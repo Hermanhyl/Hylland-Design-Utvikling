@@ -1,16 +1,228 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/Section.astro';
+import Eyebrow from '@/components/Eyebrow.astro';
 import Container from '@/components/Container.astro';
+
+const background = [
+	{
+		year: '2023–2025',
+		title: 'Fagutdanning i frontend-utvikling (2-årig)',
+		org: 'Noroff School of Technology and Digital Media',
+		note: 'JavaScript, React, HTML5, CSS3, responsivt design, REST API, universell utforming (WCAG), Git og smidig prosjektarbeid.',
+	},
+	{
+		year: '2019–2022',
+		title: 'Bachelor i animasjon og digital kunst',
+		org: 'Høgskolen i Innlandet',
+		note: 'Illustrasjon, konseptkunst, 3D, teksturer, motion graphics (After Effects), VFX og UX-design.',
+	},
+	{
+		year: '2023–2024',
+		title: 'IDF-sertifiseringer',
+		org: 'Interaction Design Foundation',
+		note: "UX Beginner's Guide · Design for the 21st Century (Don Norman) · UI Design Patterns for Successful Software",
+	},
+];
+
+const principles = [
+	{
+		number: '01',
+		title: 'Forstå før jeg bygger',
+		body: 'Jeg starter med å forstå hva klienten faktisk trenger — ikke bare hva som ble sagt i den første e-posten. Det sparer alle for tid senere.',
+	},
+	{
+		number: '02',
+		title: 'Klart hierarki, korte steg',
+		body: 'Brukere mister tålmodigheten når ting blir uklart. Jeg jobber for tydelige strukturer, korte avsnitt og handlinger som er enkle å forstå.',
+	},
+	{
+		number: '03',
+		title: 'AI som verktøy, ikke autopilot',
+		body: 'Jeg bruker AI for å jobbe raskere, men hver beslutning er min. Det betyr tett oppfølging, gjennomtenkte valg, og kvalitet som ikke går på akkord med fart.',
+	},
+	{
+		number: '04',
+		title: 'Åpen kommunikasjon',
+		body: 'Jeg sier ifra når noe ikke fungerer, og spør når noe er uklart. Det er bedre å ta diskusjonen tidlig enn å oppdage problemet ved levering.',
+	},
+];
 ---
 
 <BaseLayout
 	title="Om meg — Hylland Design og Utvikling"
-	description="Lær mer om Herman Hylland — frontend-utvikler og UX/UI-designer basert i Drammen, Norge."
+	description="Herman Hylland — frontend-utvikler og UX-designer fra Drammen. Bakgrunn, arbeidsmåte og hvorfor jeg gjør det jeg gjør."
 >
-	<Container as="section" class="py-24 md:py-32 lg:py-40">
-		<h1 class="text-balance">Om meg</h1>
-		<p class="mt-6 max-w-[55ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
-			Bakgrunn, arbeidsmåte og hvorfor jeg gjør det jeg gjør.
+	<!-- Hero -->
+	<Section tone="default" padding="none" class="py-32 lg:py-40">
+		<Eyebrow class="mb-6">Om meg</Eyebrow>
+		<h1 class="text-[length:var(--text-h1)] leading-[1.1] tracking-[-0.02em] text-balance">
+			Frontend-utvikler og designer med
+			<span class="italic text-accent">brukeren i sentrum</span>.
+		</h1>
+		<p class="mt-8 max-w-[58ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+			Jeg heter Herman Hylland, og driver Hylland Design og Utvikling fra
+			Drammen. Her er litt om hvordan jeg jobber — og hvorfor.
 		</p>
-	</Container>
+	</Section>
+
+	<!-- Narrative -->
+	<Section tone="default" padding="default">
+		<Container size="prose">
+			<Eyebrow>Bakgrunn</Eyebrow>
+			<h2 class="mt-4">Veien hit</h2>
+			<div class="mt-8 space-y-6 text-[length:var(--text-body)] leading-relaxed text-text">
+				<p>
+					Jeg har en bachelor i animasjon og digital kunst fra Høgskolen i
+					Innlandet, og en toårig frontendutdanning fra Noroff. Det høres
+					kanskje ut som to forskjellige retninger, men for meg har de alltid
+					hørt sammen: det visuelle og det tekniske er to sider av samme
+					håndverk.
+				</p>
+				<p>
+					I årene etter studiene har jeg jobbet med alt fra VR-simulatorer for
+					Sykehuspartner til UX-revisjoner for Hubro Digital, og bygget egne
+					produkter som MyHobbyist og GoneFishing. Jeg har også tatt
+					sertifiseringer i UX og designprinsipper gjennom Interaction Design
+					Foundation — fordi jeg mener et godt grensesnitt fortjener like mye
+					omtanke som koden bak.
+				</p>
+				<p>
+					Hylland Design og Utvikling startet jeg fordi jeg ville ha friheten
+					til å forme arbeidsdagen min selv, bygge tette relasjoner til
+					klientene mine, og bruke tiden min på det jeg synes faktisk betyr
+					noe — å lage nettsider som fungerer for menneskene som bruker dem.
+				</p>
+			</div>
+		</Container>
+	</Section>
+
+	<!-- Portrait + passion -->
+	<Section tone="warm" padding="default">
+		<div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
+			<!-- Image column -->
+			<div class="lg:col-span-5">
+				<div
+					class="relative w-full overflow-hidden border border-border bg-bg"
+					style="aspect-ratio: 4/5"
+				>
+					<div class="absolute inset-0 flex items-center justify-center">
+						<p class="text-xs uppercase tracking-[0.15em] text-text-subtle">
+							Portrett kommer
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Text column -->
+			<div class="lg:col-span-7">
+				<Eyebrow>Det jeg brenner for</Eyebrow>
+				<h2 class="mt-4 font-display text-3xl font-medium lg:text-4xl">
+					Nettsider som faktisk fungerer.
+				</h2>
+				<div class="mt-6 max-w-[50ch] space-y-5 text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+					<p>
+						Mye av det jeg ser når jeg jobber med UX-revisjoner, er at folk
+						faller av nettsider fordi det blir for mye på en gang. For mange steg,
+						for mye informasjon, for uklart hva neste handling er.
+					</p>
+					<p>
+						Det jeg jobber for er det motsatte: tydelig hierarki, korte og klare
+						steg, og en flyt som hjelper brukeren videre uten friksjon. Når en
+						nettside er godt strukturert, virker den profesjonell — og den
+						beholder kundene den allerede har trukket inn.
+					</p>
+				</div>
+			</div>
+		</div>
+	</Section>
+
+	<!-- Principles -->
+	<Section tone="default" padding="default">
+		<Eyebrow>Arbeidsmåte</Eyebrow>
+		<h2 class="mt-4">Slik jobber jeg</h2>
+		<p class="mt-4 max-w-[55ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+			Fire prinsipper som ligger til grunn for nesten alt jeg gjør.
+		</p>
+
+		<div class="mt-16 grid grid-cols-1 gap-x-12 gap-y-12 md:grid-cols-2">
+			{principles.map(({ number, title, body }) => (
+				<article class="border-t border-border pt-8">
+					<p class="font-mono text-xs font-medium uppercase tracking-[0.15em] text-text-subtle">
+						{number}
+					</p>
+					<h3 class="mt-3 font-display text-xl font-medium">{title}</h3>
+					<p class="mt-3 max-w-[42ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+						{body}
+					</p>
+				</article>
+			))}
+		</div>
+	</Section>
+
+	<!-- Background -->
+	<Section tone="warm" padding="default">
+		<Eyebrow>Bakgrunn</Eyebrow>
+		<h2 class="mt-4">Utdanning og erfaring</h2>
+
+		<ul class="mt-12 divide-y divide-border border-b border-t border-border" role="list">
+			{background.map((item) => (
+				<li class="grid grid-cols-12 items-baseline gap-4 py-5">
+					<span class="col-span-2 font-mono text-sm text-text-subtle">
+						{item.year}
+					</span>
+					<div class="col-span-10 sm:col-span-6">
+						<p class="font-display text-lg font-medium text-text">
+							{item.title}
+						</p>
+						<p class="text-sm text-text-muted">{item.org}</p>
+					</div>
+					<span class="hidden text-right text-sm leading-relaxed text-text-muted sm:col-span-4 sm:block">
+						{item.note}
+					</span>
+				</li>
+			))}
+		</ul>
+	</Section>
+
+	<!-- Outside work -->
+	<Section tone="default" padding="default">
+		<Container size="prose">
+			<Eyebrow>Utenfor jobb</Eyebrow>
+			<h2 class="mt-4">Det andre jeg holder på med</h2>
+			<div class="mt-8 space-y-5 text-[length:var(--text-body)] leading-relaxed text-text">
+				<p>
+					Når jeg ikke sitter foran skjermen, finner du meg som regel ute.
+					Jeg fisker, bruker tid i naturen, og trener jevnlig på
+					treningssenter — noe som ble enda lettere etter at jeg flyttet
+					hjem til Drammen fra Dresden.
+				</p>
+				<p>
+					Jeg illustrerer fortsatt på fritiden og deler arbeidet mitt på
+					Instagram. For meg henger det visuelle håndverket og arbeidet mitt
+					tett sammen — det ene gjør det andre bedre.
+				</p>
+			</div>
+		</Container>
+	</Section>
+
+	<!-- Closing CTA -->
+	<Section tone="deep" padding="default">
+		<div class="max-w-[58ch]">
+			<Eyebrow class="text-accent-soft">Ta kontakt</Eyebrow>
+			<p class="mt-4 font-display text-3xl font-medium text-text-on-deep lg:text-4xl">
+				Har du et prosjekt vi burde snakke om?
+			</p>
+			<p class="mt-6 text-[length:var(--text-body)] leading-[1.6] text-text-on-deep/60">
+				Send en e-post med noen ord om hva du jobber med, så finner vi
+				ut om det er en god match. Det koster ingenting å spørre.
+			</p>
+			<a
+				href="/kontakt"
+				class="mt-10 inline-block rounded-[2px] bg-accent px-6 py-3 font-medium text-bg transition-colors duration-150 hover:bg-accent-hover"
+			>
+				Send melding
+			</a>
+		</div>
+	</Section>
 </BaseLayout>

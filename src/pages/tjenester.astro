@@ -1,16 +1,79 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/Section.astro';
+import Eyebrow from '@/components/Eyebrow.astro';
 import Container from '@/components/Container.astro';
+import ServiceBlock from '@/components/ServiceBlock.astro';
 ---
 
 <BaseLayout
 	title="Tjenester — Hylland Design og Utvikling"
 	description="Frontend-utvikling, UX/UI-design, og webrådgivning. Se hva jeg kan hjelpe deg med."
 >
-	<Container as="section" class="py-24 md:py-32 lg:py-40">
-		<h1 class="text-balance">Tjenester</h1>
-		<p class="mt-6 max-w-[55ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+	<!-- Hero -->
+	<Section tone="default" padding="none" class="py-32 lg:py-40">
+		<Eyebrow class="mb-6">Tjenester</Eyebrow>
+		<h1 class="text-[length:var(--text-h1)] leading-[1.1] tracking-[-0.02em] text-balance">
 			Det jeg kan hjelpe deg med.
+		</h1>
+		<p class="mt-8 max-w-[58ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+			Fire tjenester som dekker hele veien fra idé til ferdig nettløsning —
+			enten du trenger hjelp til ett konkret prosjekt eller noen som kan se
+			helheten.
 		</p>
+	</Section>
+
+	<!-- Service blocks -->
+	<Container>
+		<ServiceBlock
+			number="01"
+			title="Frontend-utvikling"
+			pitch="Raske, tilgjengelige nettsider og webapplikasjoner bygget med moderne verktøy — fra enkle landingssider til komplekse løsninger."
+			includes={[
+				'Utvikling i React, Astro, Next.js eller WordPress',
+				'Responsivt design som fungerer på alle enheter',
+				'Ytelsesoptimalisering og Core Web Vitals',
+				'Tilgjengelighet (WCAG) og semantisk HTML',
+			]}
+			whenItFits="Du har et design klart og trenger noen til å bygge det — eller du trenger en utvikler som kan ta hele løpet fra skisse til ferdig produkt."
+		/>
+
+		<ServiceBlock
+			number="02"
+			title="UX/UI-design"
+			pitch="Brukervennlige grensesnitt og gjennomtenkte designsystemer — fra wireframes og prototyper til ferdig design i Figma."
+			includes={[
+				'Brukerresearch og behovsanalyse',
+				'Wireframes og interaktive prototyper',
+				'Visuelt design og designsystem i Figma',
+				'Brukertesting og iterasjon',
+			]}
+			whenItFits="Du skal lage noe nytt og vil sikre at det er gjennomtenkt fra start — eller du har en eksisterende løsning som trenger et løft."
+		/>
+
+		<ServiceBlock
+			number="03"
+			title="Rådgivning"
+			pitch="UX-audits, designgjennomganger og strategiske råd som hjelper deg å ta riktige valg for produktet ditt."
+			includes={[
+				'Heuristisk evaluering og UX-audit',
+				'Designgjennomgang med konkrete anbefalinger',
+				'Teknologivalg og arkitekturvurdering',
+				'Tilgjengelighetsvurdering (WCAG-revisjon)',
+			]}
+			whenItFits="Du har en eksisterende løsning som ikke fungerer godt nok, og trenger et eksternt blikk med konkrete forslag til forbedring."
+		/>
+
+		<ServiceBlock
+			number="04"
+			title="Grafisk design"
+			pitch="Visuell identitet, illustrasjon og grafiske elementer som gir produktet ditt personlighet og gjenkjennelse."
+			includes={[
+				'Logo og visuell identitet',
+				'Illustrasjoner og ikoner',
+				'Grafiske elementer for web og print',
+			]}
+			whenItFits="Du trenger et helhetlig visuelt uttrykk som binder sammen nettside, markedsmateriell og merkevare."
+		/>
 	</Container>
 </BaseLayout>

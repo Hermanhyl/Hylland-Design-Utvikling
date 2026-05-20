@@ -1,0 +1,66 @@
+---
+import Eyebrow from '@/components/Eyebrow.astro';
+
+interface Props {
+	number: string;
+	title: string;
+	pitch: string;
+	includes: string[];
+	whenItFits: string;
+	ctaHref?: string;
+	ctaLabel?: string;
+}
+
+const {
+	number,
+	title,
+	pitch,
+	includes,
+	whenItFits,
+	ctaHref = '/kontakt',
+	ctaLabel = 'Snakk om et prosjekt →',
+} = Astro.props;
+---
+
+<article class="grid grid-cols-1 gap-10 border-t border-border py-16 lg:grid-cols-12 lg:gap-12 lg:py-20">
+	<!-- Left: heading + pitch + CTA -->
+	<div class="lg:sticky lg:top-32 lg:col-span-5 lg:self-start">
+		<Eyebrow>{number} — Tjeneste</Eyebrow>
+		<h2 class="mt-4 font-display text-[length:var(--text-h2)] leading-[1.2]">{title}</h2>
+		<p class="mt-4 max-w-[44ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+			{pitch}
+		</p>
+		<a
+			href={ctaHref}
+			class="mt-8 inline-block text-[length:var(--text-body)] font-medium text-text transition-colors duration-150 hover:text-accent"
+		>
+			{ctaLabel}
+		</a>
+	</div>
+
+	<!-- Right: includes + when it fits -->
+	<div class="lg:col-span-7">
+		<div>
+			<h3 class="text-[length:var(--text-small)] font-medium uppercase tracking-wider text-text-subtle">
+				Hva som inngår
+			</h3>
+			<ul class="mt-4 flex flex-col gap-3" role="list">
+				{includes.map((item) => (
+					<li class="flex items-baseline gap-3 text-[length:var(--text-body)] leading-[1.6]">
+						<span class="mt-[0.35em] block h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+						{item}
+					</li>
+				))}
+			</ul>
+		</div>
+
+		<div class="mt-10 rounded-[2px] bg-bg-warm px-6 py-5">
+			<h3 class="text-[length:var(--text-small)] font-medium uppercase tracking-wider text-text-subtle">
+				Passer når
+			</h3>
+			<p class="mt-2 text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+				{whenItFits}
+			</p>
+		</div>
+	</div>
+</article>

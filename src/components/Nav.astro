@@ -155,6 +155,8 @@ function isActive(href: string): boolean {
 		position: fixed;
 		inset: 0;
 		z-index: 50;
+		width: 100vw;
+		height: 100dvh;
 		background-color: var(--color-bg);
 		opacity: 0;
 		visibility: hidden;
@@ -195,6 +197,38 @@ function isActive(href: string): boolean {
 	// Module-level state shared across navigations
 	let isOpen = false;
 
+	// ── Shared helpers ──
+
+	function unlockScroll() {
+		document.body.style.overflow = '';
+		document.body.style.touchAction = '';
+	}
+
+	function lockScroll() {
+		document.body.style.overflow = 'hidden';
+		document.body.style.touchAction = 'none';
+	}
+
+	function forceCloseOverlay() {
+		isOpen = false;
+		const overlay = document.getElementById('mobile-menu');
+		const toggle = document.querySelector('.mobile-toggle') as HTMLButtonElement | null;
+		if (overlay) {
+			overlay.classList.remove('is-open');
+			overlay.hidden = true;
+		}
+		if (toggle) {
+			toggle.setAttribute('aria-expanded', 'false');
+			toggle.setAttribute('aria-label', 'Åpne meny');
+		}
+		unlockScroll();
+	}
+
+	// ── FIX 3 & 5: Clean up before every view-transition swap ──
+	document.addEventListener('astro:before-swap', () => {
+		forceCloseOverlay();
+	});
+
 	function initNav() {
 		const header = document.querySelector('.site-header') as HTMLElement | null;
 		const toggle = document.querySelector('.mobile-toggle') as HTMLButtonElement | null;
@@ -230,24 +264,15 @@ function isActive(href: string): boolean {
 			}
 		});
 
-		// ── Every navigation: reset scroll state ──
+		// ── FIX 4 & 5: Reset scroll state + force-close any stale menu ──
 		header.dataset.scrolled = window.scrollY > 8 ? 'true' : 'false';
-
-		// ── Every navigation: force-close menu if open ──
-		if (isOpen) {
-			isOpen = false;
-			overlay.classList.remove('is-open');
-			overlay.hidden = true;
-			toggle.setAttribute('aria-expanded', 'false');
-			toggle.setAttribute('aria-label', 'Åpne meny');
-			document.body.style.overflow = '';
-		}
+		forceCloseOverlay();
 
 		// ── Once: attach event listeners (persisted element, never re-added) ──
 		if (header.dataset.navInit) return;
 		header.dataset.navInit = 'true';
 
-		// Scroll detection
+		// FIX 4: Scroll detection — attached once, persists via transition:persist
 		function onScroll() {
 			header!.dataset.scrolled = window.scrollY > 8 ? 'true' : 'false';
 		}
@@ -261,21 +286,48 @@ function isActive(href: string): boolean {
 			overlay!.classList.add('is-open');
 			toggle!.setAttribute('aria-expanded', 'true');
 			toggle!.setAttribute('aria-label', 'Lukk meny');
-			document.body.style.overflow = 'hidden';
+			lockScroll();
 			const firstLink = overlay!.querySelector('a') as HTMLElement | null;
 			firstLink?.focus();
 		}
 
 		function closeMenu() {
+			if (!isOpen) return;
 			isOpen = false;
 			overlay!.classList.remove('is-open');
 			toggle!.setAttribute('aria-expanded', 'false');
 			toggle!.setAttribute('aria-label', 'Åpne meny');
-			document.body.style.overflow = '';
+			unlockScroll();
 			toggle!.focus();
 			setTimeout(() => {
 				if (!isOpen) overlay!.hidden = true;
 			}, 200);
+		}
+
+		// FIX 6: Single close-then-navigate handler for mobile links
+		// Replaces both the old closeMenu-on-click AND the tap-feedback handler
+		// to eliminate the dual-handler race condition.
+		function closeMenuAndNavigate(href: string) {
+			if (!isOpen) return;
+			isOpen = false;
+			overlay!.classList.remove('is-open');
+			toggle!.setAttribute('aria-expanded', 'false');
+			toggle!.setAttribute('aria-label', 'Åpne meny');
+			unlockScroll();
+
+			const reduced = window.matchMedia(
+				'(prefers-reduced-motion: reduce)'
+			).matches;
+			const delay = reduced ? 0 : 180;
+
+			setTimeout(() => {
+				overlay!.hidden = true;
+				try {
+					navigate(href);
+				} catch {
+					window.location.href = href;
+				}
+			}, delay);
 		}
 
 		toggle.addEventListener('click', () => {
@@ -307,45 +359,14 @@ function isActive(href: string): boolean {
 			}
 		});
 
-		// Close menu on link click
+		// Mobile link click — single unified handler
 		overlay.querySelectorAll('a').forEach((link) => {
-			link.addEventListener('click', () => closeMenu());
-		});
-
-		// Tap feedback on mobile menu links
-		attachTapFeedback();
-	}
-
-	function attachTapFeedback() {
-		const links = document.querySelectorAll('[data-mobile-menu-link]');
-		links.forEach((link) => {
-			if ((link as HTMLElement).dataset.tapAttached === 'true') return;
-			(link as HTMLElement).dataset.tapAttached = 'true';
-
 			link.addEventListener('click', (e) => {
 				const href = link.getAttribute('href');
 				if (!href) return;
 				if (href.startsWith('http') || href.startsWith('mailto:')) return;
-
-				const reduced = window.matchMedia(
-					'(prefers-reduced-motion: reduce)'
-				).matches;
-				if (reduced) return;
-
 				e.preventDefault();
-				link.classList.add('is-tapped');
-
-				setTimeout(() => {
-					const menu = document.querySelector('[data-mobile-menu]');
-					if (menu) (menu as HTMLElement).dataset.open = 'false';
-					document.body.style.overflow = '';
-					link.classList.remove('is-tapped');
-					try {
-						navigate(href);
-					} catch {
-						window.location.href = href;
-					}
-				}, 180);
+				closeMenuAndNavigate(href);
 			});
 		});
 	}
