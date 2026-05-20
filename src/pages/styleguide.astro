@@ -1,0 +1,348 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const colors = [
+	{ name: '--color-bg', hex: '#FAFAF7', label: 'Background' },
+	{ name: '--color-bg-subtle', hex: '#F2F1EC', label: 'Background subtle' },
+	{ name: '--color-text', hex: '#1A1A1F', label: 'Text' },
+	{ name: '--color-text-muted', hex: '#6B6B70', label: 'Text muted' },
+	{ name: '--color-border', hex: '#E5E4DE', label: 'Border' },
+	{ name: '--color-accent', hex: '#B8533A', label: 'Accent' },
+	{ name: '--color-accent-hover', hex: '#9E4530', label: 'Accent hover' },
+	{ name: '--color-accent-subtle', hex: '#F5E8E2', label: 'Accent subtle' },
+];
+
+const typeScale = [
+	{ name: '--text-display', value: 'clamp(3rem, 6vw, 5.5rem)', sample: 'Display', font: 'display', lh: '1.05', ls: '-0.02em' },
+	{ name: '--text-h1', value: 'clamp(2.25rem, 4vw, 3.5rem)', sample: 'Heading 1', font: 'display', lh: '1.1', ls: '-0.02em' },
+	{ name: '--text-h2', value: 'clamp(1.75rem, 3vw, 2.5rem)', sample: 'Heading 2', font: 'display', lh: '1.2', ls: 'normal' },
+	{ name: '--text-h3', value: '1.5rem', sample: 'Heading 3', font: 'display', lh: '1.2', ls: 'normal' },
+	{ name: '--text-h4', value: '1.25rem', sample: 'Heading 4', font: 'display', lh: '1.2', ls: 'normal' },
+	{ name: '--text-body', value: '1.0625rem', sample: 'Body text — the quick brown fox jumps over the lazy dog.', font: 'body', lh: '1.6', ls: 'normal' },
+	{ name: '--text-small', value: '0.9375rem', sample: 'Small text — secondary information and captions.', font: 'body', lh: '1.6', ls: 'normal' },
+	{ name: '--text-micro', value: '0.8125rem', sample: 'Micro text — labels, metadata, fine print.', font: 'body', lh: '1.6', ls: 'normal' },
+];
+
+const spacingSteps = [
+	{ name: '4px', value: '0.25rem', width: 4 },
+	{ name: '8px', value: '0.5rem', width: 8 },
+	{ name: '12px', value: '0.75rem', width: 12 },
+	{ name: '16px', value: '1rem', width: 16 },
+	{ name: '24px', value: '1.5rem', width: 24 },
+	{ name: '32px', value: '2rem', width: 32 },
+	{ name: '48px', value: '3rem', width: 48 },
+	{ name: '64px', value: '4rem', width: 64 },
+	{ name: '96px', value: '6rem', width: 96 },
+	{ name: '128px', value: '8rem', width: 128 },
+];
+---
+
+<BaseLayout
+	title="Styleguide — Herman Hylland"
+	description="Intern designsystem-referanse."
+>
+	<div class="mx-auto max-w-5xl px-6 py-24 md:px-8">
+		<header class="mb-16">
+			<h1>Styleguide</h1>
+			<p class="mt-4 text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+				Intern referanse for designsystemet. Ikke indeksert av søkemotorer.
+			</p>
+		</header>
+
+		<!-- ─── 1. Colors ─── -->
+		<section class="border-t border-border py-16">
+			<h2>Farger</h2>
+			<div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+				{colors.map(({ name, hex, label }) => (
+					<div>
+						<div
+							class="h-20 rounded-lg border border-border"
+							style={`background-color: ${hex};`}
+						/>
+						<p class="mt-2 text-[length:var(--text-small)] font-medium">{label}</p>
+						<p class="text-[length:var(--text-micro)] text-text-muted">{hex}</p>
+						<code class="text-[length:var(--text-micro)] text-text-muted">{name}</code>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<!-- ─── 2. Type Scale ─── -->
+		<section class="border-t border-border py-16">
+			<h2>Typografi</h2>
+			<div class="mt-8 flex flex-col gap-10">
+				{typeScale.map(({ name, value, sample, font, lh, ls }) => (
+					<div class="border-b border-border pb-8 last:border-b-0 last:pb-0">
+						<p
+							class:list={[
+								font === 'display' ? 'font-display' : 'font-body',
+							]}
+							style={`font-size: var(${name}); line-height: ${lh}; letter-spacing: ${ls};`}
+						>
+							{sample}
+						</p>
+						<div class="mt-3 flex flex-wrap gap-x-4 gap-y-1">
+							<code class="text-[length:var(--text-micro)] text-text-muted">{name}</code>
+							<span class="text-[length:var(--text-micro)] text-text-muted">{value}</span>
+							<span class="text-[length:var(--text-micro)] text-text-muted">line-height: {lh}</span>
+							{ls !== 'normal' && (
+								<span class="text-[length:var(--text-micro)] text-text-muted">letter-spacing: {ls}</span>
+							)}
+						</div>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<!-- ─── 3. Spacing ─── -->
+		<section class="border-t border-border py-16">
+			<h2>Spacing</h2>
+			<div class="mt-8 flex flex-col gap-3">
+				{spacingSteps.map(({ name, value, width }) => (
+					<div class="flex items-center gap-4">
+						<div
+							class="h-4 shrink-0 rounded-sm bg-accent"
+							style={`width: ${width}px;`}
+						/>
+						<span class="text-[length:var(--text-small)]">{name}</span>
+						<span class="text-[length:var(--text-micro)] text-text-muted">{value}</span>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<!-- ─── 4. Buttons ─── -->
+		<section class="border-t border-border py-16">
+			<h2>Knapper</h2>
+
+			<h3 class="mb-4 mt-8">Primary</h3>
+			<div class="flex flex-wrap items-center gap-4">
+				<button type="button" class="sg-btn sg-btn--primary">Primary</button>
+				<button type="button" class="sg-btn sg-btn--primary" data-hover>Primary :hover</button>
+				<button type="button" class="sg-btn sg-btn--primary" disabled>Primary :disabled</button>
+			</div>
+
+			<h3 class="mb-4 mt-10">Secondary</h3>
+			<div class="flex flex-wrap items-center gap-4">
+				<button type="button" class="sg-btn sg-btn--secondary">Secondary</button>
+				<button type="button" class="sg-btn sg-btn--secondary" data-hover>Secondary :hover</button>
+				<button type="button" class="sg-btn sg-btn--secondary" disabled>Secondary :disabled</button>
+			</div>
+
+			<h3 class="mb-4 mt-10">Text link</h3>
+			<div class="flex flex-wrap items-center gap-4">
+				<a href="#" class="sg-link">En tekstlenke</a>
+			</div>
+		</section>
+
+		<!-- ─── 5. Form Elements ─── -->
+		<section class="border-t border-border py-16">
+			<h2>Skjemaelementer</h2>
+			<div class="mt-8 flex max-w-md flex-col gap-6">
+				<div>
+					<label for="sg-name" class="sg-label">Navn</label>
+					<input type="text" id="sg-name" class="sg-input" placeholder="Ola Nordmann" />
+				</div>
+				<div>
+					<label for="sg-email" class="sg-label">E-post</label>
+					<input type="email" id="sg-email" class="sg-input" placeholder="ola@eksempel.no" />
+				</div>
+				<div>
+					<label for="sg-message" class="sg-label">Melding</label>
+					<textarea id="sg-message" class="sg-input" rows="4" placeholder="Skriv meldingen din her..."></textarea>
+				</div>
+			</div>
+		</section>
+
+		<!-- ─── 6. Prose ─── -->
+		<section class="border-t border-border py-16">
+			<h2>Prose</h2>
+			<div class="sg-prose mt-8 max-w-2xl">
+				<h2>Andreoverskrift i brødtekst</h2>
+				<p>
+					Dette er et avsnitt med vanlig brødtekst. Designsystemet bruker
+					<a href="#">Inter Variable</a> for brødtekst og
+					<strong>Fraunces Variable</strong> for overskrifter. Målet er å skape en
+					varm, redaksjonell tone som føles tillitsvekkende og rolig.
+				</p>
+				<h3>Tredjeoverskrift</h3>
+				<p>
+					God typografi handler om rytme og hierarki. Riktig linjehøyde,
+					bokstavmellomrom og skriftstørrelse gjør innhold lettere å lese og
+					gir siden en klar visuell struktur.
+				</p>
+				<ul>
+					<li>Punkt nummer en i listen</li>
+					<li>Punkt nummer to med litt mer tekst for å vise hvordan linjebryting fungerer over flere linjer</li>
+					<li>Punkt nummer tre</li>
+				</ul>
+				<blockquote>
+					<p>
+						«Design er ikke bare hvordan det ser ut og føles. Design er
+						hvordan det fungerer.»
+					</p>
+				</blockquote>
+				<p>
+					Her er et eksempel på <code>inline kode</code> inne i en setning.
+					Det kan brukes for variabelnavn, CSS-egenskaper eller kommandoer.
+				</p>
+			</div>
+		</section>
+	</div>
+</BaseLayout>
+
+<style>
+	/* ─── Buttons ─── */
+	.sg-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.75rem 1.5rem;
+		font-size: var(--text-small);
+		font-weight: 500;
+		line-height: 1;
+		border-radius: 0.5rem;
+		transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+		cursor: pointer;
+		border: 1px solid transparent;
+	}
+
+	.sg-btn:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
+
+	.sg-btn--primary {
+		background-color: var(--color-accent);
+		color: #fff;
+	}
+
+	.sg-btn--primary:hover:not(:disabled),
+	.sg-btn--primary[data-hover] {
+		background-color: var(--color-accent-hover);
+	}
+
+	.sg-btn--secondary {
+		background-color: transparent;
+		color: var(--color-text);
+		border-color: var(--color-border);
+	}
+
+	.sg-btn--secondary:hover:not(:disabled),
+	.sg-btn--secondary[data-hover] {
+		border-color: var(--color-text);
+	}
+
+	.sg-link {
+		color: var(--color-accent);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		text-decoration-thickness: 1px;
+		transition: color 0.2s ease;
+	}
+
+	.sg-link:hover {
+		color: var(--color-accent-hover);
+	}
+
+	/* ─── Form elements ─── */
+	.sg-label {
+		display: block;
+		margin-bottom: 0.5rem;
+		font-size: var(--text-small);
+		font-weight: 500;
+		color: var(--color-text);
+	}
+
+	.sg-input {
+		display: block;
+		width: 100%;
+		padding: 0.75rem 1rem;
+		font-size: var(--text-body);
+		line-height: 1.5;
+		color: var(--color-text);
+		background-color: var(--color-bg);
+		border: 1px solid var(--color-border);
+		border-radius: 0.5rem;
+		transition: border-color 0.2s ease;
+	}
+
+	.sg-input::placeholder {
+		color: var(--color-text-muted);
+		opacity: 0.6;
+	}
+
+	.sg-input:hover {
+		border-color: var(--color-text-muted);
+	}
+
+	.sg-input:focus {
+		border-color: var(--color-accent);
+		outline: 2px solid var(--color-accent);
+		outline-offset: 1px;
+	}
+
+	/* ─── Prose ─── */
+	.sg-prose h2 {
+		margin-top: 2em;
+		margin-bottom: 0.75em;
+	}
+
+	.sg-prose h2:first-child {
+		margin-top: 0;
+	}
+
+	.sg-prose h3 {
+		margin-top: 1.75em;
+		margin-bottom: 0.5em;
+	}
+
+	.sg-prose p {
+		margin-bottom: 1.25em;
+	}
+
+	.sg-prose a {
+		color: var(--color-accent);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		text-decoration-thickness: 1px;
+		transition: color 0.2s ease;
+	}
+
+	.sg-prose a:hover {
+		color: var(--color-accent-hover);
+	}
+
+	.sg-prose ul {
+		margin-bottom: 1.25em;
+		padding-left: 1.5em;
+		list-style: disc;
+	}
+
+	.sg-prose li {
+		margin-bottom: 0.375em;
+		line-height: 1.6;
+	}
+
+	.sg-prose blockquote {
+		margin: 1.5em 0;
+		padding: 1rem 1.5rem;
+		border-left: 3px solid var(--color-accent);
+		background-color: var(--color-bg-subtle);
+		border-radius: 0 0.5rem 0.5rem 0;
+	}
+
+	.sg-prose blockquote p {
+		margin-bottom: 0;
+		font-style: italic;
+		color: var(--color-text-muted);
+	}
+
+	.sg-prose code {
+		padding: 0.15em 0.4em;
+		font-size: 0.875em;
+		font-family: var(--font-mono);
+		background-color: var(--color-bg-subtle);
+		border-radius: 0.25rem;
+	}
+</style>
