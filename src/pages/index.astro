@@ -1,0 +1,42 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Person',
+			name: 'Herman Hylland',
+			jobTitle: 'Frontend-utvikler & UX/UI-designer',
+			url: 'https://hermanhylland.no',
+			address: {
+				'@type': 'PostalAddress',
+				addressLocality: 'Drammen',
+				addressCountry: 'NO',
+			},
+		},
+		{
+			'@type': 'LocalBusiness',
+			name: 'Herman Hylland ENK',
+			url: 'https://hermanhylland.no',
+			description: 'Frontend-utvikling og UX/UI-design i Drammen',
+			address: {
+				'@type': 'PostalAddress',
+				addressLocality: 'Drammen',
+				addressCountry: 'NO',
+			},
+		},
+	],
+};
+---
+
+<BaseLayout
+	title="Herman Hylland — Frontend-utvikler & UX/UI-designer"
+	description="Frontend-utvikling og UX/UI-design fra Drammen. Jeg hjelper bedrifter med å bygge raske, tilgjengelige og brukervennlige nettsider."
+	jsonLd={jsonLd}
+>
+	<section>
+		<h1>Herman Hylland</h1>
+		<p>Frontend-utvikler &amp; UX/UI-designer i Drammen</p>
+	</section>
+</BaseLayout>

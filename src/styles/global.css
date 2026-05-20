@@ -1,0 +1,84 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens — override these per-theme or in component styles.
+ * Values are placeholders; update when design system is defined.
+ */
+:root {
+	--color-primary: #1a1a2e;
+	--color-accent: #e94560;
+	--color-bg: #ffffff;
+	--color-text: #1a1a2e;
+	--color-text-muted: #6b7280;
+	--color-surface: #f9fafb;
+	--color-border: #e5e7eb;
+
+	--font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+		Arial, sans-serif;
+	--font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo,
+		Consolas, monospace;
+
+	--max-width: 72rem;
+}
+
+/*
+ * Minimal reset
+ */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+	-moz-tab-size: 4;
+	tab-size: 4;
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: var(--font-sans);
+	color: var(--color-text);
+	background-color: var(--color-bg);
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+	display: block;
+	max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	overflow-wrap: break-word;
+	line-height: 1.2;
+}
+
+p {
+	overflow-wrap: break-word;
+}
