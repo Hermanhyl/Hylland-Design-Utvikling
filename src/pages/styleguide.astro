@@ -1,15 +1,22 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/Container.astro';
 
 const colors = [
 	{ name: '--color-bg', hex: '#FAFAF7', label: 'Background' },
 	{ name: '--color-bg-subtle', hex: '#F2F1EC', label: 'Background subtle' },
+	{ name: '--color-bg-warm', hex: '#F5F2EA', label: 'Background warm' },
+	{ name: '--color-bg-deep', hex: '#1A1A1F', label: 'Background deep' },
 	{ name: '--color-text', hex: '#1A1A1F', label: 'Text' },
 	{ name: '--color-text-muted', hex: '#6B6B70', label: 'Text muted' },
+	{ name: '--color-text-subtle', hex: '#9A9A9F', label: 'Text subtle' },
+	{ name: '--color-text-on-deep', hex: '#F5F2EA', label: 'Text on deep' },
 	{ name: '--color-border', hex: '#E5E4DE', label: 'Border' },
 	{ name: '--color-accent', hex: '#B8533A', label: 'Accent' },
 	{ name: '--color-accent-hover', hex: '#9E4530', label: 'Accent hover' },
 	{ name: '--color-accent-subtle', hex: '#F5E8E2', label: 'Accent subtle' },
+	{ name: '--color-accent-deep', hex: '#6B2E20', label: 'Accent deep' },
+	{ name: '--color-accent-soft', hex: '#D89280', label: 'Accent soft' },
 ];
 
 const typeScale = [
@@ -41,7 +48,7 @@ const spacingSteps = [
 	title="Styleguide — Herman Hylland"
 	description="Intern designsystem-referanse."
 >
-	<div class="mx-auto max-w-5xl px-6 py-24 md:px-8">
+	<Container class="py-24">
 		<header class="mb-16">
 			<h1>Styleguide</h1>
 			<p class="mt-4 text-[length:var(--text-body)] leading-[1.6] text-text-muted">
@@ -129,6 +136,14 @@ const spacingSteps = [
 				<button type="button" class="sg-btn sg-btn--secondary" disabled>Secondary :disabled</button>
 			</div>
 
+			<h3 class="mb-4 mt-10">On dark background</h3>
+			<div class="flex flex-wrap items-center gap-4 rounded-lg bg-bg-deep p-8">
+				<button type="button" class="sg-btn sg-btn--primary-on-deep">Primary</button>
+				<button type="button" class="sg-btn sg-btn--primary-on-deep" data-hover>Primary :hover</button>
+				<button type="button" class="sg-btn sg-btn--secondary-on-deep">Secondary</button>
+				<button type="button" class="sg-btn sg-btn--secondary-on-deep" data-hover>Secondary :hover</button>
+			</div>
+
 			<h3 class="mb-4 mt-10">Text link</h3>
 			<div class="flex flex-wrap items-center gap-4">
 				<a href="#" class="sg-link">En tekstlenke</a>
@@ -188,7 +203,7 @@ const spacingSteps = [
 				</p>
 			</div>
 		</section>
-	</div>
+	</Container>
 </BaseLayout>
 
 <style>
@@ -201,7 +216,7 @@ const spacingSteps = [
 		font-size: var(--text-small);
 		font-weight: 500;
 		line-height: 1;
-		border-radius: 0.5rem;
+		border-radius: 2px;
 		transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
 		cursor: pointer;
 		border: 1px solid transparent;
@@ -214,7 +229,7 @@ const spacingSteps = [
 
 	.sg-btn--primary {
 		background-color: var(--color-accent);
-		color: #fff;
+		color: var(--color-bg);
 	}
 
 	.sg-btn--primary:hover:not(:disabled),
@@ -225,12 +240,36 @@ const spacingSteps = [
 	.sg-btn--secondary {
 		background-color: transparent;
 		color: var(--color-text);
-		border-color: var(--color-border);
+		border-color: var(--color-text);
 	}
 
 	.sg-btn--secondary:hover:not(:disabled),
 	.sg-btn--secondary[data-hover] {
-		border-color: var(--color-text);
+		background-color: var(--color-text);
+		color: var(--color-bg);
+	}
+
+	/* On-dark variants */
+	.sg-btn--primary-on-deep {
+		background-color: var(--color-accent);
+		color: var(--color-bg);
+	}
+
+	.sg-btn--primary-on-deep:hover:not(:disabled),
+	.sg-btn--primary-on-deep[data-hover] {
+		background-color: var(--color-accent-soft);
+	}
+
+	.sg-btn--secondary-on-deep {
+		background-color: transparent;
+		color: var(--color-text-on-deep);
+		border-color: var(--color-text-on-deep);
+	}
+
+	.sg-btn--secondary-on-deep:hover:not(:disabled),
+	.sg-btn--secondary-on-deep[data-hover] {
+		background-color: var(--color-text-on-deep);
+		color: var(--color-bg-deep);
 	}
 
 	.sg-link {

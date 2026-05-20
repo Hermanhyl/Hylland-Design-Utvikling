@@ -1,15 +1,16 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/Container.astro';
 ---
 
 <BaseLayout
 	title="Om meg — Herman Hylland"
 	description="Lær mer om Herman Hylland — frontend-utvikler og UX/UI-designer basert i Drammen, Norge."
 >
-	<section class="mx-auto max-w-5xl px-6 py-32 md:px-8">
-		<h1>Om meg</h1>
-		<p class="mt-4 max-w-2xl text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+	<Container as="section" class="py-24 md:py-32 lg:py-40">
+		<h1 class="text-balance">Om meg</h1>
+		<p class="mt-6 max-w-[55ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
 			Bakgrunn, arbeidsmåte og hvorfor jeg gjør det jeg gjør.
 		</p>
-	</section>
+	</Container>
 </BaseLayout>

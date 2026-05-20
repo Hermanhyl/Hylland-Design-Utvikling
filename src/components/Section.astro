@@ -1,0 +1,35 @@
+---
+import Container from '@/components/Container.astro';
+
+interface Props {
+	tone?: 'default' | 'warm' | 'deep';
+	padding?: 'tight' | 'default' | 'loose';
+	id?: string;
+	class?: string;
+}
+
+const {
+	tone = 'default',
+	padding = 'default',
+	id,
+	class: className,
+} = Astro.props;
+
+const toneClasses: Record<string, string> = {
+	default: 'bg-bg',
+	warm: 'bg-bg-warm',
+	deep: 'bg-bg-deep text-text-on-deep',
+};
+
+const paddingClasses: Record<string, string> = {
+	tight: 'py-16 md:py-20',
+	default: 'py-24 md:py-32',
+	loose: 'py-32 md:py-48',
+};
+---
+
+<section id={id} class:list={[toneClasses[tone], paddingClasses[padding], className]}>
+	<Container>
+		<slot />
+	</Container>
+</section>

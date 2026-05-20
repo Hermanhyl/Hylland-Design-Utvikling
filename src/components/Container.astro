@@ -1,0 +1,24 @@
+---
+interface Props {
+	size?: 'prose' | 'default' | 'wide' | 'full';
+	as?: keyof HTMLElementTagNameMap;
+	class?: string;
+}
+
+const {
+	size = 'default',
+	as: Tag = 'div',
+	class: className,
+} = Astro.props;
+
+const sizeClasses: Record<string, string> = {
+	prose: 'max-w-[68ch]',
+	default: 'max-w-5xl',
+	wide: 'max-w-7xl',
+	full: 'max-w-none',
+};
+---
+
+<Tag class:list={['mx-auto px-6 md:px-8 lg:px-12', sizeClasses[size], className]}>
+	<slot />
+</Tag>

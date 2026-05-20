@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/Section.astro';
+import Eyebrow from '@/components/Eyebrow.astro';
 
 const jsonLd = {
 	'@context': 'https://schema.org',
@@ -35,12 +37,85 @@ const jsonLd = {
 	description="Frontend-utvikling og UX/UI-design fra Drammen. Jeg hjelper bedrifter med å bygge raske, tilgjengelige og brukervennlige nettsider."
 	jsonLd={jsonLd}
 >
-	<section class="mx-auto max-w-5xl px-6 py-32 md:px-8">
-		<h1 class="text-[length:var(--text-display)] leading-[1.05] tracking-[-0.02em]">
+	<!-- Hero -->
+	<Section tone="default" padding="loose">
+		<h1 class="text-[length:var(--text-display)] leading-[1.05] tracking-[-0.02em] text-balance">
 			Frontend-utvikling og UX-design fra&nbsp;Drammen.
 		</h1>
-		<p class="mt-6 max-w-2xl text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+		<p class="mt-6 max-w-[55ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
 			Jeg hjelper bedrifter med å bygge nettløsninger som er raske, tydelige og lette å bruke.
 		</p>
-	</section>
+	</Section>
+
+	<!-- Tjenester teaser -->
+	<Section tone="warm" padding="default">
+		<Eyebrow>Tjenester</Eyebrow>
+		<h2 class="mt-4 text-[length:var(--text-h2)] leading-[1.2]">Det jeg jobber med</h2>
+
+		<div class="mt-12 grid gap-x-8 gap-y-0 sm:grid-cols-2 lg:grid-cols-4">
+			<article class="border-t border-border py-8">
+				<span class="font-mono text-xs tracking-widest text-text-subtle">01</span>
+				<h3 class="mt-3 font-display text-xl font-medium">Frontend-utvikling</h3>
+				<p class="mt-3 max-w-[40ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+					Raske, tilgjengelige nettsider og webapplikasjoner bygget med moderne verktøy som React, Astro og WordPress.
+				</p>
+			</article>
+			<article class="border-t border-border py-8">
+				<span class="font-mono text-xs tracking-widest text-text-subtle">02</span>
+				<h3 class="mt-3 font-display text-xl font-medium">UX/UI-design</h3>
+				<p class="mt-3 max-w-[40ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+					Brukervennlige grensesnitt og gjennomtenkte designsystemer — fra wireframes og prototyper til ferdig design i Figma.
+				</p>
+			</article>
+			<article class="border-t border-border py-8">
+				<span class="font-mono text-xs tracking-widest text-text-subtle">03</span>
+				<h3 class="mt-3 font-display text-xl font-medium">Rådgivning</h3>
+				<p class="mt-3 max-w-[40ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+					UX-audits, designgjennomganger og strategiske råd som hjelper deg å ta riktige valg for produktet ditt.
+				</p>
+			</article>
+			<article class="border-t border-border py-8">
+				<span class="font-mono text-xs tracking-widest text-text-subtle">04</span>
+				<h3 class="mt-3 font-display text-xl font-medium">Grafisk design</h3>
+				<p class="mt-3 max-w-[40ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+					Visuell identitet, illustrasjon og grafiske elementer som gir produktet ditt personlighet og gjenkjennelse.
+				</p>
+			</article>
+		</div>
+	</Section>
+
+	<!-- Utvalgte prosjekter -->
+	<Section tone="default" padding="default">
+		<Eyebrow>Portefølje</Eyebrow>
+		<h2 class="mt-4 text-[length:var(--text-h2)] leading-[1.2]">Utvalgte prosjekter</h2>
+
+		<div class="mt-12 grid gap-8 md:grid-cols-2">
+			<div class="border-t border-border pt-8">
+				<h3 class="text-[length:var(--text-h4)] leading-[1.2]">Prosjekt 1</h3>
+				<p class="mt-2 text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+					Kort beskrivelse av prosjektet og hva som ble levert.
+				</p>
+			</div>
+			<div class="border-t border-border pt-8">
+				<h3 class="text-[length:var(--text-h4)] leading-[1.2]">Prosjekt 2</h3>
+				<p class="mt-2 text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+					Kort beskrivelse av prosjektet og hva som ble levert.
+				</p>
+			</div>
+		</div>
+	</Section>
+
+	<!-- CTA -->
+	<Section tone="deep" padding="default">
+		<h2 class="font-display text-[length:var(--text-h2)] leading-[1.2]">Har du et prosjekt?</h2>
+		<p class="mt-4 max-w-[50ch] text-[length:var(--text-body)] leading-[1.6] text-text-on-deep/70">
+			Jeg er alltid interessert i nye samarbeid. Ta gjerne kontakt for en uforpliktende prat.
+		</p>
+		<a
+			href="/kontakt"
+			class="mt-8 inline-block bg-accent px-6 py-3 font-medium text-bg rounded-[2px] transition-colors hover:bg-accent-hover"
+		>
+			Ta kontakt
+		</a>
+	</Section>
 </BaseLayout>

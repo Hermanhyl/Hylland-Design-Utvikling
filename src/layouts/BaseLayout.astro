@@ -69,7 +69,7 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}
 	<body class="flex min-h-svh flex-col">
 		<Nav />
 
-		<main class="flex-1">
+		<main class="flex-1" style={`min-height: calc(100vh - var(--nav-height));`}>
 			<slot />
 		</main>
 

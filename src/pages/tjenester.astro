@@ -1,15 +1,16 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/Container.astro';
 ---
 
 <BaseLayout
 	title="Tjenester — Herman Hylland"
 	description="Frontend-utvikling, UX/UI-design, og webrådgivning. Se hva jeg kan hjelpe deg med."
 >
-	<section class="mx-auto max-w-5xl px-6 py-32 md:px-8">
-		<h1>Tjenester</h1>
-		<p class="mt-4 max-w-2xl text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+	<Container as="section" class="py-24 md:py-32 lg:py-40">
+		<h1 class="text-balance">Tjenester</h1>
+		<p class="mt-6 max-w-[55ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
 			Det jeg kan hjelpe deg med.
 		</p>
-	</section>
+	</Container>
 </BaseLayout>
