@@ -67,6 +67,7 @@ function isActive(href: string): boolean {
 	<div
 		id="mobile-menu"
 		class="mobile-overlay"
+		data-mobile-menu
 		role="dialog"
 		aria-modal="true"
 		aria-label="Navigasjonsmeny"
@@ -76,8 +77,9 @@ function isActive(href: string): boolean {
 			{links.map(({ href, label }) => (
 				<a
 					href={href}
+					data-mobile-menu-link
 					class:list={[
-						'mobile-nav-link block py-4 font-display text-3xl transition-colors duration-150 hover:text-accent',
+						'mobile-nav-link block py-4 font-display text-3xl transition-all duration-150 ease-out hover:text-accent active:scale-[0.97] active:text-accent will-change-transform',
 						{ 'text-accent': isActive(href) },
 						{ 'text-text': !isActive(href) },
 					]}
@@ -188,6 +190,8 @@ function isActive(href: string): boolean {
 </style>
 
 <script>
+	import { navigate } from 'astro:transitions/client';
+
 	// Module-level state shared across navigations
 	let isOpen = false;
 
@@ -306,6 +310,43 @@ function isActive(href: string): boolean {
 		// Close menu on link click
 		overlay.querySelectorAll('a').forEach((link) => {
 			link.addEventListener('click', () => closeMenu());
+		});
+
+		// Tap feedback on mobile menu links
+		attachTapFeedback();
+	}
+
+	function attachTapFeedback() {
+		const links = document.querySelectorAll('[data-mobile-menu-link]');
+		links.forEach((link) => {
+			if ((link as HTMLElement).dataset.tapAttached === 'true') return;
+			(link as HTMLElement).dataset.tapAttached = 'true';
+
+			link.addEventListener('click', (e) => {
+				const href = link.getAttribute('href');
+				if (!href) return;
+				if (href.startsWith('http') || href.startsWith('mailto:')) return;
+
+				const reduced = window.matchMedia(
+					'(prefers-reduced-motion: reduce)'
+				).matches;
+				if (reduced) return;
+
+				e.preventDefault();
+				link.classList.add('is-tapped');
+
+				setTimeout(() => {
+					const menu = document.querySelector('[data-mobile-menu]');
+					if (menu) (menu as HTMLElement).dataset.open = 'false';
+					document.body.style.overflow = '';
+					link.classList.remove('is-tapped');
+					try {
+						navigate(href);
+					} catch {
+						window.location.href = href;
+					}
+				}, 180);
+			});
 		});
 	}
 

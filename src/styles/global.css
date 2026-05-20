@@ -200,3 +200,10 @@
 		animation-duration: 0.01ms !important;
 	}
 }
+
+/* ─── Mobile menu tap feedback ─── */
+.is-tapped {
+	transform: scale(0.97);
+	color: var(--color-accent);
+	transition: transform 150ms ease-out, color 150ms ease-out;
+}
