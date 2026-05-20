@@ -1,29 +1,60 @@
+/* ─── Fonts (self-hosted via fontsource) ─── */
+@import '@fontsource-variable/fraunces';
+@import '@fontsource-variable/fraunces/wght-italic.css';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/inter/wght-italic.css';
+
+/* ─── Tailwind ─── */
 @import 'tailwindcss';
 
-/*
- * Design tokens — override these per-theme or in component styles.
- * Values are placeholders; update when design system is defined.
- */
+/* ─── Design Tokens ─── */
 :root {
-	--color-primary: #1a1a2e;
-	--color-accent: #e94560;
-	--color-bg: #ffffff;
-	--color-text: #1a1a2e;
-	--color-text-muted: #6b7280;
-	--color-surface: #f9fafb;
-	--color-border: #e5e7eb;
+	/* Colors */
+	--color-bg: #FAFAF7;
+	--color-bg-subtle: #F2F1EC;
+	--color-text: #1A1A1F;
+	--color-text-muted: #6B6B70;
+	--color-border: #E5E4DE;
+	--color-accent: #B8533A;
+	--color-accent-hover: #9E4530;
+	--color-accent-subtle: #F5E8E2;
 
-	--font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
-		Arial, sans-serif;
-	--font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo,
-		Consolas, monospace;
+	/* Font stacks */
+	--font-display: 'Fraunces Variable', Georgia, serif;
+	--font-body: 'Inter Variable', system-ui, sans-serif;
+	--font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
+	/* Type scale (responsive) */
+	--text-display: clamp(3rem, 6vw, 5.5rem);
+	--text-h1: clamp(2.25rem, 4vw, 3.5rem);
+	--text-h2: clamp(1.75rem, 3vw, 2.5rem);
+	--text-h3: 1.5rem;
+	--text-h4: 1.25rem;
+	--text-body: 1.0625rem;
+	--text-small: 0.9375rem;
+	--text-micro: 0.8125rem;
+
+	/* Layout */
 	--max-width: 72rem;
 }
 
-/*
- * Minimal reset
- */
+/* ─── Tailwind v4 Theme ─── */
+@theme {
+	--color-bg: #FAFAF7;
+	--color-bg-subtle: #F2F1EC;
+	--color-text: #1A1A1F;
+	--color-text-muted: #6B6B70;
+	--color-border: #E5E4DE;
+	--color-accent: #B8533A;
+	--color-accent-hover: #9E4530;
+	--color-accent-subtle: #F5E8E2;
+
+	--font-display: 'Fraunces Variable', Georgia, serif;
+	--font-body: 'Inter Variable', system-ui, sans-serif;
+	--font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* ─── CSS Reset (Andy Bell style) ─── */
 *,
 *::before,
 *::after {
@@ -40,12 +71,14 @@ html {
 }
 
 body {
-	font-family: var(--font-sans);
+	font-family: var(--font-body);
 	color: var(--color-text);
 	background-color: var(--color-bg);
+	font-size: var(--text-body);
 	line-height: 1.6;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	min-height: 100svh;
 }
 
 img,
@@ -55,6 +88,7 @@ canvas,
 svg {
 	display: block;
 	max-width: 100%;
+	height: auto;
 }
 
 input,
@@ -75,10 +109,60 @@ h3,
 h4,
 h5,
 h6 {
+	font-family: var(--font-display);
 	overflow-wrap: break-word;
+	text-wrap: balance;
+}
+
+h1 {
+	font-size: var(--text-h1);
+	line-height: 1.1;
+	letter-spacing: -0.02em;
+}
+
+h2 {
+	font-size: var(--text-h2);
+	line-height: 1.2;
+}
+
+h3 {
+	font-size: var(--text-h3);
+	line-height: 1.2;
+}
+
+h4 {
+	font-size: var(--text-h4);
 	line-height: 1.2;
 }
 
 p {
 	overflow-wrap: break-word;
+	text-wrap: pretty;
+}
+
+/* ─── Selection ─── */
+::selection {
+	background-color: var(--color-accent-subtle);
+}
+
+/* ─── Focus ─── */
+:focus-visible {
+	outline: 2px solid var(--color-accent);
+	outline-offset: 2px;
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
 }

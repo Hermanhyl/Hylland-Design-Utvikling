@@ -1,0 +1,84 @@
+---
+const currentYear = new Date().getFullYear();
+
+const navLinks = [
+	{ href: '/tjenester', label: 'Tjenester' },
+	{ href: '/portefolje', label: 'Portefølje' },
+	{ href: '/om-meg', label: 'Om meg' },
+	{ href: '/kontakt', label: 'Kontakt' },
+];
+
+const externalLinks = [
+	{ href: 'mailto:hei@hermanhylland.no', label: 'E-post' },
+	{ href: 'https://github.com/Hermanhyl', label: 'GitHub' },
+	{ href: 'https://linkedin.com/in/hermanhylland', label: 'LinkedIn' },
+	{ href: 'https://instagram.com/hermanhylland', label: 'Instagram' },
+];
+---
+
+<footer class="border-t border-border">
+	<div class="mx-auto grid w-full max-w-[var(--max-width)] gap-12 px-6 py-16 md:grid-cols-3 md:gap-8 md:px-8 md:py-20">
+		<!-- Left: Wordmark -->
+		<div>
+			<a
+				href="/"
+				class="font-display text-[1.25rem] font-[500] tracking-tight text-text transition-colors hover:text-accent"
+			>
+				Herman Hylland
+			</a>
+			<p class="mt-2 text-[var(--text-small)] text-text-muted">
+				Frontend & UX-design — Drammen, Norge
+			</p>
+		</div>
+
+		<!-- Middle: Nav links -->
+		<div>
+			<p class="mb-4 text-[var(--text-micro)] font-medium uppercase tracking-wider text-text-muted">
+				Sider
+			</p>
+			<ul class="flex flex-col gap-3" role="list">
+				{navLinks.map(({ href, label }) => (
+					<li>
+						<a
+							href={href}
+							class="text-[var(--text-small)] text-text-muted transition-colors hover:text-accent"
+						>
+							{label}
+						</a>
+					</li>
+				))}
+			</ul>
+		</div>
+
+		<!-- Right: External links -->
+		<div>
+			<p class="mb-4 text-[var(--text-micro)] font-medium uppercase tracking-wider text-text-muted">
+				Kontakt & sosiale medier
+			</p>
+			<ul class="flex flex-col gap-3" role="list">
+				{externalLinks.map(({ href, label }) => (
+					<li>
+						<a
+							href={href}
+							class="text-[var(--text-small)] text-text-muted transition-colors hover:text-accent"
+							{...(href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+						>
+							{label}
+							{href.startsWith('http') && (
+								<span class="ml-1 inline-block text-[0.75em] opacity-50" aria-hidden="true">&#8599;</span>
+							)}
+						</a>
+					</li>
+				))}
+			</ul>
+		</div>
+	</div>
+
+	<!-- Bottom row -->
+	<div class="border-t border-border">
+		<div class="mx-auto flex w-full max-w-[var(--max-width)] flex-col items-center gap-2 px-6 py-6 text-[var(--text-micro)] text-text-muted md:flex-row md:justify-between md:px-8">
+			<p>&copy; {currentYear} Herman Hylland</p>
+			<p>Org.nr: XXX XXX XXX</p>
+		</div>
+	</div>
+</footer>

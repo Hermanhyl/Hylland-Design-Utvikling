@@ -1,0 +1,283 @@
+---
+const pathname = Astro.url.pathname;
+
+const links = [
+	{ href: '/tjenester', label: 'Tjenester' },
+	{ href: '/portefolje', label: 'Portefølje' },
+	{ href: '/om-meg', label: 'Om meg' },
+	{ href: '/kontakt', label: 'Kontakt' },
+];
+
+function isActive(href: string): boolean {
+	return pathname === href || pathname === `${href}/`;
+}
+---
+
+<header
+	class="site-header"
+	data-scrolled="false"
+>
+	<nav
+		class="mx-auto flex w-full max-w-[var(--max-width)] items-center justify-between px-6 py-4 md:px-8"
+		aria-label="Hovedmeny"
+	>
+		<!-- Logo -->
+		<a
+			href="/"
+			class="font-display text-[1.25rem] font-[500] tracking-tight text-text transition-colors hover:text-accent"
+			aria-current={pathname === '/' || pathname === '' ? 'page' : undefined}
+		>
+			Herman Hylland
+		</a>
+
+		<!-- Desktop nav -->
+		<ul class="hidden items-center gap-8 md:flex" role="list">
+			{links.map(({ href, label }) => (
+				<li>
+					<a
+						href={href}
+						class:list={[
+							'nav-link relative py-1 text-[var(--text-small)] transition-colors hover:text-accent',
+							{ 'nav-link--active text-text': isActive(href) },
+							{ 'text-text-muted': !isActive(href) },
+						]}
+						aria-current={isActive(href) ? 'page' : undefined}
+					>
+						{label}
+					</a>
+				</li>
+			))}
+		</ul>
+
+		<!-- Mobile toggle -->
+		<button
+			type="button"
+			class="mobile-toggle relative z-50 flex h-10 w-10 items-center justify-center md:hidden"
+			aria-expanded="false"
+			aria-controls="mobile-menu"
+			aria-label="Åpne meny"
+		>
+			<span class="hamburger" aria-hidden="true">
+				<span></span>
+				<span></span>
+				<span></span>
+			</span>
+		</button>
+	</nav>
+
+	<!-- Mobile overlay -->
+	<div
+		id="mobile-menu"
+		class="mobile-overlay"
+		role="dialog"
+		aria-modal="true"
+		aria-label="Navigasjonsmeny"
+		hidden
+	>
+		<nav class="flex h-full flex-col items-center justify-center gap-8" aria-label="Mobilmeny">
+			{links.map(({ href, label }) => (
+				<a
+					href={href}
+					class:list={[
+						'mobile-nav-link font-display text-[clamp(1.75rem,5vw,2.5rem)] font-[400] transition-colors hover:text-accent',
+						{ 'text-accent': isActive(href) },
+						{ 'text-text': !isActive(href) },
+					]}
+					aria-current={isActive(href) ? 'page' : undefined}
+				>
+					{label}
+				</a>
+			))}
+		</nav>
+	</div>
+</header>
+
+<style>
+	/* ─── Header ─── */
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 40;
+		transition: background-color 0.3s ease, border-color 0.3s ease;
+		border-bottom: 1px solid transparent;
+	}
+
+	.site-header[data-scrolled='true'] {
+		background-color: oklch(from var(--color-bg) l c h / 0.85);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		border-bottom-color: var(--color-border);
+	}
+
+	/* ─── Desktop link active dot ─── */
+	.nav-link--active::after {
+		content: '';
+		position: absolute;
+		bottom: -2px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 4px;
+		height: 4px;
+		border-radius: 50%;
+		background-color: var(--color-accent);
+	}
+
+	/* ─── Hamburger icon ─── */
+	.hamburger {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 5px;
+		width: 22px;
+		height: 22px;
+	}
+
+	.hamburger span {
+		display: block;
+		width: 100%;
+		height: 2px;
+		background-color: var(--color-text);
+		border-radius: 1px;
+		transition: transform 0.3s ease, opacity 0.3s ease;
+	}
+
+	.mobile-toggle[aria-expanded='true'] .hamburger span:nth-child(1) {
+		transform: translateY(7px) rotate(45deg);
+	}
+
+	.mobile-toggle[aria-expanded='true'] .hamburger span:nth-child(2) {
+		opacity: 0;
+	}
+
+	.mobile-toggle[aria-expanded='true'] .hamburger span:nth-child(3) {
+		transform: translateY(-7px) rotate(-45deg);
+	}
+
+	/* ─── Mobile overlay ─── */
+	.mobile-overlay {
+		position: fixed;
+		inset: 0;
+		z-index: 40;
+		background-color: var(--color-bg);
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.3s ease, visibility 0.3s ease;
+	}
+
+	.mobile-overlay[hidden] {
+		display: block;
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	.mobile-overlay.is-open {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.mobile-nav-link {
+		opacity: 0;
+		transform: translateY(12px);
+		transition: opacity 0.3s ease, transform 0.3s ease, color 0.2s ease;
+	}
+
+	.mobile-overlay.is-open .mobile-nav-link {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.mobile-overlay.is-open .mobile-nav-link:nth-child(1) { transition-delay: 0.05s; }
+	.mobile-overlay.is-open .mobile-nav-link:nth-child(2) { transition-delay: 0.1s; }
+	.mobile-overlay.is-open .mobile-nav-link:nth-child(3) { transition-delay: 0.15s; }
+	.mobile-overlay.is-open .mobile-nav-link:nth-child(4) { transition-delay: 0.2s; }
+</style>
+
+<script>
+	function initNav() {
+		const header = document.querySelector('.site-header') as HTMLElement | null;
+		const toggle = document.querySelector('.mobile-toggle') as HTMLButtonElement | null;
+		const overlay = document.getElementById('mobile-menu');
+		if (!header || !toggle || !overlay) return;
+
+		// --- Scroll detection ---
+		function onScroll() {
+			header!.dataset.scrolled = window.scrollY > 10 ? 'true' : 'false';
+		}
+		window.addEventListener('scroll', onScroll, { passive: true });
+		onScroll();
+
+		// --- Mobile menu ---
+		let isOpen = false;
+
+		function openMenu() {
+			isOpen = true;
+			overlay!.hidden = false;
+			// Force reflow before adding class so transition fires
+			void overlay!.offsetHeight;
+			overlay!.classList.add('is-open');
+			toggle!.setAttribute('aria-expanded', 'true');
+			toggle!.setAttribute('aria-label', 'Lukk meny');
+			document.body.style.overflow = 'hidden';
+			// Focus first link
+			const firstLink = overlay!.querySelector('a') as HTMLElement | null;
+			firstLink?.focus();
+		}
+
+		function closeMenu() {
+			isOpen = false;
+			overlay!.classList.remove('is-open');
+			toggle!.setAttribute('aria-expanded', 'false');
+			toggle!.setAttribute('aria-label', 'Åpne meny');
+			document.body.style.overflow = '';
+			toggle!.focus();
+			// Wait for transition to finish before hiding
+			setTimeout(() => {
+				if (!isOpen) overlay!.hidden = true;
+			}, 300);
+		}
+
+		toggle.addEventListener('click', () => {
+			isOpen ? closeMenu() : openMenu();
+		});
+
+		// Escape key
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape' && isOpen) {
+				closeMenu();
+			}
+		});
+
+		// Focus trap
+		overlay.addEventListener('keydown', (e) => {
+			if (e.key !== 'Tab' || !isOpen) return;
+
+			const focusable = overlay!.querySelectorAll<HTMLElement>(
+				'a[href], button, [tabindex]:not([tabindex="-1"])'
+			);
+			if (focusable.length === 0) return;
+
+			const first = focusable[0];
+			const last = focusable[focusable.length - 1];
+
+			if (e.shiftKey && document.activeElement === first) {
+				e.preventDefault();
+				last.focus();
+			} else if (!e.shiftKey && document.activeElement === last) {
+				e.preventDefault();
+				first.focus();
+			}
+		});
+
+		// Close on link click (for SPA navigation)
+		overlay.querySelectorAll('a').forEach((link) => {
+			link.addEventListener('click', () => {
+				closeMenu();
+			});
+		});
+	}
+
+	// Run on initial load
+	initNav();
+	// Re-run after Astro view transitions
+	document.addEventListener('astro:after-swap', initNav);
+</script>

@@ -1,6 +1,8 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import '@/styles/global.css';
+import Nav from '@/components/Nav.astro';
+import Footer from '@/components/Footer.astro';
 
 interface Props {
 	title: string;
@@ -29,7 +31,7 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
-		<meta name="theme-color" content="#1a1a2e" />
+		<meta name="theme-color" content="#FAFAF7" />
 
 		<!-- SEO -->
 		<title>{title}</title>
@@ -64,25 +66,13 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}
 		<ClientRouter />
 	</head>
 
-	<body>
-		<header>
-			<nav>
-				<a href="/">Herman Hylland</a>
-				<ul>
-					<li><a href="/tjenester">Tjenester</a></li>
-					<li><a href="/om-meg">Om meg</a></li>
-					<li><a href="/portefolje">Portefølje</a></li>
-					<li><a href="/kontakt">Kontakt</a></li>
-				</ul>
-			</nav>
-		</header>
+	<body class="flex min-h-svh flex-col">
+		<Nav />
 
-		<main>
+		<main class="flex-1">
 			<slot />
 		</main>
 
-		<footer>
-			<p>&copy; {new Date().getFullYear()} Herman Hylland ENK. Alle rettigheter reservert.</p>
-		</footer>
+		<Footer />
 	</body>
 </html>
