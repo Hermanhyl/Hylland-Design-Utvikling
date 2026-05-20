@@ -1,0 +1,52 @@
+---
+interface Props {
+	title: string;
+	client?: string;
+	year: string;
+	type: string;
+	description: string;
+	contribution: string;
+	href?: string;
+	linkLabel?: string;
+}
+
+const {
+	title,
+	client,
+	year,
+	type,
+	description,
+	contribution,
+	href,
+	linkLabel = 'Les mer →',
+} = Astro.props;
+---
+
+<article class="flex flex-col h-full border-t border-border pt-8">
+	<p class="text-xs uppercase tracking-[0.15em] font-medium text-text-subtle font-mono">
+		{type} · {year}
+	</p>
+	<h3 class="font-display text-2xl font-medium mt-3 text-text">{title}</h3>
+	{client && (
+		<p class="mt-1 text-sm text-text-muted italic">for {client}</p>
+	)}
+	<p class="mt-4 text-[length:var(--text-body)] leading-[1.6] text-text-muted max-w-[42ch]">
+		{description}
+	</p>
+	<p class="mt-3 text-[length:var(--text-body)] leading-[1.6] text-text">
+		{contribution}
+	</p>
+	<div class="mt-auto"></div>
+	{href && (
+		<div class="pt-6">
+			<a
+				href={href}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="text-sm font-medium text-accent hover:underline transition-colors"
+			>
+				{linkLabel}
+			</a>
+		</div>
+	)}
+</article>

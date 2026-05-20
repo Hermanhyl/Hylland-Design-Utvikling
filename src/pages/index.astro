@@ -2,6 +2,42 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/Section.astro';
 import Eyebrow from '@/components/Eyebrow.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+
+const projects = [
+	{
+		title: 'MyHobbyist',
+		client: 'Eget produkt',
+		year: '2024–2025',
+		type: 'Webapplikasjon',
+		description:
+			'AI-drevet aktivitetskonsierge bygget som progressiv webapplikasjon. Hjelper folk å oppdage og engasjere seg i nye hobbyer og aktiviteter.',
+		contribution:
+			'Designet og utviklet hele løsningen fra konsept til live produkt — React, TypeScript, Next.js og Supabase.',
+		href: 'https://myhobbyist.app',
+		linkLabel: 'myhobbyist.app',
+	},
+	{
+		title: 'UX-revisjon av paastell.no',
+		client: 'Hubro Digital',
+		year: '2025',
+		type: 'UX-audit',
+		description:
+			'Omfattende heuristisk evaluering av nettstedet til På Stell AS, med fokus på struktur, brukerflyt og tilgjengelighet.',
+		contribution:
+			'Gjennomførte revisjonen og leverte en 19-siders rapport med 30 funn og prioriterte anbefalinger, samt en oppsummerende presentasjon.',
+	},
+	{
+		title: 'BrannVRn',
+		client: 'Sykehuspartner',
+		year: '2023',
+		type: 'VR-simulator',
+		description:
+			'Brannsikkerhetssimulator i virtuell virkelighet utviklet som bacheloroppgave i samarbeid med Sykehuspartner. Karakter A.',
+		contribution:
+			'Bidro til konseptutvikling, visuell design, 3D-miljø og brukeropplevelse i et tverrfaglig team.',
+	},
+];
 
 const jsonLd = {
 	'@context': 'https://schema.org',
@@ -38,13 +74,20 @@ const jsonLd = {
 	jsonLd={jsonLd}
 >
 	<!-- Hero -->
-	<Section tone="default" padding="loose">
+	<Section tone="default" padding="none" class="py-32 md:py-40 lg:py-48">
+		<Eyebrow class="mb-6">Frilans · Drammen · 2026</Eyebrow>
 		<h1 class="text-[length:var(--text-display)] leading-[1.05] tracking-[-0.02em] text-balance">
-			Frontend-utvikling og UX-design fra&nbsp;Drammen.
+			Frontend-utvikling og UX-design<br />
+			<span class="italic">fra Drammen.</span>
 		</h1>
-		<p class="mt-6 max-w-[55ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+		<p class="mt-8 max-w-[58ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
 			Jeg hjelper bedrifter med å bygge nettløsninger som er raske, tydelige og lette å bruke.
 		</p>
+		<div class="mt-10 flex flex-wrap items-center gap-6">
+			<a href="/tjenester" class="text-[length:var(--text-body)] text-text-muted transition-colors duration-150 hover:text-accent">Se tjenester →</a>
+			<span class="text-text-subtle">·</span>
+			<a href="/kontakt" class="text-[length:var(--text-body)] text-text-muted transition-colors duration-150 hover:text-accent">Ta kontakt →</a>
+		</div>
 	</Section>
 
 	<!-- Tjenester teaser -->
@@ -52,32 +95,32 @@ const jsonLd = {
 		<Eyebrow>Tjenester</Eyebrow>
 		<h2 class="mt-4 text-[length:var(--text-h2)] leading-[1.2]">Det jeg jobber med</h2>
 
-		<div class="mt-12 grid gap-x-8 gap-y-0 sm:grid-cols-2 lg:grid-cols-4">
-			<article class="border-t border-border py-8">
+		<div class="mt-12 grid items-stretch gap-x-8 gap-y-0 sm:grid-cols-2 lg:grid-cols-4">
+			<article class="flex flex-col border-t border-border py-8">
 				<span class="font-mono text-xs tracking-widest text-text-subtle">01</span>
 				<h3 class="mt-3 font-display text-xl font-medium">Frontend-utvikling</h3>
-				<p class="mt-3 max-w-[40ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+				<p class="mt-3 flex-1 max-w-[40ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
 					Raske, tilgjengelige nettsider og webapplikasjoner bygget med moderne verktøy som React, Astro og WordPress.
 				</p>
 			</article>
-			<article class="border-t border-border py-8">
+			<article class="flex flex-col border-t border-border py-8">
 				<span class="font-mono text-xs tracking-widest text-text-subtle">02</span>
 				<h3 class="mt-3 font-display text-xl font-medium">UX/UI-design</h3>
-				<p class="mt-3 max-w-[40ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+				<p class="mt-3 flex-1 max-w-[40ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
 					Brukervennlige grensesnitt og gjennomtenkte designsystemer — fra wireframes og prototyper til ferdig design i Figma.
 				</p>
 			</article>
-			<article class="border-t border-border py-8">
+			<article class="flex flex-col border-t border-border py-8">
 				<span class="font-mono text-xs tracking-widest text-text-subtle">03</span>
 				<h3 class="mt-3 font-display text-xl font-medium">Rådgivning</h3>
-				<p class="mt-3 max-w-[40ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+				<p class="mt-3 flex-1 max-w-[40ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
 					UX-audits, designgjennomganger og strategiske råd som hjelper deg å ta riktige valg for produktet ditt.
 				</p>
 			</article>
-			<article class="border-t border-border py-8">
+			<article class="flex flex-col border-t border-border py-8">
 				<span class="font-mono text-xs tracking-widest text-text-subtle">04</span>
 				<h3 class="mt-3 font-display text-xl font-medium">Grafisk design</h3>
-				<p class="mt-3 max-w-[40ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+				<p class="mt-3 flex-1 max-w-[40ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
 					Visuell identitet, illustrasjon og grafiske elementer som gir produktet ditt personlighet og gjenkjennelse.
 				</p>
 			</article>
@@ -88,20 +131,18 @@ const jsonLd = {
 	<Section tone="default" padding="default">
 		<Eyebrow>Portefølje</Eyebrow>
 		<h2 class="mt-4 text-[length:var(--text-h2)] leading-[1.2]">Utvalgte prosjekter</h2>
+		<p class="mt-4 text-[length:var(--text-body)] leading-[1.6] text-text-muted max-w-[55ch]">
+			Et utvalg av arbeid fra de siste årene — egne produkter, klientarbeid og prosjekter underveis i studiene.
+		</p>
 
-		<div class="mt-12 grid gap-8 md:grid-cols-2">
-			<div class="border-t border-border pt-8">
-				<h3 class="text-[length:var(--text-h4)] leading-[1.2]">Prosjekt 1</h3>
-				<p class="mt-2 text-[length:var(--text-body)] leading-[1.6] text-text-muted">
-					Kort beskrivelse av prosjektet og hva som ble levert.
-				</p>
-			</div>
-			<div class="border-t border-border pt-8">
-				<h3 class="text-[length:var(--text-h4)] leading-[1.2]">Prosjekt 2</h3>
-				<p class="mt-2 text-[length:var(--text-body)] leading-[1.6] text-text-muted">
-					Kort beskrivelse av prosjektet og hva som ble levert.
-				</p>
-			</div>
+		<div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+			{projects.map((p) => <ProjectCard {...p} />)}
+		</div>
+
+		<div class="mt-16">
+			<a href="/portefolje" class="text-[length:var(--text-body)] font-medium text-text transition-colors duration-150 hover:text-accent">
+				Se hele porteføljen →
+			</a>
 		</div>
 	</Section>
 

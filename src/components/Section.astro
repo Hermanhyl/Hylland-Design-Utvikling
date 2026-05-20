@@ -3,7 +3,7 @@ import Container from '@/components/Container.astro';
 
 interface Props {
 	tone?: 'default' | 'warm' | 'deep';
-	padding?: 'tight' | 'default' | 'loose';
+	padding?: 'none' | 'tight' | 'default' | 'loose';
 	id?: string;
 	class?: string;
 }
@@ -22,6 +22,7 @@ const toneClasses: Record<string, string> = {
 };
 
 const paddingClasses: Record<string, string> = {
+	none: '',
 	tight: 'py-16 md:py-20',
 	default: 'py-24 md:py-32',
 	loose: 'py-32 md:py-48',
