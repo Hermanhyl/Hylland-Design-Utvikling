@@ -1,0 +1,27 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/Section.astro';
+import Eyebrow from '@/components/Eyebrow.astro';
+---
+
+<BaseLayout
+	title="Takk — Hylland Design & Utvikling"
+	description="Meldingen din er mottatt. Jeg svarer så fort jeg kan."
+>
+	<Section tone="default" padding="none" class="py-40">
+		<Eyebrow class="mb-6">Takk</Eyebrow>
+		<h1 class="text-[length:var(--text-h1)] leading-[1.1] tracking-[-0.02em] text-balance">
+			Meldingen er sendt.
+		</h1>
+		<p class="mt-8 max-w-[55ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+			Jeg svarer som regel innen 24 timer på hverdager. Du hører fra meg
+			snart.
+		</p>
+		<a
+			href="/"
+			class="link-animated mt-10 inline-block text-[length:var(--text-body)] font-medium text-text transition-colors hover:text-accent"
+		>
+			← Tilbake til forsiden
+		</a>
+	</Section>
+</BaseLayout>
