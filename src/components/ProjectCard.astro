@@ -22,7 +22,7 @@ const {
 } = Astro.props;
 ---
 
-<article class="flex flex-col h-full border-t border-border pt-8">
+<article class="group flex flex-col h-full border-t border-border pt-8 cursor-default transition-transform duration-300 ease-out hover:-translate-y-1" data-reveal>
 	<p class="text-xs uppercase tracking-[0.15em] font-medium text-text-subtle font-mono">
 		{type} · {year}
 	</p>
@@ -43,9 +43,9 @@ const {
 				href={href}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="text-sm font-medium text-accent hover:underline transition-colors"
+				class="link-animated inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors"
 			>
-				{linkLabel}
+				{linkLabel} <span class="inline-block transition-transform duration-200 group-hover:translate-x-1">↗</span>
 			</a>
 		</div>
 	)}

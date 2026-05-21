@@ -29,7 +29,7 @@ const paddingClasses: Record<string, string> = {
 };
 ---
 
-<section id={id} class:list={[toneClasses[tone], paddingClasses[padding], className]}>
+<section id={id} class:list={[toneClasses[tone], paddingClasses[padding], className]} data-reveal>
 	<Container>
 		<slot />
 	</Container>

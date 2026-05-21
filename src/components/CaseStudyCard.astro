@@ -30,7 +30,7 @@ const {
 } = Astro.props;
 ---
 
-<article class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
+<article class="group grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12 cursor-default transition-transform duration-300 ease-out hover:-translate-y-1" data-reveal>
 	<!-- Image column -->
 	<div class="lg:col-span-7">
 		<div
@@ -41,7 +41,7 @@ const {
 				<img
 					src={imageSrc}
 					alt={imageAlt ?? ''}
-					class="h-full w-full object-cover"
+					class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
 					loading="lazy"
 				/>
 			) : (
@@ -88,9 +88,9 @@ const {
 						href={liveHref}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="text-sm font-medium text-accent hover:underline"
+						class="link-animated inline-flex items-center gap-1 text-sm font-medium text-accent"
 					>
-						{liveLabel ?? 'Besøk siden'} ↗
+						{liveLabel ?? 'Besøk siden'} <span class="inline-block transition-transform duration-200 group-hover:translate-x-1">↗</span>
 					</a>
 				)}
 				{caseStudyHref && (
@@ -98,9 +98,9 @@ const {
 						href={caseStudyHref}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="text-sm font-medium text-text transition-colors hover:text-accent"
+						class="link-animated inline-flex items-center gap-1 text-sm font-medium text-text transition-colors hover:text-accent"
 					>
-						Les case study ↗
+						Les case study <span class="inline-block transition-transform duration-200 group-hover:translate-x-1">↗</span>
 					</a>
 				)}
 			</div>

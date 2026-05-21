@@ -43,7 +43,7 @@ const externalLinks = [
 					<li>
 						<a
 							href={href}
-							class="text-[length:var(--text-small)] text-text-on-deep transition-colors hover:text-accent-soft"
+							class="link-animated text-[length:var(--text-small)] text-text-on-deep transition-colors hover:text-accent-soft"
 						>
 							{label}
 						</a>
@@ -62,7 +62,7 @@ const externalLinks = [
 					<li>
 						<a
 							href={href}
-							class="text-[length:var(--text-small)] text-text-on-deep transition-colors hover:text-accent-soft"
+							class="link-animated text-[length:var(--text-small)] text-text-on-deep transition-colors hover:text-accent-soft"
 							{...(href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
 						>
 							{label}

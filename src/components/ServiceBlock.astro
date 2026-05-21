@@ -22,17 +22,17 @@ const {
 } = Astro.props;
 ---
 
-<article class="grid grid-cols-1 gap-10 border-t border-border py-16 lg:grid-cols-12 lg:gap-12 lg:py-20">
+<article class="grid grid-cols-1 gap-10 border-t border-border py-16 lg:grid-cols-12 lg:gap-12 lg:py-20" data-reveal>
 	<!-- Left: heading + pitch + CTA -->
 	<div class="lg:sticky lg:top-32 lg:col-span-5 lg:self-start">
-		<Eyebrow>{number} — Tjeneste</Eyebrow>
+		<Eyebrow><span data-counter data-target={number}>{number}</span> — Tjeneste</Eyebrow>
 		<h2 class="mt-4 font-display text-[length:var(--text-h2)] leading-[1.2]">{title}</h2>
 		<p class="mt-4 max-w-[44ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
 			{pitch}
 		</p>
 		<a
 			href={ctaHref}
-			class="mt-8 inline-block text-[length:var(--text-body)] font-medium text-text transition-colors duration-150 hover:text-accent"
+			class="link-animated mt-8 inline-block text-[length:var(--text-body)] font-medium text-text transition-colors duration-150 hover:text-accent"
 		>
 			{ctaLabel}
 		</a>
