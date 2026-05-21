@@ -1,0 +1,27 @@
+---
+interface Props {
+	targetId?: string;
+	label?: string;
+}
+
+const { targetId, label = 'Bla videre' } = Astro.props;
+
+const Tag = targetId ? 'a' : 'div';
+const attrs = targetId ? { href: `#${targetId}` } : {};
+---
+
+<Tag {...attrs} class="mt-16 flex items-center gap-3 lg:mt-20">
+	<span class="text-xs font-medium uppercase tracking-[0.15em] text-text-subtle">
+		{label}
+	</span>
+	<svg
+		class="h-4 w-4 animate-bounce-slow text-text-subtle"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		stroke-width="2"
+		aria-hidden="true"
+	>
+		<path d="M12 5v14M19 12l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" />
+	</svg>
+</Tag>

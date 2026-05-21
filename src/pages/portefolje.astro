@@ -4,6 +4,7 @@ import Section from '@/components/Section.astro';
 import Eyebrow from '@/components/Eyebrow.astro';
 import Container from '@/components/Container.astro';
 import CaseStudyCard from '@/components/CaseStudyCard.astro';
+import ScrollHint from '@/components/ScrollHint.astro';
 
 const additionalWork = [
 	{
@@ -84,7 +85,7 @@ const caseStudies = [
 	description="Et utvalg klientprosjekter, egne produkter og kreativt arbeid. Frontend-utvikling, UX-design og digital design fra Drammen."
 >
 	<!-- Hero -->
-	<Section tone="default" padding="none" class="py-32 lg:py-40">
+	<Section tone="default" padding="none" class="py-24 md:py-28 lg:py-32">
 		<Eyebrow class="mb-6">Portefølje</Eyebrow>
 		<h1 class="text-[length:var(--text-h1)] leading-[1.1] tracking-[-0.02em] text-balance">
 			Et utvalg av arbeidet mitt.
@@ -103,6 +104,7 @@ const caseStudies = [
 		>
 			Besøk hele porteføljen ↗
 		</a>
+		<ScrollHint label="Se prosjekter" />
 	</Section>
 
 	<!-- Featured case studies -->

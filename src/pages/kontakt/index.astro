@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/Section.astro';
 import Eyebrow from '@/components/Eyebrow.astro';
+import ScrollHint from '@/components/ScrollHint.astro';
 ---
 
 <BaseLayout
@@ -9,7 +10,7 @@ import Eyebrow from '@/components/Eyebrow.astro';
 	description="Ta kontakt med Hylland Design & Utvikling i Drammen. Send en e-post om prosjektet ditt — uforpliktende."
 >
 	<!-- Hero -->
-	<Section tone="default" padding="none" class="py-32 lg:py-40">
+	<Section tone="default" padding="none" class="py-24 md:py-28 lg:py-32">
 		<Eyebrow class="mb-6">Kontakt</Eyebrow>
 		<h1 class="text-[length:var(--text-h1)] leading-[1.1] tracking-[-0.02em] text-balance">
 			La oss snakkes.
@@ -18,6 +19,7 @@ import Eyebrow from '@/components/Eyebrow.astro';
 			Send en e-post med noen ord om prosjektet du jobber med, så finner
 			vi ut av det sammen. Det er ingen forpliktelser — bare en samtale.
 		</p>
+		<ScrollHint label="Send melding" />
 	</Section>
 
 	<!-- Contact block -->
