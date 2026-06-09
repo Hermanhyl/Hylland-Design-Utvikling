@@ -1,148 +1,105 @@
-import { Suspense, useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Environment, Lightformer, MeshTransmissionMaterial, Float } from '@react-three/drei';
-import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
-import { type MotionValue } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { type MotionValue } from 'framer-motion';
 import { usePrefersReducedMotion, useIsLowPower } from './motion-primitives';
 
-/** Brand colours pulled from global.css tokens. */
-const ACCENT = '#B8533A';
-const ACCENT_GLOW = '#FF6A45';
-
-type Quality = 'glass' | 'gem';
-
-type SceneProps = {
-	scrollProgress?: MotionValue<number>;
-	reduced: boolean;
-	quality: Quality;
-};
-
-const damp = THREE.MathUtils.damp;
-
-/** The signature object: a slowly drifting refractive crystal (or faceted gem). */
-function HeroObject({ scrollProgress, reduced, quality }: SceneProps) {
-	const groupRef = useRef<THREE.Group>(null); // magnetic-to-cursor wrapper
-	const meshRef = useRef<THREE.Mesh>(null); // continuous spin
-	const matRef = useRef<{ distortion?: number; temporalDistortion?: number } | null>(null);
-
-	useFrame((state, delta) => {
-		const group = groupRef.current;
-		const mesh = meshRef.current;
-		if (!group || !mesh) return;
-
-		const p = scrollProgress ? scrollProgress.get() : 0;
-
-		// Dolly the camera in as the user scrolls through the hero runway.
-		const targetZ = damp(state.camera.position.z, THREE.MathUtils.lerp(6, 2.4, p), 4, delta);
-		state.camera.position.z = targetZ;
-		state.camera.lookAt(0, 0, 0);
-
-		if (!reduced) {
-			// Magnetic: the whole object eases toward the cursor (NDC -1..1).
-			const px = state.pointer.x;
-			const py = state.pointer.y;
-			group.rotation.y = damp(group.rotation.y, px * 0.45, 3, delta);
-			group.rotation.x = damp(group.rotation.x, -py * 0.32, 3, delta);
-			group.position.x = damp(group.position.x, px * 0.4, 3, delta);
-			group.position.y = damp(group.position.y, py * 0.28, 3, delta);
-
-			// Continuous slow spin on top of the magnetic tilt.
-			mesh.rotation.y += delta * 0.22;
-		}
-
-		const scale = 1 + p * 0.65;
-		mesh.scale.setScalar(damp(mesh.scale.x, scale, 4, delta));
-
-		const mat = matRef.current;
-		if (mat && typeof mat.distortion === 'number') {
-			mat.distortion = 0.28 + p * 0.32;
-			mat.temporalDistortion = 0.12 + p * 0.15;
-		}
-	});
-
-	const detail = quality === 'glass' ? (reduced ? 4 : 8) : 0;
-
-	return (
-		<group ref={groupRef}>
-			<Float speed={reduced ? 0 : 1.6} rotationIntensity={reduced ? 0 : 0.5} floatIntensity={reduced ? 0 : 1}>
-				<mesh ref={meshRef}>
-					<icosahedronGeometry args={[1.4, detail]} />
-					{quality === 'glass' ? (
-						<MeshTransmissionMaterial
-							ref={matRef as never}
-							samples={6}
-							resolution={512}
-							thickness={1.4}
-							roughness={0.06}
-							transmission={1}
-							ior={1.5}
-							chromaticAberration={0.06}
-							anisotropy={0.2}
-							distortion={0.28}
-							distortionScale={0.4}
-							temporalDistortion={0.12}
-							color="#F4E8E2"
-							attenuationColor={ACCENT}
-							attenuationDistance={0.7}
-							clearcoat={1}
-							clearcoatRoughness={0.2}
-						/>
-					) : (
-						<meshStandardMaterial
-							color={ACCENT}
-							emissive={ACCENT}
-							emissiveIntensity={0.18}
-							flatShading
-							metalness={0.35}
-							roughness={0.38}
-						/>
-					)}
-				</mesh>
-			</Float>
-		</group>
-	);
-}
-
 /**
- * Soft, broad lighting via an inline environment of area lights (Lightformers)
- * instead of discrete point lights — this makes the rust read as smooth,
- * integrated reflection/refraction across the glass rather than three hot dots.
+ * "Anomalous matter" hero scene — a wireframe icosahedron displaced by Perlin
+ * noise, with a fresnel rim glow and a point light that follows the cursor.
+ * Raw three.js (no r3f) in a single effect. Coloured in the site's copper/rust
+ * palette rather than the original blue.
+ *
+ * Reuses the existing hero contract: receives the scroll progress MotionValue
+ * (drives a camera dolly so the scroll-zoom still works) and a className for
+ * the absolutely-positioned mount.
  */
-function Lights() {
-	return (
-		<>
-			<ambientLight intensity={0.5} />
-			<Environment resolution={256}>
-				{/* Broad rust glow filling most of the frame from the right. */}
-				<Lightformer
-					form="rect"
-					intensity={2.2}
-					color={ACCENT_GLOW}
-					position={[3.5, 1, 3]}
-					scale={[7, 7, 1]}
-				/>
-				{/* Deeper rust from below-left for warmth in the body of the glass. */}
-				<Lightformer
-					form="circle"
-					intensity={1.6}
-					color={ACCENT}
-					position={[-3, -2.5, 2]}
-					scale={5}
-				/>
-				{/* A single soft, cool key so it still reads as glass — kept dim and
-				    off to the right so it doesn't blow out the headline on the left. */}
-				<Lightformer
-					form="rect"
-					intensity={1.1}
-					color="#dfe3ea"
-					position={[4, 3, 1]}
-					scale={[3, 3, 1]}
-				/>
-			</Environment>
-		</>
-	);
-}
+
+const COPPER = new THREE.Color('#B8533A');
+const ORANGE = new THREE.Color('#FF6A45');
+
+const vertexShader = `
+	uniform float uTime;
+	uniform float uScroll;
+	varying vec3 vNormal;
+	varying vec3 vPosition;
+
+	vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+	vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+	vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+	vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+	float snoise(vec3 v) {
+		const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+		const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+		vec3 i = floor(v + dot(v, C.yyy));
+		vec3 x0 = v - i + dot(i, C.xxx);
+		vec3 g = step(x0.yzx, x0.xyz);
+		vec3 l = 1.0 - g;
+		vec3 i1 = min(g.xyz, l.zxy);
+		vec3 i2 = max(g.xyz, l.zxy);
+		vec3 x1 = x0 - i1 + C.xxx;
+		vec3 x2 = x0 - i2 + C.yyy;
+		vec3 x3 = x0 - D.yyy;
+		i = mod289(i);
+		vec4 p = permute(permute(permute(
+					i.z + vec4(0.0, i1.z, i2.z, 1.0))
+				+ i.y + vec4(0.0, i1.y, i2.y, 1.0))
+				+ i.x + vec4(0.0, i1.x, i2.x, 1.0));
+		float n_ = 0.142857142857;
+		vec3 ns = n_ * D.wyz - D.xzx;
+		vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+		vec4 x_ = floor(j * ns.z);
+		vec4 y_ = floor(j - 7.0 * x_);
+		vec4 x = x_ * ns.x + ns.yyyy;
+		vec4 y = y_ * ns.x + ns.yyyy;
+		vec4 h = 1.0 - abs(x) - abs(y);
+		vec4 b0 = vec4(x.xy, y.xy);
+		vec4 b1 = vec4(x.zw, y.zw);
+		vec4 s0 = floor(b0) * 2.0 + 1.0;
+		vec4 s1 = floor(b1) * 2.0 + 1.0;
+		vec4 sh = -step(h, vec4(0.0));
+		vec4 a0 = b0.xzyw + s0.xzyw * sh.xxyy;
+		vec4 a1 = b1.xzyw + s1.xzyw * sh.zzww;
+		vec3 p0 = vec3(a0.xy, h.x);
+		vec3 p1 = vec3(a0.zw, h.y);
+		vec3 p2 = vec3(a1.xy, h.z);
+		vec3 p3 = vec3(a1.zw, h.w);
+		vec4 norm = taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));
+		p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+		vec4 m = max(0.6 - vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);
+		m = m * m;
+		return 42.0 * dot(m * m, vec4(dot(p0, x0), dot(p1, x1), dot(p2, x2), dot(p3, x3)));
+	}
+
+	void main() {
+		vNormal = normal;
+		vPosition = position;
+		float amp = 0.18 + uScroll * 0.22;
+		float displacement = snoise(position * 2.0 + uTime * 0.5) * amp;
+		vec3 newPosition = position + normal * displacement;
+		gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+	}
+`;
+
+const fragmentShader = `
+	uniform vec3 uColor;
+	uniform vec3 uGlow;
+	uniform vec3 uLightPos;
+	varying vec3 vNormal;
+	varying vec3 vPosition;
+
+	void main() {
+		vec3 normal = normalize(vNormal);
+		vec3 lightDir = normalize(uLightPos - vPosition);
+		float diffuse = max(dot(normal, lightDir), 0.0);
+
+		// Fresnel rim glow.
+		float fresnel = 1.0 - dot(normal, vec3(0.0, 0.0, 1.0));
+		fresnel = pow(fresnel, 2.0);
+
+		vec3 finalColor = uColor * (0.25 + diffuse) + uGlow * fresnel * 0.9;
+		gl_FragColor = vec4(finalColor, 1.0);
+	}
+`;
 
 export type Hero3DProps = {
 	scrollProgress?: MotionValue<number>;
@@ -150,32 +107,114 @@ export type Hero3DProps = {
 };
 
 export default function Hero3D({ scrollProgress, className }: Hero3DProps) {
+	const mountRef = useRef<HTMLDivElement>(null);
 	const reduced = usePrefersReducedMotion();
 	const lowPower = useIsLowPower();
-	const quality: Quality = lowPower ? 'gem' : 'glass';
-	const usePost = !reduced && !lowPower;
 
-	return (
-		<Canvas
-			className={className}
-			dpr={lowPower ? [1, 1.5] : [1, 2]}
-			gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-			camera={{ position: [0, 0, 6], fov: 42 }}
-			frameloop={reduced ? 'demand' : 'always'}
-			style={{ position: 'absolute', inset: 0 }}
-		>
-			<Suspense fallback={null}>
-				<Lights />
-				<HeroObject scrollProgress={scrollProgress} reduced={reduced} quality={quality} />
-				{usePost && (
-					<EffectComposer>
-						{/* Lower, higher-threshold bloom: only the very brightest glints
-						    bloom, so highlights no longer wash over the headline. */}
-						<Bloom intensity={0.4} luminanceThreshold={0.55} luminanceSmoothing={0.9} mipmapBlur />
-						<Vignette eskil={false} offset={0.3} darkness={0.7} />
-					</EffectComposer>
-				)}
-			</Suspense>
-		</Canvas>
-	);
+	useEffect(() => {
+		const mount = mountRef.current;
+		if (!mount) return;
+
+		const scene = new THREE.Scene();
+		const camera = new THREE.PerspectiveCamera(
+			75,
+			mount.clientWidth / mount.clientHeight || 1,
+			0.1,
+			1000,
+		);
+		camera.position.z = 3.2;
+
+		const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+		renderer.setSize(mount.clientWidth, mount.clientHeight);
+		renderer.setPixelRatio(Math.min(window.devicePixelRatio, lowPower ? 1.5 : 2));
+		mount.appendChild(renderer.domElement);
+
+		const detail = lowPower ? 8 : 24;
+		const geometry = new THREE.IcosahedronGeometry(1.3, detail);
+		const material = new THREE.ShaderMaterial({
+			uniforms: {
+				uTime: { value: 0 },
+				uScroll: { value: 0 },
+				uLightPos: { value: new THREE.Vector3(0, 0, 5) },
+				uColor: { value: COPPER.clone() },
+				uGlow: { value: ORANGE.clone() },
+			},
+			vertexShader,
+			fragmentShader,
+			wireframe: true,
+			transparent: true,
+		});
+
+		const mesh = new THREE.Mesh(geometry, material);
+		scene.add(mesh);
+
+		const tmpVec = new THREE.Vector3();
+		const targetLight = new THREE.Vector3(0, 0, 5);
+
+		let frameId = 0;
+		let camZ = 3.2;
+
+		const renderOnce = () => renderer.render(scene, camera);
+
+		const animate = (t: number) => {
+			material.uniforms.uTime.value = t * 0.0003;
+
+			const p = scrollProgress ? scrollProgress.get() : 0;
+			material.uniforms.uScroll.value = p;
+			// Scroll dolly (the scroll-zoom): ease the camera in.
+			camZ += (THREE.MathUtils.lerp(3.2, 1.7, p) - camZ) * 0.06;
+			camera.position.z = camZ;
+
+			// Ease the light toward the cursor target (magnetic glow).
+			material.uniforms.uLightPos.value.lerp(targetLight, 0.08);
+
+			mesh.rotation.y += 0.0011;
+			mesh.rotation.x += 0.0005;
+			renderer.render(scene, camera);
+			frameId = requestAnimationFrame(animate);
+		};
+
+		if (reduced) {
+			renderOnce();
+		} else {
+			frameId = requestAnimationFrame(animate);
+		}
+
+		const handleResize = () => {
+			const w = mount.clientWidth;
+			const h = mount.clientHeight;
+			if (!w || !h) return;
+			camera.aspect = w / h;
+			camera.updateProjectionMatrix();
+			renderer.setSize(w, h);
+			if (reduced) renderOnce();
+		};
+
+		const handleMouseMove = (e: MouseEvent) => {
+			const x = (e.clientX / window.innerWidth) * 2 - 1;
+			const y = -(e.clientY / window.innerHeight) * 2 + 1;
+			tmpVec.set(x, y, 0.5).unproject(camera);
+			const dir = tmpVec.sub(camera.position).normalize();
+			const dist = -camera.position.z / dir.z;
+			targetLight.copy(camera.position).add(dir.multiplyScalar(dist));
+		};
+
+		const ro = new ResizeObserver(handleResize);
+		ro.observe(mount);
+		if (!reduced) window.addEventListener('mousemove', handleMouseMove);
+
+		return () => {
+			cancelAnimationFrame(frameId);
+			ro.disconnect();
+			window.removeEventListener('mousemove', handleMouseMove);
+			geometry.dispose();
+			material.dispose();
+			renderer.dispose();
+			if (renderer.domElement.parentNode === mount) {
+				mount.removeChild(renderer.domElement);
+			}
+		};
+	}, [reduced, lowPower, scrollProgress]);
+
+	return <div ref={mountRef} className={className} />;
 }
