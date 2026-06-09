@@ -3,6 +3,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/Section.astro';
 import Eyebrow from '@/components/Eyebrow.astro';
 import Container from '@/components/Container.astro';
+import AuroraBackground from '@/components/react/AuroraBackground.tsx';
+import CinemaCTA from '@/components/react/CinemaCTA.tsx';
 
 const background = [
 	{
@@ -50,25 +52,33 @@ const principles = [
 ---
 
 <BaseLayout
-	title="Om meg — Hylland Design & Utvikling"
-	description="Herman Hylland — frontend-utvikler og UX-designer fra Drammen. Bakgrunn, arbeidsmåte og hvorfor jeg gjør det jeg gjør."
+	title="Om meg | Hylland Design & Utvikling"
+	description="Herman Hylland, frontend-utvikler og UX-designer fra Drammen. Bakgrunn, arbeidsmåte og hvorfor jeg gjør det jeg gjør."
+	darkHero
 >
-	<!-- Hero -->
-	<Section tone="default" padding="none" class="py-32 lg:py-40">
-		<Eyebrow class="mb-6">Om meg</Eyebrow>
-		<h1 class="text-[length:var(--text-h1)] leading-[1.1] tracking-[-0.02em] text-balance">
-			Frontend-utvikler og designer med
-			<span class="italic text-accent">brukeren i sentrum</span>.
-		</h1>
-		<p class="mt-8 max-w-[58ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
-			Jeg heter Herman Hylland, og driver Hylland Design & Utvikling fra
-			Drammen. Her er litt om hvordan jeg jobber — og hvorfor.
-		</p>
-	</Section>
+	<!-- Dark cinematic hero with the flowing copper aurora -->
+	<div class="page-hero" data-hero>
+		<AuroraBackground client:load />
+		<div class="page-hero-inner" data-reveal>
+			<p class="hero-eyebrow">Om meg</p>
+			<h1 class="page-hero-title">
+				Frontend-utvikler og designer med
+				<span class="hero-title-accent italic">brukeren i sentrum</span>.
+			</h1>
+			<p class="hero-lede">
+				Jeg heter Herman Hylland, og driver Hylland Design & Utvikling fra Drammen. Her er litt om
+				hvordan jeg jobber, og hvorfor.
+			</p>
+			<div class="hero-cta">
+				<a href="/kontakt" class="hero-btn">Ta kontakt →</a>
+				<a href="/portefolje" class="hero-btn-ghost">Se prosjekter →</a>
+			</div>
+		</div>
+	</div>
 
 	<!-- Narrative -->
 	<Section tone="default" padding="default">
-		<Container size="prose">
+		<Container size="prose" data-reveal>
 			<Eyebrow>Bakgrunn</Eyebrow>
 			<h2 class="mt-4">Veien hit</h2>
 			<div class="mt-8 space-y-6 text-[length:var(--text-body)] leading-relaxed text-text">
@@ -101,17 +111,16 @@ const principles = [
 	<Section tone="warm" padding="default">
 		<div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
 			<!-- Image column -->
-			<div class="lg:col-span-5">
-				<img
-					src="/Bruk_denne.jpg"
-					alt="Portrett av Herman Hylland"
-					class="w-full border border-border bg-bg object-cover"
-					style="aspect-ratio: 4/5"
-				/>
+			<div class="lg:col-span-5" data-reveal="zoom">
+				<div class="portrait bg-bg">
+					<div class="portrait-inner" data-parallax data-parallax-speed="0.04">
+						<img src="/Bruk_denne.jpg" alt="Portrett av Herman Hylland" loading="lazy" />
+					</div>
+				</div>
 			</div>
 
 			<!-- Text column -->
-			<div class="lg:col-span-7">
+			<div class="lg:col-span-7" data-reveal>
 				<Eyebrow>Det jeg brenner for</Eyebrow>
 				<h2 class="mt-4 font-display text-3xl font-medium lg:text-4xl">
 					Nettsider som faktisk fungerer.
@@ -141,10 +150,10 @@ const principles = [
 			Fire prinsipper som ligger til grunn for nesten alt jeg gjør.
 		</p>
 
-		<div class="mt-16 grid grid-cols-1 gap-x-12 gap-y-12 md:grid-cols-2">
+		<div class="principles-grid mt-16 grid grid-cols-1 gap-x-12 gap-y-12 md:grid-cols-2" data-reveal>
 			{principles.map(({ number, title, body }) => (
-				<article class="border-t border-border pt-8">
-					<p class="font-mono text-xs font-medium uppercase tracking-[0.15em] text-text-subtle">
+				<article class="principle">
+					<p class="principle-num font-mono text-xs font-medium uppercase tracking-[0.15em] text-text-subtle">
 						{number}
 					</p>
 					<h3 class="mt-3 font-display text-xl font-medium">{title}</h3>
@@ -161,14 +170,14 @@ const principles = [
 		<Eyebrow>Bakgrunn</Eyebrow>
 		<h2 class="mt-4">Utdanning og erfaring</h2>
 
-		<ul class="mt-12 divide-y divide-border border-b border-t border-border" role="list">
+		<ul class="work-list mt-12 divide-y divide-border" role="list" data-reveal>
 			{background.map((item) => (
-				<li class="grid grid-cols-12 items-baseline gap-4 py-5">
+				<li class="work-row grid grid-cols-12 items-baseline gap-4 px-4 py-5">
 					<span class="col-span-2 font-mono text-sm text-text-subtle">
 						{item.year}
 					</span>
 					<div class="col-span-10 sm:col-span-6">
-						<p class="font-display text-lg font-medium text-text">
+						<p class="work-title font-display text-lg font-medium text-text">
 							{item.title}
 						</p>
 						<p class="text-sm text-text-muted">{item.org}</p>
@@ -183,7 +192,7 @@ const principles = [
 
 	<!-- Outside work -->
 	<Section tone="default" padding="default">
-		<Container size="prose">
+		<Container size="prose" data-reveal>
 			<Eyebrow>Utenfor jobb</Eyebrow>
 			<h2 class="mt-4">Det andre jeg holder på med</h2>
 			<div class="mt-8 space-y-5 text-[length:var(--text-body)] leading-relaxed text-text">
@@ -202,23 +211,15 @@ const principles = [
 		</Container>
 	</Section>
 
-	<!-- Closing CTA -->
-	<Section tone="deep" padding="default">
-		<div class="max-w-[58ch]">
-			<Eyebrow class="text-accent-soft">Ta kontakt</Eyebrow>
-			<p class="mt-4 font-display text-3xl font-medium text-text-on-deep lg:text-4xl">
-				Har du et prosjekt vi burde snakke om?
-			</p>
-			<p class="mt-6 text-[length:var(--text-body)] leading-[1.6] text-text-on-deep/60">
-				Send en e-post med noen ord om hva du jobber med, så finner vi
-				ut om det er en god match. Det koster ingenting å spørre.
-			</p>
-			<a
-				href="/kontakt"
-				class="mt-10 inline-block rounded-[2px] bg-accent px-6 py-3 font-medium text-bg transition-colors duration-150 hover:bg-accent-hover"
-			>
-				Send melding
-			</a>
-		</div>
-	</Section>
+	<!-- Dark cinematic finale (reused, Om meg copy) -->
+	<CinemaCTA
+		client:load
+		eyebrow="Ta kontakt"
+		title="Har du et prosjekt vi burde snakke om?"
+		lede="Send en e-post med noen ord om hva du jobber med, så finner vi ut om det er en god match. Det koster ingenting å spørre."
+		primaryHref="/kontakt"
+		primaryLabel="Send melding"
+		secondaryHref="/tjenester"
+		secondaryLabel="Se tjenester →"
+	/>
 </BaseLayout>

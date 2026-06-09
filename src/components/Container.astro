@@ -3,12 +3,14 @@ interface Props {
 	size?: 'prose' | 'default' | 'wide' | 'full';
 	as?: keyof HTMLElementTagNameMap;
 	class?: string;
+	[key: string]: unknown;
 }
 
 const {
 	size = 'default',
 	as: Tag = 'div',
 	class: className,
+	...rest
 } = Astro.props;
 
 const sizeClasses: Record<string, string> = {

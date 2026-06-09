@@ -458,6 +458,106 @@
 	}
 }
 
+/* ─── Om meg: principle cards ─── */
+.principle {
+	position: relative;
+	padding-top: 2rem;
+	transition: transform 250ms var(--ease-out);
+}
+
+/* Top accent line that draws in on reveal. */
+.principle::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 1px;
+	background: var(--color-border);
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform var(--dur) var(--ease-out);
+}
+
+.principles-grid.is-revealed .principle::before {
+	transform: scaleX(1);
+}
+
+.principle:hover {
+	transform: translateY(-4px);
+}
+
+.principle:hover .principle-num {
+	color: var(--color-accent-glow);
+}
+
+.principle-num {
+	transition: color 250ms var(--ease-std);
+}
+
+/* Staggered reveal of the cards. */
+.principle {
+	opacity: 0;
+	transform: translateY(14px);
+	transition:
+		opacity var(--dur) var(--ease-out),
+		transform var(--dur) var(--ease-out);
+}
+
+.principles-grid.is-revealed .principle {
+	opacity: 1;
+	transform: none;
+}
+
+.principles-grid.is-revealed .principle:nth-child(1) { transition-delay: 0.08s; }
+.principles-grid.is-revealed .principle:nth-child(2) { transition-delay: 0.18s; }
+.principles-grid.is-revealed .principle:nth-child(3) { transition-delay: 0.28s; }
+.principles-grid.is-revealed .principle:nth-child(4) { transition-delay: 0.38s; }
+
+/* ─── Om meg: portrait ─── */
+.portrait {
+	position: relative;
+	overflow: hidden;
+	border: 1px solid var(--color-border);
+	aspect-ratio: 4 / 5;
+}
+
+.portrait-inner {
+	position: absolute;
+	inset-inline: 0;
+	top: -8%;
+	height: 116%;
+}
+
+.portrait-inner img {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+}
+
+/* Light copper tint that recedes on hover. */
+.portrait::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(150deg, color-mix(in srgb, var(--color-accent) 22%, transparent), transparent 60%);
+	mix-blend-mode: multiply;
+	opacity: 0.7;
+	transition: opacity 400ms var(--ease-std);
+	pointer-events: none;
+	z-index: 1;
+}
+
+.portrait:hover::after {
+	opacity: 0.15;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.principle {
+		transition-delay: 0s !important;
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	[data-reveal] {
 		transition: none;
