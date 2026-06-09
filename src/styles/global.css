@@ -454,21 +454,55 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 1.5rem;
+	gap: 1rem 1.25rem;
 	font-size: var(--text-body);
 }
 
-.hero-cta a {
-	color: color-mix(in srgb, var(--color-text-on-deep) 85%, transparent);
-	transition: color 150ms ease-out;
+/* Primary CTA — solid copper, glows so it stands out over the busy hero. */
+.hero-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	background: var(--color-accent);
+	color: var(--color-bg);
+	padding: 0.9rem 1.85rem;
+	border-radius: 2px;
+	font-weight: 600;
+	box-shadow: 0 10px 34px -10px color-mix(in srgb, var(--color-accent-glow) 70%, transparent);
+	transition:
+		background-color 150ms var(--ease-std),
+		transform 150ms var(--ease-std),
+		box-shadow 150ms var(--ease-std);
 }
 
-.hero-cta a:hover {
+.hero-btn:hover {
+	background: var(--color-accent-glow);
+	transform: translateY(-2px);
+	box-shadow: 0 14px 40px -8px color-mix(in srgb, var(--color-accent-glow) 85%, transparent);
+}
+
+/* Secondary CTA — outlined ghost on the dark hero. */
+.hero-btn-ghost {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.9rem 1.6rem;
+	border-radius: 2px;
+	border: 1px solid color-mix(in srgb, var(--color-text-on-deep) 38%, transparent);
+	color: var(--color-text-on-deep);
+	font-weight: 500;
+	transition:
+		border-color 150ms var(--ease-std),
+		background-color 150ms var(--ease-std),
+		color 150ms var(--ease-std),
+		transform 150ms var(--ease-std);
+}
+
+.hero-btn-ghost:hover {
+	border-color: var(--color-accent-glow);
 	color: var(--color-accent-glow);
-}
-
-.hero-cta-sep {
-	color: var(--color-text-subtle);
+	background: color-mix(in srgb, var(--color-accent-glow) 12%, transparent);
+	transform: translateY(-2px);
 }
 
 /* WebGL canvas must not swallow vertical touch-scroll. */

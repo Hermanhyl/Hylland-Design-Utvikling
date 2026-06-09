@@ -90,9 +90,8 @@ export default function ScrollZoomHero() {
 				animate={reduced ? undefined : { opacity: 1, y: 0 }}
 				transition={{ duration: MOTION.duration, ease: MOTION.easeOut, delay: 0.75 }}
 			>
-				<a href="/tjenester" className="link-animated">Se tjenester →</a>
-				<span className="hero-cta-sep">·</span>
-				<a href="/kontakt" className="link-animated">Ta kontakt →</a>
+				<a href="/tjenester" className="hero-btn">Se tjenester →</a>
+				<a href="/kontakt" className="hero-btn-ghost">Ta kontakt →</a>
 			</motion.div>
 		</div>
 	);
