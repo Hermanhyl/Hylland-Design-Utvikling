@@ -247,6 +247,8 @@
 /* ─── Service blocks (Tjenester) — interactive motion ─── */
 .service-block {
 	position: relative;
+	/* Inset the content so it never collides with the left accent bar / divider. */
+	padding-left: clamp(1.25rem, 2.5vw, 2rem);
 	transition: opacity 450ms var(--ease-std);
 }
 
