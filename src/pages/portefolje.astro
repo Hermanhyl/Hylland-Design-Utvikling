@@ -2,9 +2,9 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/Section.astro';
 import Eyebrow from '@/components/Eyebrow.astro';
-import Container from '@/components/Container.astro';
 import CaseStudyCard from '@/components/CaseStudyCard.astro';
-import ScrollHint from '@/components/ScrollHint.astro';
+import ConstellationBackground from '@/components/react/ConstellationBackground.tsx';
+import CinemaCTA from '@/components/react/CinemaCTA.tsx';
 
 const additionalWork = [
 	{
@@ -81,31 +81,33 @@ const caseStudies = [
 ---
 
 <BaseLayout
-	title="Portefølje — Hylland Design & Utvikling"
+	title="Portefølje | Hylland Design & Utvikling"
 	description="Et utvalg klientprosjekter, egne produkter og kreativt arbeid. Frontend-utvikling, UX-design og digital design fra Drammen."
+	darkHero
 >
-	<!-- Hero -->
-	<Section tone="default" padding="none" class="py-24 md:py-28 lg:py-32">
-		<Eyebrow class="mb-6">Portefølje</Eyebrow>
-		<h1 class="text-[length:var(--text-h1)] leading-[1.1] tracking-[-0.02em] text-balance">
-			Et utvalg av arbeidet mitt.
-		</h1>
-		<p class="mt-8 max-w-[58ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
-			Klientprosjekter, egne produkter og prosjekter underveis i studiene.
-			Vil du se det kreative arbeidet mitt — illustrasjon, 3D og case
-			studies i lengre format — finner du det på den dedikerte
-			porteføljesiden min.
-		</p>
-		<a
-			href="https://portfolio-herman-hylland.netlify.app/"
-			target="_blank"
-			rel="noopener noreferrer"
-			class="link-animated mt-8 inline-block text-[length:var(--text-body)] font-medium text-accent transition-colors"
-		>
-			Besøk hele porteføljen ↗
-		</a>
-		<ScrollHint label="Se prosjekter" />
-	</Section>
+	<!-- Dark cinematic hero with the constellation background -->
+	<div class="page-hero" data-hero>
+		<ConstellationBackground client:load />
+		<div class="page-hero-inner" data-reveal>
+			<p class="hero-eyebrow">Portefølje</p>
+			<h1 class="page-hero-title">Et utvalg av arbeidet mitt.</h1>
+			<p class="hero-lede">
+				Klientprosjekter, egne produkter og prosjekter underveis i studiene. Det kreative arbeidet
+				mitt, illustrasjon, 3D og lengre case studies, finner du på den dedikerte porteføljesiden min.
+			</p>
+			<div class="hero-cta">
+				<a href="/kontakt" class="hero-btn">Ta kontakt →</a>
+				<a
+					href="https://portfolio-herman-hylland.netlify.app/"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="hero-btn-ghost"
+				>
+					Besøk hele porteføljen ↗
+				</a>
+			</div>
+		</div>
+	</div>
 
 	<!-- Featured case studies -->
 	<Section tone="default" padding="default">
@@ -116,7 +118,7 @@ const caseStudies = [
 			</h2>
 		</div>
 		<div class="space-y-24 lg:space-y-32">
-			{caseStudies.map((c) => <CaseStudyCard {...c} />)}
+			{caseStudies.map((c, i) => <CaseStudyCard {...c} index={i + 1} reverse={i % 2 === 1} />)}
 		</div>
 	</Section>
 
@@ -132,14 +134,14 @@ const caseStudies = [
 				porteføljesiden.
 			</p>
 		</div>
-		<ul class="divide-y divide-border border-b border-t border-border" role="list">
+		<ul class="work-list divide-y divide-border" role="list" data-reveal>
 			{additionalWork.map((item) => (
-				<li class="grid grid-cols-12 items-baseline gap-4 py-5">
+				<li class="work-row grid grid-cols-12 items-baseline gap-4 px-4 py-5">
 					<span class="col-span-2 font-mono text-sm text-text-subtle">
 						{item.year}
 					</span>
 					<div class="col-span-7 sm:col-span-6">
-						<p class="font-display text-lg font-medium text-text">
+						<p class="work-title font-display text-lg font-medium text-text">
 							{item.title}
 						</p>
 						<p class="text-sm text-text-muted">
@@ -154,7 +156,7 @@ const caseStudies = [
 								rel="noopener noreferrer"
 								class="text-sm font-medium text-accent hover:underline"
 							>
-								Se ↗
+								Se <span class="work-arrow">↗</span>
 							</a>
 						)}
 					</div>
@@ -163,25 +165,16 @@ const caseStudies = [
 		</ul>
 	</Section>
 
-	<!-- Closing CTA -->
-	<Section tone="deep" padding="default">
-		<div class="max-w-[60ch]">
-			<Eyebrow class="text-accent-soft">Hele porteføljen</Eyebrow>
-			<p class="mt-4 font-display text-3xl font-medium text-text-on-deep lg:text-4xl">
-				Vil du se det kreative arbeidet?
-			</p>
-			<p class="mt-6 text-[length:var(--text-body)] leading-[1.6] text-text-on-deep/60">
-				Illustrasjon, 3D, animasjon og case studies i lengre format
-				finner du på den dedikerte porteføljesiden min.
-			</p>
-			<a
-				href="https://portfolio-herman-hylland.netlify.app/"
-				target="_blank"
-				rel="noopener noreferrer"
-				class="mt-10 inline-block rounded-[2px] bg-accent px-6 py-3 font-medium text-bg transition-colors duration-150 hover:bg-accent-hover"
-			>
-				Besøk porteføljen ↗
-			</a>
-		</div>
-	</Section>
+	<!-- Dark cinematic finale (reused, portfolio copy) -->
+	<CinemaCTA
+		client:load
+		eyebrow="Hele porteføljen"
+		title="Vil du se det kreative arbeidet?"
+		lede="Illustrasjon, 3D, animasjon og case studies i lengre format finner du på den dedikerte porteføljesiden min."
+		primaryHref="https://portfolio-herman-hylland.netlify.app/"
+		primaryLabel="Besøk porteføljen ↗"
+		external
+		secondaryHref="/kontakt"
+		secondaryLabel="Ta kontakt →"
+	/>
 </BaseLayout>
