@@ -24,6 +24,8 @@
 	--color-accent-subtle: #F5E8E2;
 	--color-accent-deep: #6B2E20;
 	--color-accent-soft: #D89280;
+	--color-accent-glow: #FF6A45;
+	--color-bg-cinema: #0E0D12;
 
 	/* Font stacks */
 	--font-display: 'Fraunces Variable', Georgia, serif;
@@ -31,6 +33,7 @@
 	--font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
 	/* Type scale (responsive) */
+	--text-hero: clamp(3rem, 8.5vw, 7.5rem);
 	--text-display: clamp(3rem, 6vw, 5.5rem);
 	--text-h1: clamp(2.25rem, 4vw, 3.5rem);
 	--text-h2: clamp(1.75rem, 3vw, 2.5rem);
@@ -67,6 +70,8 @@
 	--color-accent-subtle: #F5E8E2;
 	--color-accent-deep: #6B2E20;
 	--color-accent-soft: #D89280;
+	--color-accent-glow: #FF6A45;
+	--color-bg-cinema: #0E0D12;
 
 	--font-display: 'Fraunces Variable', Georgia, serif;
 	--font-body: 'Inter Variable', system-ui, sans-serif;
@@ -264,4 +269,323 @@
 /* ─── Counter ─── */
 [data-counter] {
 	font-variant-numeric: tabular-nums;
+}
+
+/* ─── Cinematic WebGL Hero ─── */
+.hero-shell {
+	position: relative;
+	isolation: isolate;
+	/* Bleed full-height behind the sticky nav so the cinematic scene reaches
+	   the very top of the viewport. */
+	margin-top: calc(-1 * var(--nav-height));
+	/* Reserve the full scroll-runway height server-side so the client:only
+	   island mounts into reserved space → no layout shift (CLS ≈ 0). */
+	min-height: 170svh;
+	background-color: var(--color-bg-cinema);
+	color: var(--color-text-on-deep);
+	overflow-x: clip;
+}
+
+/* Soft transition from the dark hero into the warm body below. */
+.hero-shell::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 22svh;
+	background: linear-gradient(to bottom, transparent, var(--color-bg-warm));
+	pointer-events: none;
+	z-index: 2;
+}
+
+.hero-canvas {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+}
+
+.hero-runway {
+	position: relative;
+	height: 170svh;
+	width: 100%;
+}
+
+.hero-runway--static {
+	height: 100svh;
+}
+
+.hero-stage {
+	position: sticky;
+	top: 0;
+	height: 100svh;
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+	will-change: transform, opacity;
+}
+
+.hero-overlay {
+	position: relative;
+	z-index: 1;
+	width: 100%;
+	max-width: 72rem;
+	margin-inline: auto;
+	padding-inline: clamp(1.25rem, 5vw, 4rem);
+	will-change: transform, opacity;
+}
+
+/* Static SEO / no-JS poster (mirrors the island layout). */
+.hero-poster {
+	position: absolute;
+	inset: 0;
+	z-index: 3;
+	transition: opacity 400ms ease-out, visibility 400ms;
+}
+
+.hero-poster-inner {
+	position: sticky;
+	top: 0;
+	min-height: 100svh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	max-width: 72rem;
+	margin-inline: auto;
+	padding-inline: clamp(1.25rem, 5vw, 4rem);
+}
+
+[data-hero][data-hydrated] .hero-poster {
+	opacity: 0;
+	visibility: hidden;
+}
+
+/* Shared hero typography (used by both poster + island). */
+.hero-eyebrow {
+	font-family: var(--font-mono);
+	font-size: var(--text-micro);
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--color-accent-soft);
+	margin-bottom: 1.5rem;
+}
+
+.hero-title {
+	font-family: var(--font-display);
+	font-size: var(--text-hero);
+	line-height: 1.02;
+	letter-spacing: -0.03em;
+	font-weight: 500;
+	max-width: 18ch;
+	text-shadow: 0 2px 40px rgba(0, 0, 0, 0.55);
+}
+
+.hero-title-accent {
+	color: var(--color-accent-soft);
+}
+
+.hero-lede {
+	margin-top: 2rem;
+	max-width: 46ch;
+	font-size: var(--text-body);
+	line-height: 1.6;
+	color: color-mix(in srgb, var(--color-text-on-deep) 78%, transparent);
+}
+
+.hero-cta {
+	margin-top: 2.5rem;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 1.5rem;
+	font-size: var(--text-body);
+}
+
+.hero-cta a {
+	color: color-mix(in srgb, var(--color-text-on-deep) 85%, transparent);
+	transition: color 150ms ease-out;
+}
+
+.hero-cta a:hover {
+	color: var(--color-accent-glow);
+}
+
+.hero-cta-sep {
+	color: var(--color-text-subtle);
+}
+
+/* WebGL canvas must not swallow vertical touch-scroll. */
+canvas {
+	touch-action: pan-y;
+}
+
+/* ─── Grain / film texture overlay ─── */
+.grain::after {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: 9999;
+	pointer-events: none;
+	opacity: 0.045;
+	mix-blend-mode: overlay;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ─── Pinned scrollytelling (process narrative) ─── */
+.scrolly {
+	position: relative;
+	height: 360svh;
+	background-color: var(--color-bg);
+}
+
+.scrolly-stage {
+	position: sticky;
+	top: 0;
+	height: 100svh;
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+}
+
+.scrolly-inner {
+	position: relative;
+	width: 100%;
+	max-width: 72rem;
+	margin-inline: auto;
+	padding-inline: clamp(1.25rem, 5vw, 4rem);
+}
+
+.scrolly-head {
+	margin-bottom: clamp(2rem, 5vh, 3.5rem);
+	margin-left: clamp(3.5rem, 10vw, 9rem);
+}
+
+.scrolly-eyebrow {
+	font-family: var(--font-mono);
+	font-size: var(--text-micro);
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--color-accent);
+	margin-bottom: 0.75rem;
+}
+
+.scrolly-heading {
+	font-family: var(--font-display);
+	font-size: var(--text-h2);
+	line-height: 1.2;
+}
+
+.scrolly-rail {
+	position: absolute;
+	top: 50%;
+	left: clamp(1.25rem, 5vw, 4rem);
+	transform: translateY(-50%);
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	font-family: var(--font-mono);
+	font-size: var(--text-micro);
+	letter-spacing: 0.18em;
+}
+
+.scrolly-rail-item {
+	color: var(--color-text-subtle);
+	opacity: 0.45;
+	transition: color 250ms ease-out, opacity 250ms ease-out, transform 250ms ease-out;
+}
+
+.scrolly-rail-item.is-active {
+	color: var(--color-accent);
+	opacity: 1;
+	transform: translateX(4px);
+}
+
+.scrolly-panels {
+	position: relative;
+	min-height: 46svh;
+	margin-left: clamp(3.5rem, 10vw, 9rem);
+}
+
+.scrolly-panel {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	will-change: transform, opacity;
+}
+
+.scrolly-num {
+	font-family: var(--font-display);
+	font-size: clamp(3rem, 9vw, 8rem);
+	line-height: 1;
+	font-weight: 500;
+	color: var(--color-accent);
+	opacity: 0.92;
+}
+
+.scrolly-title {
+	font-family: var(--font-display);
+	font-size: var(--text-h1);
+	line-height: 1.1;
+	margin-top: 0.5rem;
+}
+
+.scrolly-body {
+	margin-top: 1.25rem;
+	max-width: 44ch;
+	font-size: var(--text-h4);
+	line-height: 1.6;
+	color: var(--color-text-muted);
+}
+
+/* Static / no-JS / reduced-motion fallback. */
+.scrolly--static {
+	height: auto;
+	padding-block: clamp(4rem, 10vw, 8rem);
+}
+
+.scrolly--static .scrolly-head {
+	position: static;
+	max-width: 72rem;
+	margin-inline: auto;
+	margin-bottom: 4rem;
+	padding-inline: clamp(1.25rem, 5vw, 4rem);
+}
+
+.scrolly-stack {
+	max-width: 72rem;
+	margin-inline: auto;
+	padding-inline: clamp(1.25rem, 5vw, 4rem);
+	display: grid;
+	gap: 3rem;
+}
+
+.scrolly-static-item .scrolly-num {
+	font-size: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.scrolly-static-item .scrolly-title {
+	font-size: var(--text-h2);
+}
+
+/* ─── Reduced motion: neutralise the hero scroll-scrub ─── */
+@media (prefers-reduced-motion: reduce) {
+	.hero-shell {
+		min-height: 100svh;
+	}
+
+	.hero-runway {
+		height: 100svh;
+	}
+
+	.hero-stage {
+		position: static;
+		height: 100svh;
+		transform: none !important;
+	}
+
+	.grain::after {
+		display: none;
+	}
 }

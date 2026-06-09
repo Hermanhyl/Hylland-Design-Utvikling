@@ -13,11 +13,14 @@ const links = [
 function isActive(href: string): boolean {
 	return pathname === href || pathname === `${href}/`;
 }
+
+const isHome = pathname === '/' || pathname === '';
 ---
 
 <header
 	class="site-header"
 	data-scrolled="false"
+	data-over-hero={isHome ? 'true' : 'false'}
 	transition:persist
 	transition:name="site-nav"
 >
@@ -26,7 +29,7 @@ function isActive(href: string): boolean {
 			<!-- Logo -->
 			<a
 				href="/"
-				class="font-display text-base font-medium text-text transition-colors duration-150 hover:text-accent md:text-lg"
+				class="site-logo font-display text-base font-medium text-text transition-colors duration-150 hover:text-accent md:text-lg"
 				aria-current={pathname === '/' || pathname === '' ? 'page' : undefined}
 			>
 				Hylland Design & Utvikling
@@ -107,6 +110,29 @@ function isActive(href: string): boolean {
 		backdrop-filter: blur(12px);
 		-webkit-backdrop-filter: blur(12px);
 		border-bottom-color: var(--color-border);
+	}
+
+	/* ─── Over the cinematic dark hero: transparent nav, light text ─── */
+	/* Takes precedence over the glass [data-scrolled] state while in the hero. */
+	.site-header[data-over-hero='true'] {
+		background-color: transparent;
+		backdrop-filter: none;
+		-webkit-backdrop-filter: none;
+		border-bottom-color: transparent;
+	}
+
+	.site-header[data-over-hero='true'] .site-logo,
+	.site-header[data-over-hero='true'] .nav-link {
+		color: var(--color-text-on-deep);
+	}
+
+	.site-header[data-over-hero='true'] .site-logo:hover,
+	.site-header[data-over-hero='true'] .nav-link:hover {
+		color: var(--color-accent-glow);
+	}
+
+	.site-header[data-over-hero='true'] .hamburger span {
+		background-color: var(--color-text-on-deep);
 	}
 
 	/* ─── Desktop link active dot ─── */
@@ -264,8 +290,28 @@ function isActive(href: string): boolean {
 			}
 		});
 
+		// ── Over-hero detection (homepage only): nav stays transparent/light
+		//     while the cinematic dark hero is behind it, then reverts to the
+		//     light glass nav once scrolled into the warm body. ──
+		function navHeight() {
+			return parseInt(
+				getComputedStyle(document.documentElement).getPropertyValue('--nav-height')
+			) || 80;
+		}
+
+		function updateNavState() {
+			header!.dataset.scrolled = window.scrollY > 8 ? 'true' : 'false';
+			const hero = document.querySelector('[data-hero]') as HTMLElement | null;
+			if (hero) {
+				const heroEnd = hero.offsetHeight - navHeight();
+				header!.dataset.overHero = window.scrollY < heroEnd ? 'true' : 'false';
+			} else {
+				header!.dataset.overHero = 'false';
+			}
+		}
+
 		// ── FIX 4 & 5: Reset scroll state + force-close any stale menu ──
-		header.dataset.scrolled = window.scrollY > 8 ? 'true' : 'false';
+		updateNavState();
 		forceCloseOverlay();
 
 		// ── Once: attach event listeners (persisted element, never re-added) ──
@@ -273,10 +319,8 @@ function isActive(href: string): boolean {
 		header.dataset.navInit = 'true';
 
 		// FIX 4: Scroll detection — attached once, persists via transition:persist
-		function onScroll() {
-			header!.dataset.scrolled = window.scrollY > 8 ? 'true' : 'false';
-		}
-		window.addEventListener('scroll', onScroll, { passive: true });
+		window.addEventListener('scroll', updateNavState, { passive: true });
+		window.addEventListener('resize', updateNavState, { passive: true });
 
 		// Mobile menu open/close
 		function openMenu() {
