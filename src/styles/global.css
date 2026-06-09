@@ -244,6 +244,104 @@
 	transform: none;
 }
 
+/* ─── Service blocks (Tjenester) — interactive motion ─── */
+.service-block {
+	position: relative;
+	transition: opacity 450ms var(--ease-std);
+}
+
+/* Divider line that draws in on reveal (replaces the static border-top). */
+.service-block::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 1px;
+	background: var(--color-border);
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform var(--dur) var(--ease-out);
+}
+
+.service-block.is-revealed::before {
+	transform: scaleX(1);
+}
+
+/* Left accent bar — grows when the service is the active (centred) one. */
+.service-block::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 2px;
+	background: var(--color-accent);
+	transform: scaleY(0);
+	transform-origin: top;
+	transition: transform 500ms var(--ease-out);
+}
+
+.service-block.is-active::after {
+	transform: scaleY(1);
+}
+
+/* Active emphasis: brighten the number, dim the non-active blocks. */
+.service-block.is-active .svc-num {
+	color: var(--color-accent-glow);
+}
+
+.service-block.is-dimmed {
+	opacity: 0.5;
+}
+
+/* Staggered checklist reveal. */
+.svc-item {
+	opacity: 0;
+	transform: translateY(10px);
+	transition:
+		opacity var(--dur) var(--ease-out),
+		transform var(--dur) var(--ease-out);
+}
+
+.svc-bullet {
+	transform: scale(0);
+	transition: transform var(--dur) var(--ease-out);
+}
+
+.service-block.is-revealed .svc-item {
+	opacity: 1;
+	transform: none;
+}
+
+.service-block.is-revealed .svc-bullet {
+	transform: scale(1);
+}
+
+.service-block.is-revealed .svc-item:nth-child(1),
+.service-block.is-revealed .svc-item:nth-child(1) .svc-bullet {
+	transition-delay: 0.12s;
+}
+.service-block.is-revealed .svc-item:nth-child(2),
+.service-block.is-revealed .svc-item:nth-child(2) .svc-bullet {
+	transition-delay: 0.22s;
+}
+.service-block.is-revealed .svc-item:nth-child(3),
+.service-block.is-revealed .svc-item:nth-child(3) .svc-bullet {
+	transition-delay: 0.32s;
+}
+.service-block.is-revealed .svc-item:nth-child(4),
+.service-block.is-revealed .svc-item:nth-child(4) .svc-bullet {
+	transition-delay: 0.42s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.svc-item,
+	.svc-bullet {
+		transition-delay: 0s !important;
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	[data-reveal] {
 		transition: none;
