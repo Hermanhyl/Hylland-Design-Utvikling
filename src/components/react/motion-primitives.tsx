@@ -122,7 +122,11 @@ export function MotionHeading({
 			aria-label={text}
 		>
 			{words.map((word, i) => (
-				<span key={`${word}-${i}`} style={{ display: 'inline-block', overflow: 'hidden' }} aria-hidden="true">
+				<span
+					key={`${word}-${i}`}
+					style={{ display: 'inline-block', overflow: 'hidden', paddingBottom: '0.18em', marginBottom: '-0.18em' }}
+					aria-hidden="true"
+				>
 					<motion.span
 						style={{ display: 'inline-block', willChange: 'transform' }}
 						variants={{

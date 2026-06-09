@@ -116,10 +116,13 @@ export default function PinnedScrollytelling() {
 		setActive(idx);
 	});
 
-	// SSR / no-JS / reduced-motion fallback: a plain, readable vertical stack.
-	if (!hydrated || reduced) {
+	// sectionRef is always attached (even in the static fallback) so framer's
+	// useScroll measures the element from mount.
+	const isStatic = !hydrated || reduced;
+
+	if (isStatic) {
 		return (
-			<section className="scrolly scrolly--static">
+			<section ref={sectionRef} className="scrolly scrolly--static">
 				<div className="scrolly-head">
 					<p className="scrolly-eyebrow">Prosess</p>
 					<h2 className="scrolly-heading">Slik jobber jeg</h2>

@@ -46,6 +46,11 @@
 	/* Layout */
 	--max-width: 72rem;
 	--nav-height: 72px;
+
+	/* Motion (mirrors the JS MOTION constants in motion-primitives.tsx) */
+	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+	--ease-std: cubic-bezier(0.4, 0, 0.2, 1);
+	--dur: 600ms;
 }
 
 @media (min-width: 768px) {
@@ -221,13 +226,22 @@
 	opacity: 0;
 	transform: translateY(16px);
 	transition:
-		opacity 600ms ease-out,
-		transform 600ms ease-out;
+		opacity var(--dur) var(--ease-out),
+		transform var(--dur) var(--ease-out);
 }
 
 [data-reveal].is-revealed {
 	opacity: 1;
-	transform: translateY(0);
+	transform: none;
+}
+
+/* Zoom variant — content scales up into view for a "zooming in" feel. */
+[data-reveal='zoom'] {
+	transform: scale(0.94) translateY(14px);
+}
+
+[data-reveal='zoom'].is-revealed {
+	transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -276,8 +290,11 @@
 	position: relative;
 	isolation: isolate;
 	/* Bleed full-height behind the sticky nav so the cinematic scene reaches
-	   the very top of the viewport. */
-	margin-top: calc(-1 * var(--nav-height));
+	   the very top of the viewport. The extra -1px / padding-top:1px is
+	   net-neutral on offsetHeight (Nav data-over-hero math) but covers the
+	   sub-pixel gap where the body bg used to show as a thin light line. */
+	margin-top: calc(-1 * var(--nav-height) - 1px);
+	padding-top: 1px;
 	/* Reserve the full scroll-runway height server-side so the client:only
 	   island mounts into reserved space → no layout shift (CLS ≈ 0). */
 	min-height: 170svh;
@@ -286,15 +303,37 @@
 	overflow-x: clip;
 }
 
-/* Soft transition from the dark hero into the warm body below. */
+/* Dark backdrop extending above the shell top — guarantees y=0 is covered
+   regardless of fractional nav height (kills the thin white line). */
+.hero-shell::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: -2px;
+	height: 4px;
+	background: var(--color-bg-cinema);
+	z-index: 0;
+	pointer-events: none;
+}
+
+/* Long, color-matched fade from the cinema-dark hero into the warm process
+   section. Endpoint equals .scrolly's exact bg token so there is no seam. */
 .hero-shell::after {
 	content: '';
 	position: absolute;
 	left: 0;
 	right: 0;
 	bottom: 0;
-	height: 22svh;
-	background: linear-gradient(to bottom, transparent, var(--color-bg-warm));
+	height: 55svh;
+	background: linear-gradient(
+		to bottom,
+		transparent 0%,
+		color-mix(in srgb, var(--color-bg-warm) 12%, transparent) 35%,
+		color-mix(in srgb, var(--color-bg-warm) 55%, transparent) 68%,
+		color-mix(in srgb, var(--color-bg-warm) 90%, transparent) 88%,
+		var(--color-bg-warm) 100%
+	);
 	pointer-events: none;
 	z-index: 2;
 }
@@ -373,10 +412,11 @@
 .hero-title {
 	font-family: var(--font-display);
 	font-size: var(--text-hero);
-	line-height: 1.02;
+	line-height: 1.08;
 	letter-spacing: -0.03em;
 	font-weight: 500;
 	max-width: 18ch;
+	padding-bottom: 0.08em;
 	text-shadow: 0 2px 40px rgba(0, 0, 0, 0.55);
 }
 
@@ -435,7 +475,7 @@ canvas {
 .scrolly {
 	position: relative;
 	height: 360svh;
-	background-color: var(--color-bg);
+	background-color: var(--color-bg-warm);
 }
 
 .scrolly-stage {
@@ -567,6 +607,328 @@ canvas {
 
 .scrolly-static-item .scrolly-title {
 	font-size: var(--text-h2);
+}
+
+/* ─── Horizontal projects gallery (pinned pan) ─── */
+.hpan {
+	position: relative;
+	background-color: var(--color-bg);
+}
+
+.hpan-stage {
+	position: sticky;
+	top: 0;
+	height: 100svh;
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+}
+
+.hpan-track {
+	display: flex;
+	align-items: center;
+	gap: clamp(1.5rem, 4vw, 3.5rem);
+	padding-inline: clamp(1.25rem, 8vw, 9rem);
+	will-change: transform;
+}
+
+.hpan-panel {
+	flex: 0 0 auto;
+	width: min(86vw, 860px);
+	height: 70svh;
+	display: flex;
+	align-items: center;
+}
+
+.hpan-card {
+	position: relative;
+	width: 100%;
+	will-change: transform, opacity;
+}
+
+.hpan-eyebrow,
+.hpan-meta {
+	font-family: var(--font-mono);
+	font-size: var(--text-micro);
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--color-accent);
+}
+
+.hpan-introtitle {
+	margin-top: 0.75rem;
+	font-family: var(--font-display);
+	font-size: var(--text-display);
+	line-height: 1.05;
+	letter-spacing: -0.02em;
+}
+
+.hpan-introlede {
+	margin-top: 1.5rem;
+	max-width: 42ch;
+	font-size: var(--text-h4);
+	line-height: 1.6;
+	color: var(--color-text-muted);
+}
+
+.hpan-hint {
+	margin-top: 2.5rem;
+	font-family: var(--font-mono);
+	font-size: var(--text-micro);
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--color-text-subtle);
+}
+
+.hpan-index {
+	display: block;
+	font-family: var(--font-display);
+	font-size: clamp(4rem, 11vw, 9rem);
+	line-height: 0.9;
+	font-weight: 500;
+	color: var(--color-accent);
+	position: relative;
+}
+
+/* Rust glow behind the index number — the recurring brand signature. */
+.hpan-index::before {
+	content: '';
+	position: absolute;
+	left: -10%;
+	top: -20%;
+	width: 60%;
+	aspect-ratio: 1;
+	background: radial-gradient(circle, color-mix(in srgb, var(--color-accent-glow) 40%, transparent), transparent 70%);
+	filter: blur(30px);
+	z-index: -1;
+	pointer-events: none;
+}
+
+.hpan-meta {
+	margin-top: 1.5rem;
+}
+
+.hpan-title {
+	margin-top: 0.5rem;
+	font-family: var(--font-display);
+	font-size: clamp(2rem, 4.5vw, 3.5rem);
+	line-height: 1.1;
+	letter-spacing: -0.02em;
+}
+
+.hpan-desc {
+	margin-top: 1.5rem;
+	max-width: 46ch;
+	font-size: var(--text-body);
+	line-height: 1.6;
+	color: var(--color-text-muted);
+}
+
+.hpan-contrib {
+	margin-top: 1rem;
+	max-width: 46ch;
+	font-size: var(--text-body);
+	line-height: 1.6;
+	color: var(--color-text);
+}
+
+.hpan-link {
+	display: inline-block;
+	margin-top: 2rem;
+	font-size: var(--text-body);
+	font-weight: 500;
+	color: var(--color-accent);
+	transition: color 150ms var(--ease-std);
+}
+
+.hpan-link:hover {
+	color: var(--color-accent-hover);
+}
+
+.hpan-outrotitle {
+	font-family: var(--font-display);
+	font-size: var(--text-h1);
+	line-height: 1.1;
+}
+
+.hpan-outrolink {
+	display: inline-block;
+	margin-top: 1.5rem;
+	font-size: var(--text-h4);
+	font-weight: 500;
+	color: var(--color-accent);
+}
+
+/* Scroll-progress bar (orientation aid). */
+.hpan-progress-wrap {
+	position: absolute;
+	left: clamp(1.25rem, 8vw, 9rem);
+	right: clamp(1.25rem, 8vw, 9rem);
+	bottom: 8svh;
+	height: 2px;
+	background: var(--color-border);
+	overflow: hidden;
+}
+
+.hpan-progress {
+	height: 100%;
+	background: var(--color-accent);
+	transform: scaleX(0);
+	transform-origin: left center;
+}
+
+/* Static fallback: native horizontal scroll-snap. */
+.hpan--static {
+	padding-block: clamp(4rem, 10vw, 8rem);
+}
+
+.hpan--static .hpan-track {
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+	touch-action: pan-x;
+	-webkit-overflow-scrolling: touch;
+	padding-bottom: 1.5rem;
+}
+
+.hpan--static .hpan-panel {
+	scroll-snap-align: center;
+	height: auto;
+}
+
+/* Reduced motion: calm vertical stack, no horizontal coupling at all. */
+.hpan--stack .hpan-track {
+	flex-direction: column;
+	overflow-x: visible;
+	gap: clamp(3rem, 8vw, 6rem);
+	touch-action: auto;
+}
+
+.hpan--stack .hpan-panel {
+	width: 100%;
+	height: auto;
+}
+
+/* ─── Cinematic CTA finale (echoes the hero, closes the journey) ─── */
+.cinema-cta {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+	background-color: var(--color-bg-cinema);
+	color: var(--color-text-on-deep);
+	padding-block: clamp(7rem, 18vh, 12rem);
+	padding-inline: clamp(1.25rem, 5vw, 4rem);
+}
+
+/* Light→dark bridge at the top so the projects section eases into the dark. */
+.cinema-cta::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: 30svh;
+	background: linear-gradient(to bottom, var(--color-bg), transparent);
+	pointer-events: none;
+	z-index: 0;
+}
+
+/* Drifting rust glow backdrop. */
+.cinema-cta-glow {
+	position: absolute;
+	inset: -20% -10% auto -10%;
+	height: 90%;
+	z-index: 0;
+	pointer-events: none;
+	background: radial-gradient(
+		60% 60% at 70% 40%,
+		color-mix(in srgb, var(--color-accent-glow) 38%, transparent),
+		transparent 70%
+	);
+	filter: blur(40px);
+	opacity: 0.7;
+	animation: cta-glow-drift 14s ease-in-out infinite alternate;
+}
+
+@keyframes cta-glow-drift {
+	from { transform: translate3d(-6%, -4%, 0) scale(1); }
+	to { transform: translate3d(8%, 6%, 0) scale(1.15); }
+}
+
+.cinema-cta-content {
+	position: relative;
+	z-index: 1;
+	max-width: 72rem;
+	margin-inline: auto;
+}
+
+.cinema-cta-eyebrow {
+	font-family: var(--font-mono);
+	font-size: var(--text-micro);
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--color-accent-soft);
+	margin-bottom: 1.25rem;
+}
+
+.cinema-cta-title {
+	font-family: var(--font-display);
+	font-size: clamp(2.5rem, 7vw, 6rem);
+	line-height: 1.05;
+	letter-spacing: -0.03em;
+	font-weight: 500;
+	padding-bottom: 0.06em;
+}
+
+.cinema-cta-lede {
+	margin-top: 1.75rem;
+	max-width: 48ch;
+	font-size: var(--text-h4);
+	line-height: 1.6;
+	color: color-mix(in srgb, var(--color-text-on-deep) 78%, transparent);
+}
+
+.cinema-cta-actions {
+	margin-top: 2.75rem;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 1.5rem 2rem;
+}
+
+.cinema-cta-btn {
+	display: inline-block;
+	background: var(--color-accent);
+	color: var(--color-bg);
+	padding: 0.9rem 2rem;
+	border-radius: 2px;
+	font-weight: 500;
+	transition: background-color 150ms var(--ease-std), transform 150ms var(--ease-std);
+}
+
+.cinema-cta-btn:hover {
+	background: var(--color-accent-glow);
+	transform: translateY(-2px);
+}
+
+.cinema-cta-secondary {
+	color: color-mix(in srgb, var(--color-text-on-deep) 85%, transparent);
+	transition: color 150ms var(--ease-std);
+}
+
+.cinema-cta-secondary:hover {
+	color: var(--color-accent-glow);
+}
+
+/* Zoom-in reveal on arrival (only when JS present + not reduced motion). */
+.cinema-cta[data-anim] .cinema-cta-content {
+	opacity: 0;
+	transform: scale(0.94) translateY(20px);
+	transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+}
+
+.cinema-cta[data-anim][data-inview] .cinema-cta-content {
+	opacity: 1;
+	transform: none;
 }
 
 /* ─── Reduced motion: neutralise the hero scroll-scrub ─── */

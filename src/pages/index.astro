@@ -1,10 +1,9 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Section from '@/components/Section.astro';
-import Eyebrow from '@/components/Eyebrow.astro';
-import ProjectCard from '@/components/ProjectCard.astro';
 import ScrollZoomHero from '@/components/react/ScrollZoomHero.tsx';
 import PinnedScrollytelling from '@/components/react/PinnedScrollytelling.tsx';
+import HorizontalProjects from '@/components/react/HorizontalProjects.tsx';
+import CinemaCTA from '@/components/react/CinemaCTA.tsx';
 
 const projects = [
 	{
@@ -101,39 +100,14 @@ const jsonLd = {
 		<ScrollZoomHero client:only="react" />
 	</div>
 
-	<!-- Prosess: pinned scrollytelling (client:visible island, SSR-stacked fallback) -->
-	<PinnedScrollytelling client:visible />
+	<!-- Prosess: pinned scrollytelling (client:load — light DOM-only island, no three.js;
+	     client:load avoids IntersectionObserver-trigger flakiness and hydrates the SSR
+	     stacked fallback into the pinned version reliably) -->
+	<PinnedScrollytelling client:load />
 
-	<!-- Utvalgte prosjekter -->
-	<Section tone="default" padding="default">
-		<Eyebrow>Portefølje</Eyebrow>
-		<h2 class="mt-4 text-[length:var(--text-h2)] leading-[1.2]">Utvalgte prosjekter</h2>
-		<p class="mt-4 text-[length:var(--text-body)] leading-[1.6] text-text-muted max-w-[55ch]">
-			Et utvalg av arbeid fra de siste årene — egne produkter, klientarbeid og prosjekter underveis i studiene.
-		</p>
+	<!-- Utvalgte prosjekter: pinned horizontal-pan gallery (client:load — DOM-only island) -->
+	<HorizontalProjects client:load projects={projects} />
 
-		<div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-			{projects.map((p) => <ProjectCard {...p} />)}
-		</div>
-
-		<div class="mt-16">
-			<a href="/portefolje" class="link-animated text-[length:var(--text-body)] font-medium text-text transition-colors duration-150 hover:text-accent">
-				Se hele porteføljen →
-			</a>
-		</div>
-	</Section>
-
-	<!-- CTA -->
-	<Section tone="deep" padding="default">
-		<h2 class="font-display text-[length:var(--text-h2)] leading-[1.2]">Har du et prosjekt?</h2>
-		<p class="mt-4 max-w-[50ch] text-[length:var(--text-body)] leading-[1.6] text-text-on-deep/70">
-			Jeg er alltid interessert i nye samarbeid. Ta gjerne kontakt for en uforpliktende prat.
-		</p>
-		<a
-			href="/kontakt"
-			class="mt-8 inline-block bg-accent px-6 py-3 font-medium text-bg rounded-[2px] transition-colors hover:bg-accent-hover"
-		>
-			Ta kontakt
-		</a>
-	</Section>
+	<!-- CTA finale: cinematic dark close (client:load island) -->
+	<CinemaCTA client:load />
 </BaseLayout>
