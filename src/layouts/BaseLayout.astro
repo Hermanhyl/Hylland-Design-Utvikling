@@ -10,6 +10,8 @@ interface Props {
 	ogImage?: string;
 	canonicalUrl?: string;
 	jsonLd?: Record<string, unknown>;
+	/** Set on pages with a dark cinematic hero so the nav starts transparent/light. */
+	darkHero?: boolean;
 }
 
 const {
@@ -18,6 +20,7 @@ const {
 	ogImage = '/og-default.png',
 	canonicalUrl,
 	jsonLd,
+	darkHero = false,
 } = Astro.props;
 
 const siteUrl = Astro.site?.origin ?? 'https://hermanhylland.no';
@@ -67,7 +70,7 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}
 	</head>
 
 	<body class="grain flex min-h-svh flex-col">
-		<Nav />
+		<Nav overHero={darkHero} />
 
 		<main class="flex-1" style={`min-height: calc(100vh - var(--nav-height));`}>
 			<slot />

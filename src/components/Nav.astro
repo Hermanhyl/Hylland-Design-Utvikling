@@ -1,6 +1,13 @@
 ---
 import Container from '@/components/Container.astro';
 
+interface Props {
+	/** Start the nav transparent/light (page has a dark cinematic hero). */
+	overHero?: boolean;
+}
+
+const { overHero = false } = Astro.props;
+
 const pathname = Astro.url.pathname;
 
 const links = [
@@ -20,7 +27,7 @@ const isHome = pathname === '/' || pathname === '';
 <header
 	class="site-header"
 	data-scrolled="false"
-	data-over-hero={isHome ? 'true' : 'false'}
+	data-over-hero={isHome || overHero ? 'true' : 'false'}
 	transition:persist
 	transition:name="site-nav"
 >

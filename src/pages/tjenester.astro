@@ -1,30 +1,35 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Section from '@/components/Section.astro';
-import Eyebrow from '@/components/Eyebrow.astro';
 import Container from '@/components/Container.astro';
 import ServiceBlock from '@/components/ServiceBlock.astro';
+import NoiseBackground from '@/components/react/NoiseBackground.tsx';
+import CinemaCTA from '@/components/react/CinemaCTA.tsx';
 ---
 
 <BaseLayout
-	title="Tjenester — Hylland Design & Utvikling"
+	title="Tjenester | Hylland Design & Utvikling"
 	description="Frontend-utvikling, UX/UI-design, og webrådgivning. Se hva jeg kan hjelpe deg med."
+	darkHero
 >
-	<!-- Hero -->
-	<Section tone="default" padding="none" class="py-32 lg:py-40">
-		<Eyebrow class="mb-6">Tjenester</Eyebrow>
-		<h1 class="text-[length:var(--text-h1)] leading-[1.1] tracking-[-0.02em] text-balance">
-			Det jeg kan hjelpe deg med.
-		</h1>
-		<p class="mt-8 max-w-[58ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
-			Fire tjenester som dekker hele veien fra idé til ferdig nettløsning —
-			enten du trenger hjelp til ett konkret prosjekt eller noen som kan se
-			helheten.
-		</p>
-	</Section>
+	<!-- Dark cinematic hero with noise + copper spotlight background -->
+	<div class="page-hero" data-hero>
+		<NoiseBackground client:load />
+		<div class="page-hero-inner" data-reveal>
+			<p class="hero-eyebrow">Tjenester</p>
+			<h1 class="page-hero-title">Det jeg kan hjelpe deg med.</h1>
+			<p class="hero-lede">
+				Fire tjenester som dekker hele veien fra idé til ferdig nettløsning, enten du trenger
+				hjelp til ett konkret prosjekt eller noen som kan se helheten.
+			</p>
+			<div class="hero-cta">
+				<a href="/kontakt" class="hero-btn">Ta kontakt →</a>
+				<a href="/portefolje" class="hero-btn-ghost">Se portefølje →</a>
+			</div>
+		</div>
+	</div>
 
 	<!-- Service blocks -->
-	<Container>
+	<Container class="py-24 md:py-32">
 		<ServiceBlock
 			number="01"
 			title="Frontend-utvikling"
@@ -76,4 +81,7 @@ import ServiceBlock from '@/components/ServiceBlock.astro';
 			whenItFits="Du trenger et helhetlig visuelt uttrykk som binder sammen nettside, markedsmateriell og merkevare."
 		/>
 	</Container>
+
+	<!-- Dark cinematic finale (reused from homepage) -->
+	<CinemaCTA client:load />
 </BaseLayout>
