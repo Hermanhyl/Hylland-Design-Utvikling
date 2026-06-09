@@ -11,7 +11,7 @@ const STAGES: Stage[] = [
 	{
 		num: '01',
 		title: 'Forstå',
-		body: 'Jeg starter med research, UX-audit og brukerinnsikt — for å forstå problemet skikkelig før noe bygges.',
+		body: 'Jeg starter med research, UX-audit og brukerinnsikt for å forstå problemet skikkelig før noe bygges.',
 	},
 	{
 		num: '02',
@@ -21,7 +21,7 @@ const STAGES: Stage[] = [
 	{
 		num: '03',
 		title: 'Bygge',
-		body: 'Rask, tilgjengelig kode med React og Astro. Solid håndverk under panseret — ikke bare pent på overflaten.',
+		body: 'Rask, tilgjengelig kode med React og Astro. Solid håndverk under panseret, ikke bare pent på overflaten.',
 	},
 	{
 		num: '04',

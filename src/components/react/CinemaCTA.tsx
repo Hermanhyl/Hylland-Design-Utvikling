@@ -40,7 +40,7 @@ export default function CinemaCTA() {
 				<p className="cinema-cta-eyebrow">Kontakt</p>
 				<h2 className="cinema-cta-title">Har du et prosjekt?</h2>
 				<p className="cinema-cta-lede">
-					Jeg er alltid interessert i nye samarbeid. Ta gjerne kontakt for en uforpliktende prat — så
+					Jeg er alltid interessert i nye samarbeid. Ta gjerne kontakt for en uforpliktende prat, så
 					tar vi en titt på hva vi kan bygge sammen.
 				</p>
 				<div className="cinema-cta-actions">

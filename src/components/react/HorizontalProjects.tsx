@@ -109,7 +109,7 @@ export default function HorizontalProjects({ projects }: { projects: Project[] }
 					<p className="hpan-eyebrow">Portefølje</p>
 					<h2 className="hpan-introtitle">Utvalgte prosjekter</h2>
 					<p className="hpan-introlede">
-						Et utvalg av arbeid fra de siste årene — egne produkter, klientarbeid og prosjekter
+						Et utvalg av arbeid fra de siste årene: egne produkter, klientarbeid og prosjekter
 						underveis i studiene.
 					</p>
 					{useDynamic && <p className="hpan-hint">Bla nedover for å utforske →</p>}
