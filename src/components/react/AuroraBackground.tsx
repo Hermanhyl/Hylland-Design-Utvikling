@@ -56,7 +56,7 @@ export default function AuroraBackground() {
 					speedY: 0.03 + Math.random() * 0.05,
 					phaseX: Math.random() * Math.PI * 2,
 					phaseY: Math.random() * Math.PI * 2,
-					radius: (0.4 + Math.random() * 0.35) * Math.max(w, h),
+					radius: (0.32 + Math.random() * 0.26) * Math.max(w, h),
 					color: colors[i % colors.length],
 				});
 			}
@@ -91,7 +91,7 @@ export default function AuroraBackground() {
 					x += (mouse.x - x) * 0.25;
 					y += (mouse.y - y) * 0.25;
 				}
-				drawBlob(x, y, b.radius, b.color, 0.5);
+				drawBlob(x, y, b.radius, b.color, 0.2);
 			}
 			ctx.globalCompositeOperation = 'source-over';
 		};

@@ -881,6 +881,22 @@ canvas {
 	padding-block: clamp(3rem, 8vh, 6rem);
 }
 
+/* Readability scrim: soft left-weighted dark gradient behind the hero text
+   (sits above the background canvas, below the text via z-index) so headlines
+   stay legible over a bright background like the aurora. */
+.page-hero-inner::before {
+	content: '';
+	position: absolute;
+	inset: -12% -20%;
+	z-index: -1;
+	pointer-events: none;
+	background: radial-gradient(
+		ellipse at 25% 50%,
+		color-mix(in srgb, var(--color-bg-cinema) 62%, transparent),
+		transparent 70%
+	);
+}
+
 .page-hero-title {
 	font-family: var(--font-display);
 	font-size: var(--text-display);
@@ -889,7 +905,7 @@ canvas {
 	font-weight: 500;
 	max-width: 16ch;
 	padding-bottom: 0.08em;
-	text-shadow: 0 2px 40px rgba(0, 0, 0, 0.5);
+	text-shadow: 0 2px 30px rgba(0, 0, 0, 0.65);
 }
 
 /* ─── Grain / film texture overlay ─── */
