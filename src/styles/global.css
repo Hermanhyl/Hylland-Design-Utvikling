@@ -558,6 +558,91 @@
 	}
 }
 
+/* Big faint number watermark behind each principle. */
+.principle {
+	overflow: hidden;
+}
+
+.principle-bignum {
+	position: absolute;
+	top: -0.55em;
+	right: -0.1em;
+	font-family: var(--font-display);
+	font-size: clamp(4rem, 8vw, 7rem);
+	line-height: 1;
+	font-weight: 500;
+	color: var(--color-accent);
+	opacity: 0.08;
+	pointer-events: none;
+	z-index: -1;
+}
+
+/* Inner wrapper carries the cursor-tilt (keeps it off the reveal transform). */
+.principle-inner {
+	will-change: transform;
+	transform-style: preserve-3d;
+}
+
+/* ─── Om meg: education scroll-fill timeline ─── */
+.timeline {
+	position: relative;
+	margin-top: 3rem;
+	padding-left: clamp(2rem, 4vw, 3rem);
+}
+
+.timeline-track {
+	position: absolute;
+	left: 0.375rem;
+	top: 0.5rem;
+	bottom: 0.5rem;
+	width: 2px;
+	background: var(--color-border);
+	overflow: hidden;
+}
+
+.timeline-fill {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 0;
+	background: linear-gradient(to bottom, var(--color-accent-glow), var(--color-accent));
+	transition: height 120ms linear;
+}
+
+.timeline-item {
+	position: relative;
+	display: grid;
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+	align-items: baseline;
+	gap: 1rem;
+	padding-block: 1.5rem;
+	border-bottom: 1px solid var(--color-border);
+}
+
+.timeline-item:first-child {
+	border-top: 1px solid var(--color-border);
+}
+
+.timeline-dot {
+	position: absolute;
+	left: calc(-1 * clamp(2rem, 4vw, 3rem) + 0.375rem - 5px);
+	top: 1.85rem;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: var(--color-bg);
+	border: 2px solid var(--color-border);
+	transition: background-color 300ms var(--ease-std), border-color 300ms var(--ease-std), box-shadow 300ms var(--ease-std), transform 300ms var(--ease-out);
+}
+
+.timeline-dot.is-lit {
+	background: var(--color-accent);
+	border-color: var(--color-accent);
+	transform: scale(1.15);
+	box-shadow: 0 0 14px color-mix(in srgb, var(--color-accent-glow) 70%, transparent);
+}
+
 @media (prefers-reduced-motion: reduce) {
 	[data-reveal] {
 		transition: none;

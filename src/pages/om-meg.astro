@@ -112,7 +112,7 @@ const principles = [
 		<div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
 			<!-- Image column -->
 			<div class="lg:col-span-5" data-reveal="zoom">
-				<div class="portrait bg-bg">
+				<div class="portrait bg-bg" data-tilt="4">
 					<div class="portrait-inner" data-parallax data-parallax-speed="0.04">
 						<img src="/Bruk_denne.jpg" alt="Portrett av Herman Hylland" loading="lazy" />
 					</div>
@@ -153,13 +153,16 @@ const principles = [
 		<div class="principles-grid mt-16 grid grid-cols-1 gap-x-12 gap-y-12 md:grid-cols-2" data-reveal>
 			{principles.map(({ number, title, body }) => (
 				<article class="principle">
-					<p class="principle-num font-mono text-xs font-medium uppercase tracking-[0.15em] text-text-subtle">
-						{number}
-					</p>
-					<h3 class="mt-3 font-display text-xl font-medium">{title}</h3>
-					<p class="mt-3 max-w-[42ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
-						{body}
-					</p>
+					<span class="principle-bignum" aria-hidden="true">{number}</span>
+					<div class="principle-inner" data-tilt="5">
+						<p class="principle-num font-mono text-xs font-medium uppercase tracking-[0.15em] text-text-subtle">
+							{number}
+						</p>
+						<h3 class="mt-3 font-display text-xl font-medium">{title}</h3>
+						<p class="mt-3 max-w-[42ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+							{body}
+						</p>
+					</div>
 				</article>
 			))}
 		</div>
@@ -170,24 +173,26 @@ const principles = [
 		<Eyebrow>Bakgrunn</Eyebrow>
 		<h2 class="mt-4">Utdanning og erfaring</h2>
 
-		<ul class="work-list mt-12 divide-y divide-border" role="list" data-reveal>
+		<div class="timeline" data-timeline data-reveal>
+			<div class="timeline-track"><div class="timeline-fill" data-timeline-fill></div></div>
 			{background.map((item) => (
-				<li class="work-row grid grid-cols-12 items-baseline gap-4 px-4 py-5">
-					<span class="col-span-2 font-mono text-sm text-text-subtle">
+				<div class="timeline-item">
+					<span class="timeline-dot" aria-hidden="true"></span>
+					<span class="col-span-12 font-mono text-sm text-text-subtle sm:col-span-2">
 						{item.year}
 					</span>
-					<div class="col-span-10 sm:col-span-6">
-						<p class="work-title font-display text-lg font-medium text-text">
+					<div class="col-span-12 sm:col-span-6">
+						<p class="font-display text-lg font-medium text-text">
 							{item.title}
 						</p>
 						<p class="text-sm text-text-muted">{item.org}</p>
 					</div>
-					<span class="hidden text-right text-sm leading-relaxed text-text-muted sm:col-span-4 sm:block">
+					<span class="col-span-12 text-sm leading-relaxed text-text-muted sm:col-span-4 sm:text-right">
 						{item.note}
 					</span>
-				</li>
+				</div>
 			))}
-		</ul>
+		</div>
 	</Section>
 
 	<!-- Outside work -->
