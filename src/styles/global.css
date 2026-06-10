@@ -99,6 +99,9 @@
 		tab-size: 4;
 		scroll-behavior: smooth;
 		scroll-padding-top: var(--nav-height);
+		/* Guard against accidental horizontal overflow (e.g. 100vw + scrollbar).
+		   `clip` is used instead of `hidden` so it doesn't break position: sticky. */
+		overflow-x: clip;
 	}
 
 	body {
