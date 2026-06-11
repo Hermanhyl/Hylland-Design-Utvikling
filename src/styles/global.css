@@ -971,17 +971,25 @@ canvas {
 
 /* Readability scrim: soft left-weighted dark gradient behind the hero text
    (sits above the background canvas, below the text via z-index) so headlines
-   stay legible over a bright background like the aurora. */
+   stay legible over a bright background like the aurora. Stretched to the
+   viewport edges with calc(50% - 50vw) — the inner container is max-width
+   72rem, so percentage insets stop short on wide screens and leave a visible
+   scrim edge. Overshoot is harmless: html has overflow-x: clip. */
 .page-hero-inner::before {
 	content: '';
 	position: absolute;
-	inset: -12% -20%;
+	top: -15%;
+	bottom: -15%;
+	left: calc(50% - 50vw);
+	right: calc(50% - 50vw);
 	z-index: -1;
 	pointer-events: none;
-	background: radial-gradient(
-		ellipse at 25% 50%,
-		color-mix(in srgb, var(--color-bg-cinema) 62%, transparent),
-		transparent 70%
+	background: linear-gradient(
+		100deg,
+		color-mix(in srgb, var(--color-bg-cinema) 65%, transparent) 0%,
+		color-mix(in srgb, var(--color-bg-cinema) 48%, transparent) 38%,
+		color-mix(in srgb, var(--color-bg-cinema) 18%, transparent) 58%,
+		transparent 78%
 	);
 }
 
