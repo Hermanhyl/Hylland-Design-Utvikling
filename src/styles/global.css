@@ -561,9 +561,13 @@
 	}
 }
 
-/* Big faint number watermark behind each principle. */
+/* Big faint number watermark behind each principle. isolation keeps a
+   permanent stacking context so the z-index:-1 number stays put — without it
+   the number only showed while the reveal transform created a temporary
+   context, then vanished. */
 .principle {
 	overflow: hidden;
+	isolation: isolate;
 }
 
 .principle-bignum {
