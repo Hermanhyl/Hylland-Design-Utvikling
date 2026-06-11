@@ -1012,6 +1012,158 @@ canvas {
 	text-shadow: 0 2px 30px rgba(0, 0, 0, 0.65);
 }
 
+/* ─── Kontakt page: dark shell + standout form card ─── */
+.contact-shell {
+	position: relative;
+	isolation: isolate;
+	margin-top: calc(-1 * var(--nav-height) - 1px);
+	padding-top: var(--nav-height);
+	min-height: 100svh;
+	background-color: var(--color-bg-cinema);
+	color: var(--color-text-on-deep);
+	overflow: hidden;
+}
+
+.contact-shell::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: -2px;
+	height: 4px;
+	background: var(--color-bg-cinema);
+	z-index: 0;
+	pointer-events: none;
+}
+
+.contact-inner {
+	position: relative;
+	z-index: 2;
+	max-width: 72rem;
+	margin-inline: auto;
+	padding-inline: clamp(1.25rem, 5vw, 4rem);
+	padding-block: clamp(5rem, 12vh, 8rem) clamp(4rem, 10vh, 7rem);
+}
+
+.contact-head {
+	max-width: 60ch;
+	margin-bottom: clamp(3rem, 7vh, 5rem);
+}
+
+.contact-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: clamp(2.5rem, 5vw, 4rem);
+}
+
+@media (min-width: 1024px) {
+	.contact-grid {
+		grid-template-columns: 0.85fr 1.15fr;
+		align-items: start;
+	}
+}
+
+/* Left: direct contact + social + meta, light-on-dark. */
+.contact-aside-label {
+	font-family: var(--font-mono);
+	font-size: var(--text-micro);
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--color-accent-soft);
+}
+
+.contact-email {
+	display: inline-block;
+	margin-top: 0.75rem;
+	font-family: var(--font-display);
+	font-size: clamp(1.4rem, 3vw, 2rem);
+	font-weight: 500;
+	color: var(--color-text-on-deep);
+	transition: color 150ms var(--ease-std);
+	word-break: break-word;
+}
+
+.contact-email:hover {
+	color: var(--color-accent-glow);
+}
+
+.contact-social a {
+	color: color-mix(in srgb, var(--color-text-on-deep) 82%, transparent);
+	transition: color 150ms var(--ease-std);
+}
+
+.contact-social a:hover {
+	color: var(--color-accent-glow);
+}
+
+.contact-meta {
+	border-top: 1px solid color-mix(in srgb, var(--color-text-on-deep) 18%, transparent);
+}
+
+.contact-meta dt {
+	color: var(--color-accent-soft);
+}
+
+.contact-meta dd {
+	color: color-mix(in srgb, var(--color-text-on-deep) 80%, transparent);
+}
+
+/* Right: the form as a prominent light card that pops against the dark. */
+.contact-card {
+	background: var(--color-bg);
+	color: var(--color-text);
+	border-radius: 4px;
+	padding: clamp(1.75rem, 4vw, 3rem);
+	box-shadow:
+		0 30px 70px -25px rgba(0, 0, 0, 0.7),
+		0 0 0 1px color-mix(in srgb, var(--color-accent-glow) 18%, transparent);
+}
+
+.contact-field label {
+	display: block;
+	font-size: var(--text-small);
+	font-weight: 500;
+	color: var(--color-text);
+}
+
+.contact-field input,
+.contact-field textarea {
+	margin-top: 0.5rem;
+	width: 100%;
+	padding: 0.75rem 1rem;
+	background: var(--color-bg-subtle);
+	border: 1px solid var(--color-border);
+	border-radius: 2px;
+	color: var(--color-text);
+	transition: border-color 150ms var(--ease-std), box-shadow 150ms var(--ease-std);
+}
+
+.contact-field input:focus,
+.contact-field textarea:focus {
+	outline: none;
+	border-color: var(--color-accent);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 18%, transparent);
+}
+
+.contact-submit {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	background: var(--color-accent);
+	color: var(--color-bg);
+	padding: 0.95rem 2rem;
+	border-radius: 2px;
+	font-weight: 600;
+	box-shadow: 0 10px 30px -10px color-mix(in srgb, var(--color-accent-glow) 70%, transparent);
+	transition: background-color 150ms var(--ease-std), transform 150ms var(--ease-std), box-shadow 150ms var(--ease-std);
+}
+
+.contact-submit:hover {
+	background: var(--color-accent-glow);
+	transform: translateY(-2px);
+	box-shadow: 0 14px 38px -8px color-mix(in srgb, var(--color-accent-glow) 85%, transparent);
+}
+
 /* ─── Grain / film texture overlay ─── */
 .grain::after {
 	content: '';

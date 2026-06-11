@@ -1,193 +1,123 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Section from '@/components/Section.astro';
-import Eyebrow from '@/components/Eyebrow.astro';
-import ScrollHint from '@/components/ScrollHint.astro';
+import AuroraBackground from '@/components/react/AuroraBackground.tsx';
+
+const email = 'hermanhyl@hotmail.com';
+
+const socials = [
+	{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/herman-hylland/' },
+	{ label: 'GitHub', href: 'https://github.com/Hermanhyl' },
+	{ label: 'Instagram', href: 'https://www.instagram.com/hermanhyl98/' },
+];
+
+const meta = [
+	{ term: 'Sted', value: 'Drammen, Norge' },
+	{ term: 'Svartid', value: 'Innen 24 t på hverdager' },
+	{ term: 'Språk', value: 'Norsk · Engelsk' },
+];
 ---
 
 <BaseLayout
-	title="Kontakt — Hylland Design & Utvikling"
-	description="Ta kontakt med Hylland Design & Utvikling i Drammen. Send en e-post om prosjektet ditt — uforpliktende."
+	title="Kontakt | Hylland Design & Utvikling"
+	description="Ta kontakt med Hylland Design & Utvikling i Drammen. Send en uforpliktende melding om prosjektet ditt."
+	darkHero
 >
-	<!-- Hero -->
-	<Section tone="default" padding="none" class="py-24 md:py-28 lg:py-32">
-		<Eyebrow class="mb-6">Kontakt</Eyebrow>
-		<h1 class="text-[length:var(--text-h1)] leading-[1.1] tracking-[-0.02em] text-balance">
-			La oss snakkes.
-		</h1>
-		<p class="mt-8 max-w-[58ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
-			Send en e-post med noen ord om prosjektet du jobber med, så finner
-			vi ut av det sammen. Det er ingen forpliktelser — bare en samtale.
-		</p>
-		<ScrollHint label="Send melding" />
-	</Section>
+	<section class="contact-shell" data-hero>
+		<AuroraBackground client:load />
 
-	<!-- Contact block -->
-	<Section tone="default" padding="default">
-		<div class="grid grid-cols-1 gap-16 lg:grid-cols-12">
-			<!-- Left column -->
-			<div class="lg:col-span-5" data-reveal>
-				<Eyebrow>E-post</Eyebrow>
-				<h2 class="mt-4 font-display text-3xl font-medium">Send direkte</h2>
-				<p class="mt-6 text-[length:var(--text-body)] leading-[1.6] text-text-muted">
-					Jeg svarer som regel innen 24 timer på hverdager.
+		<div class="contact-inner">
+			<div class="contact-head" data-reveal>
+				<p class="hero-eyebrow">Kontakt</p>
+				<h1 class="page-hero-title">La oss snakkes.</h1>
+				<p class="hero-lede">
+					Fortell meg noen ord om prosjektet du jobber med, så finner vi ut av det sammen. Ingen
+					forpliktelser, bare en uforpliktende samtale.
 				</p>
-
-				<a
-					href="mailto:herman.hylland@gmail.com"
-					class="link-animated mt-8 inline-block font-display text-2xl font-medium text-accent"
-				>
-					herman.hylland@gmail.com
-				</a>
-
-				<div class="mt-16">
-					<Eyebrow>Sosiale kanaler</Eyebrow>
-					<h2 class="mt-4 font-display text-3xl font-medium">Finn meg ellers</h2>
-
-					<div class="mt-8 space-y-3">
-						<a
-							href="https://www.linkedin.com/in/herman-hylland/"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="link-animated block text-[length:var(--text-body)] font-medium text-text transition-colors hover:text-accent"
-						>
-							LinkedIn <span class="inline-block transition-transform duration-200 hover:translate-x-1">↗</span>
-						</a>
-						<a
-							href="https://github.com/Hermanhyl"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="link-animated block text-[length:var(--text-body)] font-medium text-text transition-colors hover:text-accent"
-						>
-							GitHub <span class="inline-block transition-transform duration-200 hover:translate-x-1">↗</span>
-						</a>
-						<a
-							href="https://www.instagram.com/hermanhyl98/"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="link-animated block text-[length:var(--text-body)] font-medium text-text transition-colors hover:text-accent"
-						>
-							Instagram <span class="inline-block transition-transform duration-200 hover:translate-x-1">↗</span>
-						</a>
-					</div>
-				</div>
 			</div>
 
-			<!-- Right column -->
-			<div class="lg:col-span-7" data-reveal>
-				<p class="text-xs uppercase tracking-[0.15em] font-medium text-accent">
-					Skjema
-				</p>
-				<h2 class="mt-4 font-display text-3xl font-medium">
-					Eller fyll ut her
-				</h2>
-				<p class="mt-6 max-w-[45ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
-					Kort om hva du jobber med — jeg svarer fra samme adresse.
-				</p>
+			<div class="contact-grid">
+				<!-- Left: direct contact + social + meta -->
+				<aside data-reveal>
+					<p class="contact-aside-label">Send direkte</p>
+					<a href={`mailto:${email}`} class="contact-email">{email}</a>
 
-				<form
-					name="kontakt"
-					method="POST"
-					action="/kontakt/takk"
-					data-netlify="true"
-					netlify-honeypot="bot-field"
-					class="mt-10 space-y-6"
-				>
-					<input type="hidden" name="form-name" value="kontakt" />
-					<p class="hidden">
-						<label>Ikke fyll ut: <input name="bot-field" /></label>
+					<div class="contact-social mt-10">
+						<p class="contact-aside-label">Finn meg ellers</p>
+						<div class="mt-4 space-y-3">
+							{socials.map((s) => (
+								<a
+									href={s.href}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="group block text-[length:var(--text-body)] font-medium"
+								>
+									{s.label}
+									<span class="inline-block transition-transform duration-200 group-hover:translate-x-1">↗</span>
+								</a>
+							))}
+						</div>
+					</div>
+
+					<dl class="contact-meta mt-10 space-y-4 pt-8">
+						{meta.map((m) => (
+							<div>
+								<dt class="font-mono text-xs uppercase tracking-[0.15em]">{m.term}</dt>
+								<dd class="mt-1 text-[length:var(--text-body)]">{m.value}</dd>
+							</div>
+						))}
+					</dl>
+				</aside>
+
+				<!-- Right: standout form card -->
+				<div class="contact-card" data-reveal>
+					<p class="text-xs font-medium uppercase tracking-[0.15em] text-accent">Skjema</p>
+					<h2 class="mt-3 font-display text-2xl font-medium lg:text-3xl">Fyll ut og send</h2>
+					<p class="mt-3 max-w-[42ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
+						Kort om hva du jobber med. Jeg svarer fra samme adresse, som regel innen et døgn.
 					</p>
 
-					<div>
-						<label for="navn" class="block text-sm font-medium text-text">
-							Navn
-						</label>
-						<input
-							type="text"
-							id="navn"
-							name="navn"
-							required
-							class="mt-2 w-full px-4 py-3 bg-bg border border-border text-text focus:border-accent focus:outline-none transition-colors"
-						/>
-					</div>
-
-					<div>
-						<label for="epost" class="block text-sm font-medium text-text">
-							E-post
-						</label>
-						<input
-							type="email"
-							id="epost"
-							name="epost"
-							required
-							class="mt-2 w-full px-4 py-3 bg-bg border border-border text-text focus:border-accent focus:outline-none transition-colors"
-						/>
-					</div>
-
-					<div>
-						<label for="firma" class="block text-sm font-medium text-text">
-							Firma (valgfritt)
-						</label>
-						<input
-							type="text"
-							id="firma"
-							name="firma"
-							class="mt-2 w-full px-4 py-3 bg-bg border border-border text-text focus:border-accent focus:outline-none transition-colors"
-						/>
-					</div>
-
-					<div>
-						<label for="melding" class="block text-sm font-medium text-text">
-							Om prosjektet
-						</label>
-						<textarea
-							id="melding"
-							name="melding"
-							rows="6"
-							required
-							class="mt-2 w-full px-4 py-3 bg-bg border border-border text-text focus:border-accent focus:outline-none transition-colors resize-y"
-						></textarea>
-					</div>
-
-					<button
-						type="submit"
-						class="bg-accent text-bg px-8 py-3 font-medium hover:bg-accent-hover transition-colors duration-150"
+					<form
+						name="kontakt"
+						method="POST"
+						action="/kontakt/takk"
+						data-netlify="true"
+						netlify-honeypot="bot-field"
+						class="mt-8 space-y-5"
 					>
-						Send melding
-					</button>
-				</form>
-			</div>
-		</div>
-	</Section>
+						<input type="hidden" name="form-name" value="kontakt" />
+						<p class="hidden">
+							<label>Ikke fyll ut: <input name="bot-field" /></label>
+						</p>
 
-	<!-- Info block -->
-	<Section tone="warm" padding="default">
-		<div class="grid grid-cols-1 gap-8 md:grid-cols-4">
-			<div data-reveal>
-				<p class="text-xs uppercase tracking-[0.15em] font-medium text-accent">Sted</p>
-				<p class="mt-3 font-display text-lg font-medium">Drammen</p>
-				<p class="mt-1 text-sm text-text-muted">Norge</p>
-			</div>
-			<div data-reveal>
-				<p class="text-xs uppercase tracking-[0.15em] font-medium text-accent">Arbeidstid</p>
-				<p class="mt-3 font-display text-lg font-medium">09:00 – 17:00</p>
-				<p class="mt-1 text-sm text-text-muted">Mandag – fredag</p>
-			</div>
-			<div data-reveal>
-				<p class="text-xs uppercase tracking-[0.15em] font-medium text-accent">Svartid</p>
-				<p class="mt-3 font-display text-lg font-medium">Innen 24 t</p>
-				<p class="mt-1 text-sm text-text-muted">Hverdager</p>
-			</div>
-			<div data-reveal>
-				<p class="text-xs uppercase tracking-[0.15em] font-medium text-accent">Språk</p>
-				<p class="mt-3 font-display text-lg font-medium">Norsk · Engelsk</p>
-				<p class="mt-1 text-sm text-text-muted">Tysk på en kaffe</p>
+						<div class="contact-field">
+							<label for="navn">Navn</label>
+							<input type="text" id="navn" name="navn" required autocomplete="name" />
+						</div>
+
+						<div class="contact-field">
+							<label for="epost">E-post</label>
+							<input type="email" id="epost" name="epost" required autocomplete="email" />
+						</div>
+
+						<div class="contact-field">
+							<label for="firma">Firma (valgfritt)</label>
+							<input type="text" id="firma" name="firma" autocomplete="organization" />
+						</div>
+
+						<div class="contact-field">
+							<label for="melding">Om prosjektet</label>
+							<textarea id="melding" name="melding" rows="6" required></textarea>
+						</div>
+
+						<button type="submit" class="contact-submit">Send melding →</button>
+					</form>
+				</div>
 			</div>
 		</div>
-	</Section>
+	</section>
 
 	<!-- Hidden form for Netlify build-time detection -->
-	<form name="kontakt" data-netlify="true" hidden>
+	<form name="kontakt" data-netlify="true" netlify-honeypot="bot-field" hidden>
 		<input type="text" name="navn" />
 		<input type="email" name="epost" />
 		<input type="text" name="firma" />
