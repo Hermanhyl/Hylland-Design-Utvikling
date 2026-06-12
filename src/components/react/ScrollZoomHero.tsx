@@ -71,7 +71,7 @@ export default function ScrollZoomHero() {
 		<div className="hero-content">
 			<p className="hero-eyebrow">Frilans · Drammen · 2026</p>
 			<h1 className="hero-title">
-				<MotionHeading text="Frontend-utvikling og UX-design" />
+				<MotionHeading text="Frontend-utvikling og UX-design" />{' '}
 				<span className="hero-title-accent italic">
 					<MotionHeading text="fra Drammen." delay={0.35} />
 				</span>

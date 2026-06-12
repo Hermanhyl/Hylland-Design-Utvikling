@@ -129,7 +129,9 @@ export default function Hero3D({ scrollProgress, className }: Hero3DProps) {
 		renderer.setPixelRatio(Math.min(window.devicePixelRatio, lowPower ? 1.5 : 2));
 		mount.appendChild(renderer.domElement);
 
-		const detail = lowPower ? 8 : 24;
+		// Wireframe detail: kept moderate so the per-frame line draw doesn't
+		// contend with the hero text entrance animation on load.
+		const detail = lowPower ? 6 : 14;
 		const geometry = new THREE.IcosahedronGeometry(1.3, detail);
 		const material = new THREE.ShaderMaterial({
 			uniforms: {
