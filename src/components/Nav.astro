@@ -83,6 +83,10 @@ const isHome = pathname === '/' || pathname === '';
 		aria-label="Navigasjonsmeny"
 		hidden
 	>
+		<button type="button" class="mobile-close" aria-label="Lukk meny">
+			<span aria-hidden="true"></span>
+			<span aria-hidden="true"></span>
+		</button>
 		<Container as="nav" class="flex h-full flex-col justify-center gap-2" aria-label="Mobilmeny">
 			{links.map(({ href, label }) => (
 				<a
@@ -108,11 +112,24 @@ const isHome = pathname === '/' || pathname === '';
 		position: sticky;
 		top: 0;
 		z-index: 40;
-		transition: background-color 0.2s ease, border-color 0.2s ease;
-		border-bottom: 1px solid transparent;
 	}
 
-	.site-header[data-scrolled='true'] {
+	/* The glass (bg + blur) lives on a pseudo-element, NOT the header itself.
+	   backdrop-filter on the header would make it a containing block for the
+	   fixed mobile overlay — anchoring the overlay to the header instead of the
+	   viewport, so it appeared at the top of the page and was invisible when
+	   scrolled to the bottom. Keeping it on ::before avoids that. */
+	.site-header::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		border-bottom: 1px solid transparent;
+		transition: background-color 0.2s ease, border-color 0.2s ease;
+		pointer-events: none;
+	}
+
+	.site-header[data-scrolled='true']::before {
 		background-color: oklch(from var(--color-bg) l c h / 0.8);
 		backdrop-filter: blur(12px);
 		-webkit-backdrop-filter: blur(12px);
@@ -121,7 +138,7 @@ const isHome = pathname === '/' || pathname === '';
 
 	/* ─── Over the cinematic dark hero: transparent nav, light text ─── */
 	/* Takes precedence over the glass [data-scrolled] state while in the hero. */
-	.site-header[data-over-hero='true'] {
+	.site-header[data-over-hero='true']::before {
 		background-color: transparent;
 		backdrop-filter: none;
 		-webkit-backdrop-filter: none;
@@ -209,6 +226,37 @@ const isHome = pathname === '/' || pathname === '';
 	.mobile-overlay.is-open {
 		opacity: 1;
 		visibility: visible;
+	}
+
+	/* Dedicated close button inside the overlay — always reachable since the
+	   overlay covers the viewport, even when the page is scrolled to the bottom
+	   (the header toggle can be scrolled off-screen). */
+	.mobile-close {
+		position: absolute;
+		top: 1.5rem;
+		right: 1.5rem;
+		z-index: 60;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+	}
+
+	.mobile-close span {
+		position: absolute;
+		width: 22px;
+		height: 2px;
+		background-color: var(--color-text);
+		border-radius: 1px;
+	}
+
+	.mobile-close span:nth-child(1) {
+		transform: rotate(45deg);
+	}
+
+	.mobile-close span:nth-child(2) {
+		transform: rotate(-45deg);
 	}
 
 	.mobile-nav-link {
@@ -388,6 +436,9 @@ const isHome = pathname === '/' || pathname === '';
 		toggle.addEventListener('click', () => {
 			isOpen ? closeMenu() : openMenu();
 		});
+
+		// Dedicated in-overlay close button (reachable at any scroll position).
+		overlay.querySelector('.mobile-close')?.addEventListener('click', closeMenu);
 
 		document.addEventListener('keydown', (e) => {
 			if (e.key === 'Escape' && isOpen) closeMenu();
