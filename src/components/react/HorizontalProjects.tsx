@@ -34,11 +34,9 @@ export default function HorizontalProjects({ projects }: { projects: Project[] }
 	const reduced = useReducedMotion();
 
 	const [hydrated, setHydrated] = useState(false);
-	const [coarse, setCoarse] = useState(false);
 
 	useEffect(() => {
 		setHydrated(true);
-		setCoarse(window.matchMedia('(pointer: coarse)').matches);
 	}, []);
 
 	const { scrollYProgress } = useScroll({
@@ -46,7 +44,10 @@ export default function HorizontalProjects({ projects }: { projects: Project[] }
 		offset: ['start start', 'end end'],
 	});
 
-	const useDynamic = hydrated && !reduced && !coarse;
+	// The scroll-driven pan runs on touch too (vertical scroll drives the
+	// horizontal translate — it never traps the page scroll). Only reduced
+	// motion / pre-hydration falls back to the static stack.
+	const useDynamic = hydrated && !reduced;
 
 	// Imperative pan: translate the track by scroll progress.
 	useEffect(() => {
