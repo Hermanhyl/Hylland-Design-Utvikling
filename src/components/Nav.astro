@@ -142,6 +142,12 @@ const isHome = pathname === '/' || pathname === '';
 		background-color: var(--color-text-on-deep);
 	}
 
+	/* When the mobile menu is open the overlay is light, so the close (X) icon
+	   must be dark — even while the nav is in its over-hero (light icon) state. */
+	.site-header[data-over-hero='true'] .mobile-toggle[aria-expanded='true'] .hamburger span {
+		background-color: var(--color-text);
+	}
+
 	/* ─── Desktop link active dot ─── */
 	.nav-link[aria-current='page']::after {
 		content: '';
