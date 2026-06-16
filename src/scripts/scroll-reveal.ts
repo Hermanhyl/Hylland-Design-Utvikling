@@ -8,6 +8,10 @@ function initScrollReveal() {
 		return;
 	}
 
+	// Reveal as soon as an element crosses into the viewport (threshold 0 + a
+	// bottom rootMargin), NOT when 15% of its area is visible: a section taller
+	// than viewport / 0.15 can never reach a 15% ratio, so it would otherwise
+	// stay hidden forever and take all its children with it.
 	const observer = new IntersectionObserver(
 		(entries) => {
 			entries.forEach((entry) => {
@@ -17,7 +21,7 @@ function initScrollReveal() {
 				}
 			});
 		},
-		{ threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
+		{ threshold: 0, rootMargin: '0px 0px -12% 0px' }
 	);
 
 	elements.forEach((el) => observer.observe(el));
