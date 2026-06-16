@@ -12,6 +12,9 @@ interface Props {
 	liveHref?: string;
 	liveLabel?: string;
 	caseStudyHref?: string;
+	/** Internal case-study page link (same tab). */
+	caseHref?: string;
+	caseLabel?: string;
 	index?: number;
 	reverse?: boolean;
 }
@@ -29,6 +32,8 @@ const {
 	liveHref,
 	liveLabel,
 	caseStudyHref,
+	caseHref,
+	caseLabel,
 	index,
 	reverse = false,
 } = Astro.props;
@@ -91,8 +96,16 @@ const num = index != null ? String(index).padStart(2, '0') : null;
 			</div>
 		</div>
 
-		{(liveHref || caseStudyHref) && (
+		{(liveHref || caseStudyHref || caseHref) && (
 			<div class="mt-8 flex flex-wrap gap-x-6 gap-y-3">
+				{caseHref && (
+					<a
+						href={caseHref}
+						class="link-animated inline-flex items-center gap-1 text-sm font-medium text-accent"
+					>
+						{caseLabel ?? 'Se case study'} <span class="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
+					</a>
+				)}
 				{liveHref && (
 					<a
 						href={liveHref}

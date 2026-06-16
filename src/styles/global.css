@@ -1657,3 +1657,229 @@ canvas {
 		display: none;
 	}
 }
+
+/* ─── Case study (Connecta): before/after slider + design language ─── */
+
+/* Small meta row under the case-study hero title. */
+.casestudy-meta {
+	margin-top: 1.75rem;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem 1.5rem;
+	font-family: var(--font-mono);
+	font-size: var(--text-micro);
+	letter-spacing: 0.04em;
+	color: color-mix(in srgb, var(--color-text-on-deep) 70%, transparent);
+}
+
+.casestudy-meta strong {
+	color: var(--color-text-on-deep);
+	font-weight: 600;
+}
+
+/* Caption above each comparison. */
+.cmp-caption {
+	max-width: 60ch;
+	margin-bottom: 1.5rem;
+	font-size: var(--text-body);
+	line-height: 1.6;
+	color: var(--color-text-muted);
+}
+
+/* The interactive frame. ETTER underneath, FØR clipped on top. */
+.cmp-frame {
+	--pos: 50%;
+	position: relative;
+	width: 100%;
+	aspect-ratio: 16 / 10;
+	overflow: hidden;
+	border: 1px solid var(--color-border);
+	border-radius: 4px;
+	background: var(--color-bg-warm);
+	box-shadow: 0 24px 60px -32px rgba(26, 26, 31, 0.45);
+	/* Vertical swipes still scroll the page; only horizontal drags move handle. */
+	touch-action: pan-y;
+	user-select: none;
+	cursor: ew-resize;
+}
+
+.cmp-img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: top center;
+	-webkit-user-drag: none;
+}
+
+.cmp-before-wrap {
+	position: absolute;
+	inset: 0;
+	/* Show FØR from the left edge up to the handle position. */
+	clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+	will-change: clip-path;
+}
+
+/* FØR / ETTER labels. */
+.cmp-pill {
+	position: absolute;
+	top: 0.75rem;
+	z-index: 3;
+	padding: 0.3rem 0.7rem;
+	border-radius: 2px;
+	font-family: var(--font-mono);
+	font-size: 0.6875rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--color-text-on-deep);
+	background: color-mix(in srgb, var(--color-bg-cinema) 72%, transparent);
+	backdrop-filter: blur(4px);
+	pointer-events: none;
+}
+
+.cmp-pill--before {
+	left: 0.75rem;
+}
+
+.cmp-pill--after {
+	right: 0.75rem;
+	background: color-mix(in srgb, var(--color-accent) 82%, transparent);
+}
+
+/* Draggable handle: full-height line + centred knob, positioned at --pos. */
+.cmp-handle {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: var(--pos);
+	z-index: 4;
+	width: 44px;
+	transform: translateX(-50%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent;
+	border: 0;
+	padding: 0;
+	cursor: ew-resize;
+	touch-action: none;
+}
+
+.cmp-handle-line {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 50%;
+	width: 2px;
+	transform: translateX(-50%);
+	background: color-mix(in srgb, var(--color-bg) 85%, transparent);
+	box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-bg-cinema) 25%, transparent);
+}
+
+.cmp-handle-knob {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	color: var(--color-bg);
+	background: var(--color-accent);
+	box-shadow: 0 6px 20px -6px color-mix(in srgb, var(--color-accent-glow) 80%, transparent);
+	transition: transform 150ms var(--ease-out), background-color 150ms var(--ease-std);
+}
+
+.cmp-handle:hover .cmp-handle-knob {
+	transform: scale(1.08);
+	background: var(--color-accent-glow);
+}
+
+.cmp-handle:focus-visible {
+	outline: none;
+}
+
+.cmp-handle:focus-visible .cmp-handle-knob {
+	outline: 3px solid var(--color-accent-glow);
+	outline-offset: 3px;
+}
+
+/* Static fallback: side-by-side (stacks on mobile). */
+.cmp-fallback {
+	display: grid;
+	gap: 1rem;
+	grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+	.cmp-fallback {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+.cmp-fallback-item {
+	position: relative;
+	margin: 0;
+	overflow: hidden;
+	border: 1px solid var(--color-border);
+	border-radius: 4px;
+	background: var(--color-bg-warm);
+}
+
+.cmp-fallback-item img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.cmp-fallback-item .cmp-pill {
+	top: 0.75rem;
+	left: 0.75rem;
+}
+
+.cmp-fallback-item .cmp-pill--after {
+	left: auto;
+	right: 0.75rem;
+}
+
+/* Design-language swatches. */
+.palette {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin-top: 2rem;
+}
+
+.swatch {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	min-width: 7rem;
+}
+
+.swatch-chip {
+	height: 4.5rem;
+	border-radius: 4px;
+	border: 1px solid var(--color-border);
+}
+
+.swatch-label {
+	font-family: var(--font-mono);
+	font-size: var(--text-micro);
+	letter-spacing: 0.04em;
+	color: var(--color-text-muted);
+}
+
+.swatch-label strong {
+	display: block;
+	color: var(--color-text);
+	font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.cmp-before-wrap {
+		will-change: auto;
+	}
+}

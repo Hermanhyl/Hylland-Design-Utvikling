@@ -1,0 +1,259 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/Section.astro';
+import Eyebrow from '@/components/Eyebrow.astro';
+import ConstellationBackground from '@/components/react/ConstellationBackground.tsx';
+import CinemaCTA from '@/components/react/CinemaCTA.tsx';
+import BeforeAfter from '@/components/react/BeforeAfter.tsx';
+
+const S = '/sections';
+
+const approach = [
+	{
+		title: 'Innholdet først',
+		body: 'Jeg gikk gjennom alt innholdet, samlet det som hørte sammen og kuttet det som ikke trengtes, før jeg begynte på designet.',
+	},
+	{
+		title: 'Mindre biter',
+		body: 'Lange avsnitt ble brutt ned i korte, nummererte steg, kort og oversikter som er lette å skanne.',
+	},
+	{
+		title: 'Et helhetlig uttrykk',
+		body: 'En varm og rolig fargepalett, tydelige overskrifter og gjennomgående komponenter gir siden ett sammenhengende språk fra forside til kontakt.',
+	},
+];
+
+const palette = [
+	{ hex: '#F4EFE4', name: 'Sandfarge', role: 'Bakgrunn' },
+	{ hex: '#1E3A4C', name: 'Dyp blågrå', role: 'Tekst og flater' },
+	{ hex: '#E2A33C', name: 'Gyllen', role: 'Aksent og knapper' },
+	{ hex: '#7C8B8F', name: 'Rolig grå', role: 'Detaljer' },
+];
+---
+
+<BaseLayout
+	title="Connecta — redesign av terapinettside | Hylland Design & Utvikling"
+	description="Case study: hvordan jeg bygde Connecta.no opp på nytt med tydeligere struktur, lesbart innhold og et varmere, helhetlig design. Dra i før/etter-bildene for å se forskjellen."
+	darkHero
+>
+	<!-- Dark cinematic hero -->
+	<div class="page-hero" data-hero>
+		<ConstellationBackground client:load />
+		<div class="page-hero-inner" data-reveal>
+			<p class="hero-eyebrow">Case study · 2025</p>
+			<h1 class="page-hero-title">
+				Connecta: en terapinettside, <span class="hero-title-accent italic">redesignet fra grunnen av.</span>
+			</h1>
+			<p class="hero-lede">
+				Connecta tilbyr terapi og veiledning. Den gamle nettsiden var informativ, men tung å lese og litt
+				anonym. Jeg bygde den opp på nytt med tydeligere struktur, et varmere visuelt uttrykk og innhold
+				som er lett å ta inn. Dra i glidebryterne under for å se forskjellen.
+			</p>
+			<div class="casestudy-meta">
+				<span><strong>Rolle:</strong> Design og utvikling</span>
+				<span><strong>År:</strong> 2025</span>
+				<span><strong>Type:</strong> WordPress</span>
+			</div>
+			<div class="hero-cta">
+				<a href="https://connecta.no" target="_blank" rel="noopener noreferrer" class="hero-btn">
+					Besøk connecta.no ↗
+				</a>
+				<a href="/portefolje" class="hero-btn-ghost">Tilbake til portefølje →</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- Utfordringen -->
+	<Section tone="default" padding="default">
+		<div class="max-w-[68ch]">
+			<Eyebrow>Utfordringen</Eyebrow>
+			<h2 class="mt-4 font-display text-3xl font-medium lg:text-4xl">Mye god informasjon, men tungt å ta inn</h2>
+			<p class="mt-6 text-[length:var(--text-body)] leading-[1.7] text-text-muted">
+				Den opprinnelige siden lente seg på lange tekstavsnitt, generiske bilder og en flat, blå
+				fargepalett. Viktig informasjon som priser, tjenester og hvem terapeutene er lå begravd i tette
+				tekstblokker uten tydelig hierarki. For en besøkende i en sårbar situasjon ble det vanskelig å
+				finne svar raskt, og siden skilte seg lite fra andre i bransjen.
+			</p>
+		</div>
+	</Section>
+
+	<!-- Tilnærmingen -->
+	<Section tone="warm" padding="default">
+		<div class="mb-12 max-w-[68ch]">
+			<Eyebrow>Tilnærmingen</Eyebrow>
+			<h2 class="mt-4 font-display text-3xl font-medium lg:text-4xl">Slik gikk jeg fram</h2>
+		</div>
+		<div class="principles-grid grid grid-cols-1 gap-8 md:grid-cols-3" data-reveal>
+			{approach.map((a, i) => (
+				<div class="principle isolate">
+					<span class="principle-num font-mono text-sm text-accent">{String(i + 1).padStart(2, '0')}</span>
+					<h3 class="mt-3 font-display text-xl font-medium text-text">{a.title}</h3>
+					<p class="mt-3 text-[length:var(--text-body)] leading-[1.6] text-text-muted">{a.body}</p>
+				</div>
+			))}
+		</div>
+	</Section>
+
+	<!-- Comparison 1: first impression -->
+	<Section tone="default" padding="default">
+		<div class="mb-8">
+			<Eyebrow>Førsteinntrykket</Eyebrow>
+			<h2 class="mt-4 font-display text-3xl font-medium lg:text-4xl">En roligere, tydeligere forside</h2>
+		</div>
+		<p class="cmp-caption">
+			Forsiden gikk fra et mørkt stockbilde med tekst oppå til en lys, rolig inngang. Tre korte
+			trygghetspunkter og en tydelig «Bestill time» gjør det klart hva siden tilbyr og hva du gjør videre.
+		</p>
+		<BeforeAfter
+			client:visible
+			label="forsiden"
+			before={`${S}/1-forside-hero-FOER.png`}
+			after={`${S}/1-forside-hero-ETTER.png`}
+			beforeAlt="Connecta forside før: mørkt stockbilde med overskrift lagt oppå."
+			afterAlt="Connecta forside etter: lys hero med eyebrow, tydelig overskrift, knapper og tre trygghetskort."
+		/>
+	</Section>
+
+	<!-- Comparison 2 + 3: dense text broken into chunks -->
+	<Section tone="warm" padding="default">
+		<div class="mb-8 max-w-[68ch]">
+			<Eyebrow>Lesbarhet</Eyebrow>
+			<h2 class="mt-4 font-display text-3xl font-medium lg:text-4xl">Tette tekstseksjoner ble lesbare biter</h2>
+		</div>
+
+		<div class="mb-16">
+			<p class="cmp-caption">
+				Tjenestebeskrivelsene var én lang tekstvegg. Nå er de delt i nummererte seksjoner med luft rundt,
+				så du finner det som gjelder deg uten å lese alt.
+			</p>
+			<BeforeAfter
+				client:visible
+				label="tjenester"
+				before={`${S}/3-tjenester-individualterapi-FOER.png`}
+				after={`${S}/3-tjenester-individualterapi-ETTER.png`}
+				beforeAlt="Tjenester før: lange, tette tekstavsnitt uten tydelig struktur."
+				afterAlt="Tjenester etter: nummererte seksjoner med luft rundt og tydelige overskrifter."
+			/>
+		</div>
+
+		<div>
+			<p class="cmp-caption">
+				Behandlingsprosessen lå som et tett avsnitt med fargede punkter. Den er nå fire tydelige steg i
+				hvert sitt kort, så det blir lett å se hva du kan forvente.
+			</p>
+			<BeforeAfter
+				client:visible
+				label="behandlingsmetode"
+				before={`${S}/4-behandlingsmetode-prosess-FOER.png`}
+				after={`${S}/4-behandlingsmetode-prosess-ETTER.png`}
+				beforeAlt="Behandlingsprosess før: tett tekstavsnitt med fargede kulepunkter."
+				afterAlt="Behandlingsprosess etter: fire nummererte steg i hvert sitt kort."
+			/>
+		</div>
+	</Section>
+
+	<!-- Comparison 4 + 5: organizing information -->
+	<Section tone="default" padding="default">
+		<div class="mb-8 max-w-[68ch]">
+			<Eyebrow>Struktur</Eyebrow>
+			<h2 class="mt-4 font-display text-3xl font-medium lg:text-4xl">Informasjon som er lett å skanne</h2>
+		</div>
+
+		<div class="mb-16">
+			<p class="cmp-caption">
+				Terapeutene ble presentert som avkuttede tekstkolonner. Nå har hver terapeut et profilkort med
+				bilde, fagfelt som merkelapper og kontaktinfo samlet på ett sted.
+			</p>
+			<BeforeAfter
+				client:visible
+				label="terapeutene"
+				before={`${S}/2-om-oss-terapeuter-FOER.png`}
+				after={`${S}/2-om-oss-terapeuter-ETTER.png`}
+				beforeAlt="Om oss før: terapeutene presentert som avkuttede tekstkolonner."
+				afterAlt="Om oss etter: profilkort med bilde, fagfelt som merkelapper og samlet kontaktinfo."
+			/>
+		</div>
+
+		<div>
+			<p class="cmp-caption">
+				Prisene lå som punktlister som var vanskelige å sammenligne. De er nå ryddige priskort med tydelige
+				beløp og «Spar»-merking på pakkene.
+			</p>
+			<BeforeAfter
+				client:visible
+				label="prisene"
+				before={`${S}/5-priser-priser-FOER.png`}
+				after={`${S}/5-priser-priser-ETTER.png`}
+				beforeAlt="Priser før: punktlister med priser som er vanskelige å sammenligne."
+				afterAlt="Priser etter: ryddige priskort med tydelige beløp og Spar-merking på pakkene."
+			/>
+		</div>
+	</Section>
+
+	<!-- Comparison 6: conversion -->
+	<Section tone="warm" padding="default">
+		<div class="mb-8 max-w-[68ch]">
+			<Eyebrow>Kontakt</Eyebrow>
+			<h2 class="mt-4 font-display text-3xl font-medium lg:text-4xl">Fra kontaktskjema til konvertering</h2>
+		</div>
+		<p class="cmp-caption">
+			Kontaktsiden var et nakent skjema midt på en blå flate. Nå står skjemaet sammen med åpningstider og
+			kontaktinfo, så terskelen for å ta kontakt er lavere.
+		</p>
+		<BeforeAfter
+			client:visible
+			label="kontaktsiden"
+			before={`${S}/6-kontakt-skjema-FOER.png`}
+			after={`${S}/6-kontakt-skjema-ETTER.png`}
+			beforeAlt="Kontakt før: et nakent skjema midt på en blå flate."
+			afterAlt="Kontakt etter: skjema sammen med kort for åpningstider og kontaktinfo."
+		/>
+	</Section>
+
+	<!-- Designspråket -->
+	<Section tone="default" padding="default">
+		<div class="max-w-[68ch]">
+			<Eyebrow>Designspråket</Eyebrow>
+			<h2 class="mt-4 font-display text-3xl font-medium lg:text-4xl">Ett uttrykk fra forside til kontakt</h2>
+			<p class="mt-6 text-[length:var(--text-body)] leading-[1.7] text-text-muted">
+				Det nye uttrykket bygger på en varm sandfarget bakgrunn, en dyp blågrå og en gyllen aksent som går
+				igjen på knapper og detaljer. Overskrifter i en seriffont gir et personlig og trygt preg, mens
+				korte tekster i god lesebredde holder fokus. Alt er bygget av de samme komponentene, kort,
+				merkelapper og knapper, så siden føles som én helhet.
+			</p>
+		</div>
+		<div class="palette">
+			{palette.map((c) => (
+				<div class="swatch">
+					<div class="swatch-chip" style={`background:${c.hex}`}></div>
+					<span class="swatch-label"><strong>{c.name}</strong>{c.role} · {c.hex}</span>
+				</div>
+			))}
+		</div>
+	</Section>
+
+	<!-- Resultatet -->
+	<Section tone="warm" padding="default">
+		<div class="max-w-[68ch]">
+			<Eyebrow>Resultatet</Eyebrow>
+			<h2 class="mt-4 font-display text-3xl font-medium lg:text-4xl">Enklere å bruke, raskere å forstå</h2>
+			<p class="mt-6 text-[length:var(--text-body)] leading-[1.7] text-text-muted">
+				Resultatet er en nettside som er enklere å bruke, raskere å forstå og som ser profesjonell og
+				imøtekommende ut. Innholdet er det samme, men nå er det organisert slik at besøkende finner svar
+				med en gang, og Connecta fremstår like gjennomtenkt som tilbudet deres.
+			</p>
+		</div>
+	</Section>
+
+	<!-- Dark cinematic finale -->
+	<CinemaCTA
+		client:load
+		eyebrow="Lignende prosjekt?"
+		title="Har du en nettside som fortjener et løft?"
+		lede="Enten det er en full omstart eller en opprydding av struktur og innhold, hjelper jeg deg gjerne. Ta kontakt for en uforpliktende prat."
+		primaryHref="/kontakt"
+		primaryLabel="Ta kontakt →"
+		secondaryHref="/portefolje"
+		secondaryLabel="Se mer arbeid →"
+	/>
+</BaseLayout>
