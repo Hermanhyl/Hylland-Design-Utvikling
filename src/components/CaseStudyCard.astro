@@ -1,22 +1,27 @@
 ---
 interface Props {
 	title: string;
-	client: string;
+	client?: string;
 	year: string;
 	role: string;
-	problem: string;
-	solution: string;
-	imageAspect?: '16/10' | '4/3';
+	/** Short one-to-two line blurb shown on the card. */
+	summary: string;
+	/** Role / tech chips. */
+	tags?: string[];
+	/** Small category pill over the image, e.g. "Eget produkt". */
+	category?: string;
+	/** Chrome-bar label: a domain for web projects, or a type otherwise. */
+	windowLabel?: string;
 	imageSrc?: string;
 	imageAlt?: string;
+	/** object-position for the framed shot. Screenshots look best top-anchored. */
+	imagePosition?: string;
+	/** External live link. */
 	liveHref?: string;
 	liveLabel?: string;
-	caseStudyHref?: string;
 	/** Internal case-study page link (same tab). */
 	caseHref?: string;
 	caseLabel?: string;
-	index?: number;
-	reverse?: boolean;
 }
 
 const {
@@ -24,106 +29,63 @@ const {
 	client,
 	year,
 	role,
-	problem,
-	solution,
-	imageAspect = '16/10',
+	summary,
+	tags = [],
+	category,
+	windowLabel,
 	imageSrc,
 	imageAlt,
+	imagePosition = 'top center',
 	liveHref,
 	liveLabel,
-	caseStudyHref,
 	caseHref,
 	caseLabel,
-	index,
-	reverse = false,
 } = Astro.props;
-
-const num = index != null ? String(index).padStart(2, '0') : null;
 ---
 
-<article class="group grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12 cursor-default transition-transform duration-300 ease-out hover:-translate-y-1" data-reveal>
-	<!-- Image column -->
-	<div class:list={['lg:col-span-7', reverse && 'lg:order-2']}>
-		<div
-			class="cs-image relative w-full overflow-hidden border border-border bg-bg-warm"
-			style={`aspect-ratio: ${imageAspect}`}
-			data-reveal="zoom"
-		>
+<article class="pcard group" data-reveal>
+	<div class="pcard-media">
+		<div class="pcard-chrome" aria-hidden="true">
+			<span class="pcard-dots"><i></i><i></i><i></i></span>
+			{windowLabel && <span class="pcard-url">{windowLabel}</span>}
+		</div>
+		<div class="pcard-shot">
 			{imageSrc ? (
-				<div class="cs-image-inner absolute inset-x-0" style="top: -9%; height: 118%" data-parallax data-parallax-speed="0.05">
-					<img
-						src={imageSrc}
-						alt={imageAlt ?? ''}
-						class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-						loading="lazy"
-					/>
-				</div>
+				<img
+					src={imageSrc}
+					alt={imageAlt ?? ''}
+					style={`object-position: ${imagePosition}`}
+					loading="lazy"
+					decoding="async"
+				/>
 			) : (
-				<div class="absolute inset-0 flex items-center justify-center">
-					<p class="text-xs uppercase tracking-[0.15em] text-text-subtle">
-						Bilde kommer
-					</p>
-				</div>
+				<span class="pcard-noimg">Bilde kommer</span>
 			)}
+			{category && <span class="pcard-cat">{category}</span>}
 		</div>
 	</div>
 
-	<!-- Text column -->
-	<div class:list={['relative isolate flex flex-col justify-center lg:col-span-5', reverse && 'lg:order-1']}>
-		{num && <span class="cs-num" aria-hidden="true">{num}</span>}
-		<p class="font-mono text-xs font-medium uppercase tracking-[0.15em] text-text-subtle">
-			{role} · {year}
-		</p>
-		<h3 class="mt-3 font-display text-3xl font-medium text-text">
-			{title}
-		</h3>
-		<p class="mt-1 text-sm italic text-text-muted">
-			for {client}
-		</p>
+	<div class="pcard-body">
+		<p class="pcard-meta">{role} · {year}{client ? ` · ${client}` : ''}</p>
+		<h3 class="pcard-title">{title}</h3>
+		<p class="pcard-summary">{summary}</p>
 
-		<div class="mt-6 space-y-4">
-			<div>
-				<p class="text-xs font-medium uppercase tracking-[0.15em] text-accent">Utfordring</p>
-				<p class="mt-2 max-w-[45ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
-					{problem}
-				</p>
-			</div>
-			<div>
-				<p class="text-xs font-medium uppercase tracking-[0.15em] text-accent">Løsning</p>
-				<p class="mt-2 max-w-[45ch] text-[length:var(--text-body)] leading-[1.6] text-text-muted">
-					{solution}
-				</p>
-			</div>
-		</div>
+		{tags.length > 0 && (
+			<ul class="pcard-tags" role="list">
+				{tags.map((t) => <li>{t}</li>)}
+			</ul>
+		)}
 
-		{(liveHref || caseStudyHref || caseHref) && (
-			<div class="mt-8 flex flex-wrap gap-x-6 gap-y-3">
+		{(caseHref || liveHref) && (
+			<div class="pcard-foot">
 				{caseHref && (
-					<a
-						href={caseHref}
-						class="link-animated inline-flex items-center gap-1 text-sm font-medium text-accent"
-					>
-						{caseLabel ?? 'Se case study'} <span class="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
+					<a href={caseHref} class="pcard-link pcard-link--primary">
+						{caseLabel ?? 'Se case study'} <span class="pcard-arrow">→</span>
 					</a>
 				)}
 				{liveHref && (
-					<a
-						href={liveHref}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="link-animated inline-flex items-center gap-1 text-sm font-medium text-accent"
-					>
-						{liveLabel ?? 'Besøk siden'} <span class="inline-block transition-transform duration-200 group-hover:translate-x-1">↗</span>
-					</a>
-				)}
-				{caseStudyHref && (
-					<a
-						href={caseStudyHref}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="link-animated inline-flex items-center gap-1 text-sm font-medium text-text transition-colors hover:text-accent"
-					>
-						Les case study <span class="inline-block transition-transform duration-200 group-hover:translate-x-1">↗</span>
+					<a href={liveHref} target="_blank" rel="noopener noreferrer" class="pcard-link">
+						{liveLabel ?? 'Besøk'} <span class="pcard-arrow">↗</span>
 					</a>
 				)}
 			</div>

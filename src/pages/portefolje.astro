@@ -32,28 +32,15 @@ const additionalWork = [
 
 const caseStudies = [
 	{
-		title: 'MyHobbyist',
-		client: 'Eget produkt',
-		year: '2024–2025',
-		role: 'Design & utvikling',
-		problem:
-			'Mange ønsker å utforske nye hobbyer, men vet ikke hvor de skal begynne — og generiske anbefalinger treffer sjelden riktig.',
-		solution:
-			'AI-drevet aktivitetskonsierge bygget som progressiv webapplikasjon, med personaliserte forslag og lavterskel inngang.',
-		imageSrc: '/images/case-studies/hobbyist.jpg',
-		imageAlt: 'MyHobbyist landingsside med hero-seksjon',
-		liveHref: 'https://myhobbyist.app',
-		liveLabel: 'myhobbyist.app',
-	},
-	{
 		title: 'Connecta',
 		client: 'Connecta',
 		year: '2025',
 		role: 'Design & utvikling',
-		problem:
-			'En terapinettside med mye god informasjon, men tunge tekstavsnitt, generiske bilder og et anonymt uttrykk gjorde det vanskelig å finne svar raskt.',
-		solution:
-			'Full redesign med tydeligere struktur, innhold brutt ned i lesbare biter og et varmt, helhetlig designspråk. Se før og etter i en egen case study.',
+		category: 'Klientarbeid',
+		windowLabel: 'connecta.no',
+		summary:
+			'Full redesign av en terapinettside: tydeligere struktur, innhold brutt ned i lesbare biter og et varmt, helhetlig uttrykk.',
+		tags: ['Webdesign', 'WordPress', 'Redesign'],
 		imageSrc: '/sections/1-forside-hero-ETTER.png',
 		imageAlt: 'Connecta forside etter redesign: lys hero med tydelig overskrift og trygghetskort.',
 		liveHref: 'https://connecta.no',
@@ -62,29 +49,47 @@ const caseStudies = [
 		caseLabel: 'Se case study',
 	},
 	{
-		title: 'UX-revisjon for markedsføringsbyrå',
+		title: 'MyHobbyist',
+		client: 'Eget produkt',
+		year: '2024–2025',
+		role: 'Design & utvikling',
+		category: 'Eget produkt',
+		windowLabel: 'myhobbyist.app',
+		summary:
+			'AI-drevet aktivitetskonsierge som hjelper folk å finne nye hobbyer og likesinnede. Bygget som progressiv webapp.',
+		tags: ['Produktdesign', 'PWA', 'AI'],
+		imageSrc: '/images/case-studies/hobbyist.jpg',
+		imageAlt: 'MyHobbyist landingsside med hero-seksjon',
+		liveHref: 'https://myhobbyist.app',
+		liveLabel: 'myhobbyist.app',
+	},
+	{
+		title: 'UX-revisjon for byrå',
 		client: 'Konfidensielt byråsamarbeid',
 		year: '2026',
 		role: 'UX-konsulent',
-		problem:
-			'Et markedsføringsbyrå trengte en uavhengig UX-gjennomgang av en av sine klienters nettsider, med fokus på brukerflyt, struktur og tilgjengelighet.',
-		solution:
-			'Heuristisk evaluering med 30 funn, prioriterte anbefalinger og en oppsummerende presentasjon — levert som 19-siders rapport.',
+		category: 'Klientarbeid',
+		windowLabel: 'UX-rapport',
+		summary:
+			'Uavhengig heuristisk gjennomgang av en klients nettside: 30 funn, prioriterte anbefalinger og en 19-siders rapport.',
+		tags: ['UX-audit', 'Heuristikk', 'Rapport'],
 		imageSrc: '/photo-1667056624790-f0e8e391c086.avif',
 		imageAlt: 'UX-revisjon — arbeidsflate med notater og analyse',
+		imagePosition: 'center',
 	},
 	{
 		title: 'BrannVRn',
 		client: 'Sykehuspartner',
 		year: '2023',
 		role: 'Design & 3D',
-		problem:
-			'Tradisjonell brannvernopplæring er passiv og vanskelig å skalere på tvers av store organisasjoner med kritisk infrastruktur.',
-		solution:
-			'Immersiv VR-simulator som lar ansatte trene på realistiske scenarier — utviklet som bacheloroppgave, karakter A.',
+		category: 'Bacheloroppgave',
+		windowLabel: 'VR-simulator',
+		summary:
+			'Immersiv VR-simulator for brannvernopplæring der ansatte trener på realistiske scenarier. Bacheloroppgave, karakter A.',
+		tags: ['3D-design', 'VR', 'Simulator'],
 		imageSrc: '/images/case-studies/brannvrn.png',
 		imageAlt: '3D-miljø fra BrannVRn VR-simulatoren med brannslukker og rømningsplan',
-		imageAspect: '4/3' as const,
+		imagePosition: 'center',
 	},
 ];
 ---
@@ -126,8 +131,8 @@ const caseStudies = [
 				Klientarbeid og egne produkter
 			</h2>
 		</div>
-		<div class="space-y-24 lg:space-y-32">
-			{caseStudies.map((c, i) => <CaseStudyCard {...c} index={i + 1} reverse={i % 2 === 1} />)}
+		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
+			{caseStudies.map((c) => <CaseStudyCard {...c} />)}
 		</div>
 	</Section>
 
