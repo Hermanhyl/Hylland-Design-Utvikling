@@ -41,9 +41,14 @@ const {
 	caseHref,
 	caseLabel,
 } = Astro.props;
+
+// Whole-card click target: the case study if there is one, otherwise the live
+// site. Rendered as a "stretched link" so the entire card is clickable while
+// the secondary link stays independently clickable.
+const hasLink = Boolean(caseHref || liveHref);
 ---
 
-<article class="pcard group" data-reveal>
+<article class:list={['pcard group', { 'pcard--link': hasLink }]} data-reveal>
 	<div class="pcard-media">
 		<div class="pcard-chrome" aria-hidden="true">
 			<span class="pcard-dots"><i></i><i></i><i></i></span>
@@ -79,12 +84,12 @@ const {
 		{(caseHref || liveHref) && (
 			<div class="pcard-foot">
 				{caseHref && (
-					<a href={caseHref} class="pcard-link pcard-link--primary">
+					<a href={caseHref} class="pcard-link pcard-link--primary pcard-stretch">
 						{caseLabel ?? 'Se case study'} <span class="pcard-arrow">→</span>
 					</a>
 				)}
 				{liveHref && (
-					<a href={liveHref} target="_blank" rel="noopener noreferrer" class="pcard-link">
+					<a href={liveHref} target="_blank" rel="noopener noreferrer" class:list={['pcard-link', caseHref ? 'pcard-link--raised' : 'pcard-stretch']}>
 						{liveLabel ?? 'Besøk'} <span class="pcard-arrow">↗</span>
 					</a>
 				)}

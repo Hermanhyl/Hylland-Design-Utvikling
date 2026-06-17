@@ -2048,6 +2048,8 @@ canvas {
 
 /* ─── Portfolio project cards (compact, window-framed grid) ─── */
 .pcard {
+	position: relative;
+	isolation: isolate;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -2223,6 +2225,24 @@ canvas {
 	margin-top: 1.4rem;
 	padding-top: 1.2rem;
 	border-top: 1px solid var(--color-border);
+}
+
+/* Whole-card click target: stretch the primary link over the entire card. */
+.pcard--link {
+	cursor: pointer;
+}
+
+.pcard-stretch::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+}
+
+/* Keep the secondary (live) link clickable above the stretched overlay. */
+.pcard-link--raised {
+	position: relative;
+	z-index: 2;
 }
 
 .pcard-link {
