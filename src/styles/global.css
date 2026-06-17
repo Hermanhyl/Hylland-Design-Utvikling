@@ -1938,6 +1938,114 @@ canvas {
 	}
 }
 
+/* ─── Case study: tech stack grid ─── */
+.tech-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 2.5rem 3rem;
+}
+
+@media (min-width: 768px) {
+	.tech-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+.tech-group-title {
+	font-family: var(--font-mono);
+	font-size: var(--text-micro);
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--color-accent);
+	padding-bottom: 0.75rem;
+	border-bottom: 1px solid var(--color-border);
+}
+
+.tech-list {
+	margin-top: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.tech-item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+}
+
+.tech-name {
+	font-family: var(--font-display);
+	font-size: 1.0625rem;
+	font-weight: 500;
+	color: var(--color-text);
+}
+
+.tech-desc {
+	font-size: 0.9rem;
+	line-height: 1.5;
+	color: var(--color-text-muted);
+}
+
+/* ─── Case study: highlights grid ─── */
+.highlight-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1rem;
+}
+
+@media (min-width: 640px) {
+	.highlight-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+@media (min-width: 1024px) {
+	.highlight-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.highlight {
+	padding: 1.5rem;
+	border: 1px solid var(--color-border);
+	border-radius: 8px;
+	background: var(--color-bg);
+	transition:
+		transform 250ms var(--ease-out),
+		border-color 250ms var(--ease-std),
+		box-shadow 250ms var(--ease-out);
+}
+
+.highlight:hover {
+	transform: translateY(-4px);
+	border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
+	box-shadow: 0 20px 44px -28px color-mix(in srgb, var(--color-accent) 50%, rgba(26, 26, 31, 0.4));
+}
+
+.highlight-title {
+	font-family: var(--font-display);
+	font-size: 1.2rem;
+	font-weight: 500;
+	color: var(--color-text);
+}
+
+.highlight-body {
+	margin-top: 0.6rem;
+	font-size: 0.92rem;
+	line-height: 1.55;
+	color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.highlight {
+		transition: none;
+	}
+	.highlight:hover {
+		transform: none;
+	}
+}
+
 /* ─── Portfolio project cards (compact, window-framed grid) ─── */
 .pcard {
 	display: flex;

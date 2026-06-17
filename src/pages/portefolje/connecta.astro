@@ -24,35 +24,115 @@ const approach = [
 ];
 
 const palette = [
-	{ hex: '#F4EFE4', name: 'Sandfarge', role: 'Bakgrunn' },
-	{ hex: '#1E3A4C', name: 'Dyp blågrå', role: 'Tekst og flater' },
-	{ hex: '#E2A33C', name: 'Gyllen', role: 'Aksent og knapper' },
-	{ hex: '#7C8B8F', name: 'Rolig grå', role: 'Detaljer' },
+	{ hex: '#2F5D74', name: 'Klinisk blå', role: 'Primær' },
+	{ hex: '#3E7C7B', name: 'Teal', role: 'Sekundær' },
+	{ hex: '#8CA399', name: 'Salvie', role: 'Støtte' },
+	{ hex: '#D9A441', name: 'Gyllen', role: 'Aksent' },
+	{ hex: '#F3F7F8', name: 'Lys', role: 'Bakgrunn' },
+];
+
+const techStack = [
+	{
+		group: 'Kjerne',
+		items: [
+			{ name: 'React 19.2 + TypeScript', desc: 'Komponentdrevet UI med full typesikkerhet.' },
+			{ name: 'Vite 8', desc: 'Byggeverktøy og utviklingsserver med umiddelbar HMR.' },
+			{ name: 'React Router 7', desc: 'Klientside-ruting for en flersides følelse uten full lasting.' },
+			{ name: 'Tailwind CSS 3.4', desc: 'Verktøydrevet styling basert utelukkende på egne design-tokens.' },
+		],
+	},
+	{
+		group: 'UI og interaksjon',
+		items: [
+			{ name: 'Framer Motion 12', desc: 'Sideoverganger, scroll-animasjoner og mikrointeraksjoner som respekterer redusert bevegelse.' },
+			{ name: 'Lucide React', desc: 'Lett og konsistent SVG-ikonsett.' },
+		],
+	},
+	{
+		group: 'Verktøy og kvalitet',
+		items: [
+			{ name: 'ESLint 10 + typescript-eslint', desc: 'Linting og kodekonsistens på tvers av prosjektet.' },
+			{ name: 'sharp', desc: 'Bildeprosessering ved bygg (delingsbilde og logo-rasterisering).' },
+		],
+	},
+	{
+		group: 'Hosting',
+		items: [
+			{ name: 'Netlify', desc: 'Statisk hosting med CI/CD, Netlify Forms, SPA-omdirigering og sikkerhetshoder.' },
+		],
+	},
+];
+
+const architecture = [
+	{
+		title: 'Én kilde til sannhet',
+		body: 'All tekst, overskrifter, priser, FAQ, omtaler og kontaktinfo ligger i én typet datafil. Komponenter hardkoder aldri tekst, så innholdsendringer rører aldri markup.',
+	},
+	{
+		title: 'DRY-komponentsystem',
+		body: 'Gjenbrukbare byggeklosser (hero, seksjoner, reveal, CTA, karusell, faner, trekkspill) setter sammen hver side. Dukket markup opp to ganger, ble det en komponent.',
+	},
+	{
+		title: 'Design-tokens, ikke tilfeldige verdier',
+		body: 'Et eget Tailwind-tema definerer hele det visuelle språket. Komponenter refererer tokens som «clinic.blue» og «font-heading», ikke rå hex-verdier.',
+	},
+	{
+		title: 'Mobil først og fullt responsiv',
+		body: 'Bygget fra minste skjerm og opp, testet ned til 375px uten horisontal scroll, med 16px+ brødtekst og touch-mål på minst 44×44px.',
+	},
+];
+
+const highlights = [
+	{
+		title: 'Tilgjengelighet (WCAG)',
+		body: 'Full tastaturnavigasjon, fokusfanget mobilmeny med Escape og fokus-retur, synlige fokusmarkører, ARIA-roller, ekte skjemaetiketter, «hopp til innhold», sveip + tastatur på karusell og faner, og kontrastsjekkede farger (AA).',
+	},
+	{
+		title: 'Ytelse',
+		body: 'Kodedeling per rute med lazy loading og Suspense (hver side sitt eget bundle), animasjoner kun på transform og opacity, og lang cache på hashede filer.',
+	},
+	{
+		title: 'SEO',
+		body: 'Tittel, meta og canonical per rute, Open Graph- og Twitter-kort med generert delingsbilde, JSON-LD strukturerte data (MedicalBusiness), samt robots.txt og sitemap.xml.',
+	},
+	{
+		title: 'Robusthet',
+		body: 'React error boundary, egne lastetilstander med merkevare, en egen 404-side og SPA-fallback, så dype lenker aldri knekker.',
+	},
+	{
+		title: 'Ekte kontaktskjema',
+		body: 'Koblet til Netlify Forms med statisk skjemadeteksjon og honeypot mot spam, klientsidevalidering, tilgjengelige feil- og suksess-tilstander og telefon, SMS og e-post som alternativ.',
+	},
+	{
+		title: 'Personvern og sikkerhet',
+		body: 'Utkast til norsk personvernerklæring og sikkerhetshoder (blant annet CSP) konfigurert på hosting-nivå.',
+	},
 ];
 ---
 
 <BaseLayout
 	title="Connecta — redesign av terapinettside | Hylland Design & Utvikling"
-	description="Case study: hvordan jeg bygde Connecta.no opp på nytt med tydeligere struktur, lesbart innhold og et varmere, helhetlig design. Dra i før/etter-bildene for å se forskjellen."
+	description="Case study: hvordan jeg gikk bort fra WordPress og bygde Connecta.no på nytt fra bunnen som en rask React-nettapp, med tydeligere struktur, bedre tilgjengelighet og et rolig, mykt klinisk design. Dra i før/etter-bildene for å se forskjellen."
 	darkHero
 >
 	<!-- Dark cinematic hero -->
 	<div class="page-hero" data-hero>
 		<ConstellationBackground client:load />
 		<div class="page-hero-inner" data-reveal>
-			<p class="hero-eyebrow">Case study · 2025</p>
+			<p class="hero-eyebrow">Case study · 2026</p>
 			<h1 class="page-hero-title">
-				Connecta: en terapinettside, <span class="hero-title-accent italic">redesignet fra grunnen av.</span>
+				Connecta: en terapinettside, <span class="hero-title-accent italic">bygget på nytt fra bunnen.</span>
 			</h1>
 			<p class="hero-lede">
-				Connecta tilbyr terapi og veiledning. Den gamle nettsiden var informativ, men tung å lese og litt
-				anonym. Jeg bygde den opp på nytt med tydeligere struktur, et varmere visuelt uttrykk og innhold
-				som er lett å ta inn. Dra i glidebryterne under for å se forskjellen.
+				Connecta tilbyr terapi og veiledning på nett. Den gamle WordPress-siden var informativ, men treg,
+				tung å lese og litt anonym. Jeg gikk bort fra WordPress og bygde en rask, moderne nettapp med et
+				rolig «mykt klinisk» uttrykk: samme innhold, men løftet design, tilgjengelighet og ytelse. Dra i
+				glidebryterne under for å se forskjellen.
 			</p>
 			<div class="casestudy-meta">
 				<span><strong>Rolle:</strong> Design og utvikling</span>
-				<span><strong>År:</strong> 2025</span>
-				<span><strong>Type:</strong> WordPress</span>
+				<span><strong>År:</strong> 2026</span>
+				<span><strong>Type:</strong> Nettapp bygget fra bunnen (React SPA)</span>
 			</div>
 			<div class="hero-cta">
 				<a href="https://connecta.no" target="_blank" rel="noopener noreferrer" class="hero-btn">
@@ -69,7 +149,7 @@ const palette = [
 			<Eyebrow>Utfordringen</Eyebrow>
 			<h2 class="mt-4 font-display text-3xl font-medium lg:text-4xl">Mye god informasjon, men tungt å ta inn</h2>
 			<p class="mt-6 text-[length:var(--text-body)] leading-[1.7] text-text-muted">
-				Den opprinnelige siden lente seg på lange tekstavsnitt, generiske bilder og en flat, blå
+				Den opprinnelige siden var en aldrende WordPress-løsning som lente seg på lange tekstavsnitt, generiske bilder og en flat, blå
 				fargepalett. Viktig informasjon som priser, tjenester og hvem terapeutene er lå begravd i tette
 				tekstblokker uten tydelig hierarki. For en besøkende i en sårbar situasjon ble det vanskelig å
 				finne svar raskt, og siden skilte seg lite fra andre i bransjen.
@@ -216,8 +296,8 @@ const palette = [
 			<Eyebrow>Designspråket</Eyebrow>
 			<h2 class="mt-4 font-display text-3xl font-medium lg:text-4xl">Ett uttrykk fra forside til kontakt</h2>
 			<p class="mt-6 text-[length:var(--text-body)] leading-[1.7] text-text-muted">
-				Det nye uttrykket bygger på en varm sandfarget bakgrunn, en dyp blågrå og en gyllen aksent som går
-				igjen på knapper og detaljer. Overskrifter i en seriffont gir et personlig og trygt preg, mens
+				Det nye uttrykket er «mykt klinisk»: en rolig palett i blått, teal og salvie med en gyllen aksent som går
+				igjen på knapper og detaljer. Overskrifter i Lora (serif) gir et trygt, personlig preg, mens Raleway (sans-serif) holder brødteksten lett å lese, og
 				korte tekster i god lesebredde holder fokus. Alt er bygget av de samme komponentene, kort,
 				merkelapper og knapper, så siden føles som én helhet.
 			</p>
@@ -229,6 +309,81 @@ const palette = [
 					<span class="swatch-label"><strong>{c.name}</strong>{c.role} · {c.hex}</span>
 				</div>
 			))}
+		</div>
+	</Section>
+
+	<!-- Teknologi -->
+	<Section tone="warm" padding="default">
+		<div class="mb-12 max-w-[68ch]">
+			<Eyebrow>Teknologi</Eyebrow>
+			<h2 class="mt-4 font-display text-3xl font-medium lg:text-4xl">Bygget fra bunnen, ikke på en mal</h2>
+			<p class="mt-6 text-[length:var(--text-body)] leading-[1.7] text-text-muted">
+				I stedet for å lappe på den gamle WordPress-siden bygde jeg en helt ny, rask nettapp. Her er
+				verktøykassa bak.
+			</p>
+		</div>
+		<div class="tech-grid" data-reveal>
+			{techStack.map((g) => (
+				<div class="tech-group">
+					<h3 class="tech-group-title">{g.group}</h3>
+					<ul class="tech-list" role="list">
+						{g.items.map((it) => (
+							<li class="tech-item">
+								<span class="tech-name">{it.name}</span>
+								<span class="tech-desc">{it.desc}</span>
+							</li>
+						))}
+					</ul>
+				</div>
+			))}
+		</div>
+	</Section>
+
+	<!-- Arkitektur -->
+	<Section tone="default" padding="default">
+		<div class="mb-12 max-w-[68ch]">
+			<Eyebrow>Arkitektur</Eyebrow>
+			<h2 class="mt-4 font-display text-3xl font-medium lg:text-4xl">Prinsippene bak koden</h2>
+		</div>
+		<div class="principles-grid grid grid-cols-1 gap-8 md:grid-cols-2" data-reveal>
+			{architecture.map((a, i) => (
+				<div class="principle isolate">
+					<span class="principle-num font-mono text-sm text-accent">{String(i + 1).padStart(2, '0')}</span>
+					<h3 class="mt-3 font-display text-xl font-medium text-text">{a.title}</h3>
+					<p class="mt-3 text-[length:var(--text-body)] leading-[1.6] text-text-muted">{a.body}</p>
+				</div>
+			))}
+		</div>
+	</Section>
+
+	<!-- Høydepunkter -->
+	<Section tone="warm" padding="default">
+		<div class="mb-12 max-w-[68ch]">
+			<Eyebrow>Høydepunkter</Eyebrow>
+			<h2 class="mt-4 font-display text-3xl font-medium lg:text-4xl">Det som gjør siden solid</h2>
+		</div>
+		<div class="highlight-grid" data-reveal>
+			{highlights.map((h) => (
+				<div class="highlight">
+					<h3 class="highlight-title">{h.title}</h3>
+					<p class="highlight-body">{h.body}</p>
+				</div>
+			))}
+		</div>
+	</Section>
+
+	<!-- Prosess -->
+	<Section tone="default" padding="default">
+		<div class="max-w-[68ch]">
+			<Eyebrow>Prosess</Eyebrow>
+			<h2 class="mt-4 font-display text-3xl font-medium lg:text-4xl">Fra stillas til lansering</h2>
+			<p class="mt-6 text-[length:var(--text-body)] leading-[1.7] text-text-muted">
+				Arbeidet fulgte en tydelig progresjon: stillas, innholdsmodell, felles layout og bevegelsessystem,
+				sider, responsiv gjennomgang, DRY-refaktorering, tilgjengelighetspass og produksjonsherding (SEO,
+				sikkerhet, feil- og lastetilstander), før lanseringsforberedelse med skjema, personvern og deploy.
+				Alt ble committet i små, beskrivende commits, og repoet har egen CLAUDE.md og STYLE_GUIDE.md, så
+				designspråket holder seg konsistent over tid.
+			</p>
 		</div>
 	</Section>
 
