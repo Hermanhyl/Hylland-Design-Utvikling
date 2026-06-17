@@ -77,10 +77,9 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}
 	</head>
 
 	<body class="grain flex min-h-svh flex-col">
-		<a href="#main" class="skip-link">Hopp til innhold</a>
 		<Nav overHero={darkHero} />
 
-		<main id="main" tabindex="-1" class="flex-1" style={`min-height: calc(100vh - var(--nav-height));`}>
+		<main id="main" class="flex-1" style={`min-height: calc(100vh - var(--nav-height));`}>
 			<slot />
 		</main>
 

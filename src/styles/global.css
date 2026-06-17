@@ -2267,35 +2267,3 @@ canvas {
 	}
 }
 
-/* ─── Accessibility: skip-to-content link ─── */
-.skip-link {
-	position: fixed;
-	top: 0.75rem;
-	left: 0.75rem;
-	z-index: 10000;
-	transform: translateY(-150%);
-	padding: 0.7rem 1.1rem;
-	border-radius: 4px;
-	background: var(--color-accent);
-	color: var(--color-bg);
-	font-weight: 600;
-	font-size: 0.9rem;
-	box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-	transition: transform 150ms var(--ease-out);
-}
-
-.skip-link:focus {
-	transform: translateY(0);
-	outline: 2px solid var(--color-bg);
-	outline-offset: 2px;
-}
-
-#main:focus {
-	outline: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.skip-link {
-		transition: none;
-	}
-}
