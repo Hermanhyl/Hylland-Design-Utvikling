@@ -1,0 +1,15 @@
+{
+	"name": "Hylland Design & Utvikling",
+	"short_name": "Hylland D&U",
+	"description": "Frontend-utvikling og UX-design fra Drammen.",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#0E0D12",
+	"theme_color": "#FAFAF7",
+	"lang": "no",
+	"icons": [
+		{ "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+		{ "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+		{ "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+	]
+}

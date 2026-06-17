@@ -1,0 +1,71 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ConstellationBackground from '@/components/react/ConstellationBackground.tsx';
+
+const links = [
+	{ href: '/', label: 'Forsiden' },
+	{ href: '/portefolje', label: 'Portefølje' },
+	{ href: '/tjenester', label: 'Tjenester' },
+	{ href: '/kontakt', label: 'Kontakt' },
+];
+---
+
+<BaseLayout
+	title="Siden finnes ikke (404) | Hylland Design & Utvikling"
+	description="Vi fant ikke siden du lette etter. Gå tilbake til forsiden eller utforsk porteføljen."
+	darkHero
+>
+	<div class="page-hero" data-hero>
+		<ConstellationBackground client:load />
+		<div class="page-hero-inner" data-reveal>
+			<p class="hero-eyebrow">Feil 404</p>
+			<h1 class="page-hero-title">Denne siden finnes ikke.</h1>
+			<p class="hero-lede">
+				Lenken kan være utdatert, eller så har siden flyttet. La oss få deg på rett spor igjen.
+			</p>
+			<div class="notfound-links">
+				{links.map((l) => (
+					<a href={l.href} class="notfound-link">{l.label} →</a>
+				))}
+			</div>
+		</div>
+	</div>
+</BaseLayout>
+
+<style>
+	.notfound-links {
+		margin-top: 2.5rem;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem 1rem;
+	}
+
+	.notfound-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.7rem 1.3rem;
+		border-radius: 2px;
+		border: 1px solid color-mix(in srgb, var(--color-text-on-deep) 32%, transparent);
+		color: var(--color-text-on-deep);
+		font-weight: 500;
+		transition:
+			border-color 150ms var(--ease-std),
+			color 150ms var(--ease-std),
+			background-color 150ms var(--ease-std),
+			transform 150ms var(--ease-std);
+	}
+
+	.notfound-link:hover {
+		border-color: var(--color-accent-glow);
+		color: var(--color-accent-glow);
+		background: color-mix(in srgb, var(--color-accent-glow) 12%, transparent);
+		transform: translateY(-2px);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.notfound-link:hover {
+			transform: none;
+		}
+	}
+</style>

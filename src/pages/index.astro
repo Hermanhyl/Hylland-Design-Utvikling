@@ -40,14 +40,40 @@ const projects = [
 	},
 ];
 
+const site = 'https://hermanhylland.no';
 const jsonLd = {
 	'@context': 'https://schema.org',
 	'@graph': [
 		{
 			'@type': 'Person',
+			'@id': `${site}/#person`,
 			name: 'Herman Hylland',
 			jobTitle: 'Frontend-utvikler & UX/UI-designer',
-			url: 'https://hermanhylland.no',
+			url: site,
+			email: 'hermanhyl@hotmail.com',
+			image: `${site}/og-default.png`,
+			address: {
+				'@type': 'PostalAddress',
+				addressLocality: 'Drammen',
+				addressCountry: 'NO',
+			},
+			sameAs: [
+				'https://www.linkedin.com/in/herman-hylland/',
+				'https://github.com/Hermanhyl',
+				'https://www.instagram.com/hermanhyl98/',
+			],
+		},
+		{
+			'@type': 'ProfessionalService',
+			'@id': `${site}/#business`,
+			name: 'Hylland Design & Utvikling',
+			url: site,
+			description: 'Frontend-utvikling og UX/UI-design i Drammen.',
+			image: `${site}/og-default.png`,
+			email: 'hermanhyl@hotmail.com',
+			areaServed: 'NO',
+			founder: { '@id': `${site}/#person` },
+			knowsAbout: ['Frontend-utvikling', 'UX-design', 'Webutvikling', 'React', 'Astro'],
 			address: {
 				'@type': 'PostalAddress',
 				addressLocality: 'Drammen',
@@ -55,15 +81,12 @@ const jsonLd = {
 			},
 		},
 		{
-			'@type': 'LocalBusiness',
+			'@type': 'WebSite',
+			'@id': `${site}/#website`,
+			url: site,
 			name: 'Hylland Design & Utvikling',
-			url: 'https://hermanhylland.no',
-			description: 'Frontend-utvikling og UX/UI-design i Drammen',
-			address: {
-				'@type': 'PostalAddress',
-				addressLocality: 'Drammen',
-				addressCountry: 'NO',
-			},
+			inLanguage: 'nb-NO',
+			publisher: { '@id': `${site}/#business` },
 		},
 	],
 };

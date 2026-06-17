@@ -12,6 +12,8 @@ interface Props {
 	jsonLd?: Record<string, unknown>;
 	/** Set on pages with a dark cinematic hero so the nav starts transparent/light. */
 	darkHero?: boolean;
+	/** Keep the page out of search indexes (utility pages, thank-you, styleguide). */
+	noindex?: boolean;
 }
 
 const {
@@ -21,6 +23,7 @@ const {
 	canonicalUrl,
 	jsonLd,
 	darkHero = false,
+	noindex = false,
 } = Astro.props;
 
 const siteUrl = Astro.site?.origin ?? 'https://hermanhylland.no';
@@ -40,6 +43,7 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
+		{noindex && <meta name="robots" content="noindex, nofollow" />}
 
 		<!-- Open Graph -->
 		<meta property="og:type" content="website" />
@@ -58,8 +62,11 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}
 		<!-- Sitemap -->
 		<link rel="sitemap" href="/sitemap-index.xml" />
 
-		<!-- Favicon -->
+		<!-- Favicon + icons -->
 		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<link rel="icon" href="/favicon.ico" sizes="32x32" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/site.webmanifest" />
 
 		<!-- JSON-LD structured data -->
 		{jsonLd && (
@@ -70,9 +77,10 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}
 	</head>
 
 	<body class="grain flex min-h-svh flex-col">
+		<a href="#main" class="skip-link">Hopp til innhold</a>
 		<Nav overHero={darkHero} />
 
-		<main class="flex-1" style={`min-height: calc(100vh - var(--nav-height));`}>
+		<main id="main" tabindex="-1" class="flex-1" style={`min-height: calc(100vh - var(--nav-height));`}>
 			<slot />
 		</main>
 
