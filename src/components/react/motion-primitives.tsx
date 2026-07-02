@@ -38,6 +38,35 @@ export function usePrefersReducedMotion(): boolean {
 	return reduced;
 }
 
+/**
+ * True once the app loading overlay has lifted (it sets `data-app-ready` on
+ * <html> and fires a one-shot `app:ready` window event). Used to hold hero
+ * entrance animations until the loader is gone, so they play once, in view.
+ * Falls back to `true` after a timeout so content can never be stranded hidden.
+ */
+export function useAppReady(): boolean {
+	const [ready, setReady] = useState(
+		() => typeof document !== 'undefined' && document.documentElement.hasAttribute('data-app-ready'),
+	);
+
+	useEffect(() => {
+		if (ready) return;
+		if (document.documentElement.hasAttribute('data-app-ready')) {
+			setReady(true);
+			return;
+		}
+		const onReady = () => setReady(true);
+		window.addEventListener('app:ready', onReady, { once: true });
+		const t = window.setTimeout(() => setReady(true), 4000);
+		return () => {
+			window.removeEventListener('app:ready', onReady);
+			window.clearTimeout(t);
+		};
+	}, [ready]);
+
+	return ready;
+}
+
 /** Detect low-power / coarse-pointer devices to scale down WebGL quality. */
 export function useIsLowPower(): boolean {
 	const [low, setLow] = useState(false);
@@ -101,10 +130,13 @@ export function MotionHeading({
 	text,
 	className,
 	delay = 0,
+	play = true,
 }: {
 	text: string;
 	className?: string;
 	delay?: number;
+	/** Hold in the hidden state until true, then animate in once. */
+	play?: boolean;
 }) {
 	const reduced = useReducedMotion();
 	if (reduced) return <span className={className}>{text}</span>;
@@ -114,7 +146,7 @@ export function MotionHeading({
 		<motion.span
 			className={className}
 			initial="hidden"
-			animate="visible"
+			animate={play ? 'visible' : 'hidden'}
 			variants={{
 				hidden: {},
 				visible: { transition: { staggerChildren: MOTION.stagger, delayChildren: delay } },

@@ -1,0 +1,94 @@
+---
+// Branded first-load overlay. Rendered once in BaseLayout as the first child of
+// <body> with transition:persist, so it shows on the initial visit and is kept
+// (already hidden) across client-side view-transition navigations.
+//
+// It hides once the window has loaded AND fonts are ready AND (on the homepage)
+// the WebGL hero has hydrated ([data-hero][data-hydrated]) — with a minimum
+// display time (avoid a flash) and a hard timeout (never hang). On hide it sets
+// data-app-ready on <html> and fires `app:ready` so the hero entrance plays once.
+---
+
+<div class="app-loader" id="app-loader" role="status" aria-live="polite" transition:persist>
+	<div class="app-loader__inner">
+		<span class="app-loader__mark">Hylland</span>
+		<span class="app-loader__spinner" aria-hidden="true"></span>
+		<span class="app-loader__sr">Laster siden …</span>
+	</div>
+</div>
+
+<noscript>
+	<style>
+		.app-loader { display: none !important; }
+	</style>
+</noscript>
+
+<script is:inline>
+	(function () {
+		var loader = document.getElementById('app-loader');
+		if (!loader) return;
+
+		var done = false;
+		var start = Date.now();
+		var MIN_MS = 400;
+		var MAX_MS = 3500;
+
+		function hide() {
+			if (done) return;
+			done = true;
+			var wait = Math.max(0, MIN_MS - (Date.now() - start));
+			window.setTimeout(function () {
+				loader.classList.add('is-hidden');
+				document.documentElement.setAttribute('data-app-ready', 'true');
+				try {
+					window.dispatchEvent(new Event('app:ready'));
+				} catch (e) {}
+				window.setTimeout(function () {
+					if (loader) loader.style.display = 'none';
+				}, 650);
+			}, wait);
+		}
+
+		// Never hang.
+		window.setTimeout(hide, MAX_MS);
+
+		function heroPending() {
+			var hero = document.querySelector('[data-hero]');
+			return hero && !hero.hasAttribute('data-hydrated');
+		}
+
+		function onLoaded() {
+			var fontsReady =
+				document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+			fontsReady.then(function () {
+				if (!heroPending()) {
+					hide();
+					return;
+				}
+				// Poll briefly for hero hydration; the hard timeout is the backstop.
+				var iv = window.setInterval(function () {
+					if (done || !heroPending()) {
+						window.clearInterval(iv);
+						hide();
+					}
+				}, 60);
+			});
+		}
+
+		if (document.readyState === 'complete') onLoaded();
+		else window.addEventListener('load', onLoaded, { once: true });
+
+		// On client-side (view-transition) navigations the overlay stays persisted
+		// and hidden, but the swap resets <html> attributes. Re-affirm readiness so
+		// re-mounted islands (e.g. the homepage hero) play at once instead of
+		// waiting for their fallback timeout. Listener on document survives swaps.
+		document.addEventListener('astro:page-load', function () {
+			if (loader.classList.contains('is-hidden') || loader.style.display === 'none') {
+				document.documentElement.setAttribute('data-app-ready', 'true');
+				try {
+					window.dispatchEvent(new Event('app:ready'));
+				} catch (e) {}
+			}
+		});
+	})();
+</script>

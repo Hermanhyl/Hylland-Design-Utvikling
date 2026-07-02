@@ -3,6 +3,7 @@ import { ClientRouter } from 'astro:transitions';
 import '@/styles/global.css';
 import Nav from '@/components/Nav.astro';
 import Footer from '@/components/Footer.astro';
+import LoadingOverlay from '@/components/LoadingOverlay.astro';
 
 interface Props {
 	title: string;
@@ -77,6 +78,7 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}
 	</head>
 
 	<body class="grain flex min-h-svh flex-col">
+		<LoadingOverlay />
 		<Nav overHero={darkHero} />
 
 		<main id="main" class="flex-1" style={`min-height: calc(100vh - var(--nav-height));`}>

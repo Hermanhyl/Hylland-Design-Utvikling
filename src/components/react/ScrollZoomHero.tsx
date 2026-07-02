@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { motion, useScroll, useReducedMotion } from 'framer-motion';
 import Hero3D from './Hero3D';
-import { MotionHeading, MOTION } from './motion-primitives';
+import { MotionHeading, MOTION, useAppReady } from './motion-primitives';
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 const lerp = (a: number, b: number, t: number) => a + (b - a) * clamp01(t);
@@ -27,6 +27,11 @@ export default function ScrollZoomHero() {
 	const stageRef = useRef<HTMLDivElement>(null);
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const reduced = useReducedMotion();
+	const appReady = useAppReady();
+	// Hold the entrance until the loading overlay lifts, so the headline
+	// animates once (in view) instead of playing behind, then again after the
+	// poster→island swap. Reduced motion plays immediately (no animation).
+	const play = reduced || appReady;
 
 	const { scrollYProgress } = useScroll({
 		target: heroRef,
@@ -71,15 +76,15 @@ export default function ScrollZoomHero() {
 		<div className="hero-content">
 			<p className="hero-eyebrow">Frilans · Drammen · 2026</p>
 			<h1 className="hero-title">
-				<MotionHeading text="Frontend-utvikling og UX-design" />{' '}
+				<MotionHeading text="Frontend-utvikling og UX-design" play={play} />{' '}
 				<span className="hero-title-accent italic">
-					<MotionHeading text="fra Drammen." delay={0.35} />
+					<MotionHeading text="fra Drammen." delay={0.35} play={play} />
 				</span>
 			</h1>
 			<motion.p
 				className="hero-lede"
 				initial={reduced ? false : { opacity: 0, y: 16 }}
-				animate={reduced ? undefined : { opacity: 1, y: 0 }}
+				animate={reduced ? undefined : play ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
 				transition={{ duration: MOTION.duration, ease: MOTION.easeOut, delay: 0.6 }}
 			>
 				Jeg hjelper bedrifter med å bygge nettløsninger som er raske, tydelige og lette å bruke.
@@ -87,7 +92,7 @@ export default function ScrollZoomHero() {
 			<motion.div
 				className="hero-cta"
 				initial={reduced ? false : { opacity: 0, y: 16 }}
-				animate={reduced ? undefined : { opacity: 1, y: 0 }}
+				animate={reduced ? undefined : play ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
 				transition={{ duration: MOTION.duration, ease: MOTION.easeOut, delay: 0.75 }}
 			>
 				<a href="/tjenester" className="hero-btn">Se tjenester →</a>
