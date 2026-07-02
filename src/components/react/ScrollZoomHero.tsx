@@ -74,11 +74,11 @@ export default function ScrollZoomHero() {
 
 	const Foreground = (
 		<div className="hero-content">
-			<p className="hero-eyebrow">Frilans · Drammen · 2026</p>
+			<p className="hero-eyebrow">Frilans · Norge · 2026</p>
 			<h1 className="hero-title">
 				<MotionHeading text="Frontend-utvikling og UX-design" play={play} />{' '}
 				<span className="hero-title-accent italic">
-					<MotionHeading text="fra Drammen." delay={0.35} play={play} />
+					<MotionHeading text="for hele Norge." delay={0.35} play={play} />
 				</span>
 			</h1>
 			<motion.p
@@ -87,7 +87,8 @@ export default function ScrollZoomHero() {
 				animate={reduced ? undefined : play ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
 				transition={{ duration: MOTION.duration, ease: MOTION.easeOut, delay: 0.6 }}
 			>
-				Jeg hjelper bedrifter med å bygge nettløsninger som er raske, tydelige og lette å bruke.
+				Jeg hjelper bedrifter med å bygge nettløsninger som er raske, tydelige og lette å bruke,
+				uansett hvor i landet du holder til.
 			</motion.p>
 			<motion.div
 				className="hero-cta"
